@@ -1,0 +1,2 @@
+module agatasan_java {
+}
