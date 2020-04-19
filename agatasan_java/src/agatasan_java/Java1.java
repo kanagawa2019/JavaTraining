@@ -21,7 +21,10 @@ public class Java1 {
     private static final int MULTIPLICATION_TABLE_RANGE_END = 9;
     
     /** 表示形式 */
-    private static final String DISPLAY_FORMAT = "%2d%s";
+//    private static final String DISPLAY_FORMAT = "%2d%s";
+//    private static final String DISPLAY_FORMAT = "%2d%2s";
+//    private static final String DISPLAY_FORMAT =  "%2d% ";// コンパイルエラー　UnknownFormatConversionException
+    private static final String DISPLAY_FORMAT =  "%2d ";
 
     /**
      * 九九の計算を行い、コンソールに表示します。
