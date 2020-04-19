@@ -18,7 +18,7 @@ public class Java2 {
     private static final int MULTIPLICATION_TABLE_RANGE_END = 9;
 
     /** 表示形式 */
-    private static final String DISPLAY_FORMAT = "%2s%s";
+    private static final String DISPLAY_FORMAT = "%2s ";
     
     /**
      * 入力された数値で九九の計算を行い、コンソールに表示します。
@@ -39,6 +39,7 @@ public class Java2 {
                 } else {
                     // 入力内容が数値以外の場合
                     System.out.println("エラー！！数値以外が入力されました。");
+                    System.out.println("数値を入力してください。");
                     scanner.next();
                 }
             }
