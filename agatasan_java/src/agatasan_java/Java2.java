@@ -63,7 +63,7 @@ public class Java2 {
                 IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
                     System.out.printf(DISPLAY_FORMAT, i * line, " ");
                 });
-                System.out.println("\r\n引き続き、九九表示する場合は、数値を入力してください。");
+                System.out.printf("%n引き続き、九九表示する場合は、数値を入力してください。%n");
             } catch (NumberFormatException e) {
                 // 入力内容が数値以外の場合
                 System.out.println("エラー！！数値以外が入力されました。");
