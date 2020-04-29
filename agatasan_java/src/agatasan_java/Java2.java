@@ -29,11 +29,8 @@ public class Java2 {
     /** 終了条件 */
     private static final String EXIT_CONDITIONS = "end";
 
-    /** 入力タイプ文言 */
-    private static final String USER_INPUT_TYPE = "数値";
-
     /** ユーザー入力促し文言 */
-    private static final String USER_INPUT_SENTENCES = USER_INPUT_TYPE + "を入力してください。";
+    private static final String USER_INPUT_SENTENCES = "数値を入力してください。";
 
     /** 入力許容最小値 */
     private static final int USER_INPUT_MIN_VALUE = 1;
@@ -48,7 +45,7 @@ public class Java2 {
     private static final String NUMBER_INPUT_SENTENCES = USER_INPUT_RANGE + "の" + USER_INPUT_SENTENCES;
 
     /** 数値以外の入力時エラー文言 */
-    private static final String NON_NUMERIC_ERROR = "エラー！！" + USER_INPUT_RANGE + "以外の" + USER_INPUT_TYPE + "が入力されました。";
+    private static final String NON_NUMERIC_ERROR = "エラー！！" + USER_INPUT_RANGE + "以外の数値が入力されました。";
 
     /**
      * 入力された数値で九九の計算を行い、コンソールに表示します。
@@ -86,7 +83,7 @@ public class Java2 {
                 IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
                     System.out.printf(DISPLAY_FORMAT, i * line, " ");
                 });
-                System.out.printf("%n引き続き、九九表示する場合は、" + USER_INPUT_TYPE + "を入力してください。%n");
+                System.out.printf("%n引き続き、九九表示する場合は、数値を入力してください。%n");
             } catch (NumberFormatException e) {
                 // 入力内容が数値以外の場合
                 System.out.println(NON_NUMERIC_ERROR);
