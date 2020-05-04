@@ -1,5 +1,7 @@
 package agatasan_java;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
@@ -7,7 +9,7 @@ import java.util.stream.IntStream;
  * Java4クラス Java課題４(ステータス管理）
  *
  * @author 菱田 美紀
- * @version 1.0 2020/03/22
+ * @version 1.0 2020/05/04
  */
 public class Java4 {
 
@@ -44,6 +46,18 @@ public class Java4 {
     /** 数値以外の入力時エラー文言 */
     private static final String NON_NUMERIC_ERROR = "エラー！！" + USER_INPUT_RANGE + "以外の数値が入力されました。";
 
+    /** 処理モード数値：九九表示 */
+    private static final int MODE_DISPLAY_MULTIPLICATION_TABLE = 1;
+
+    /** 処理モード数値：指定の段のみ表示 */
+    private static final int MODE_DISPLAY_MULTIPLICATION_LINE = 2;
+
+    /** 処理モード数値：モード切替 */
+    private static final int MODE_SWITCHING = 3;
+
+    /** 処理モード数値：終了 */
+    private static final int MODE_END = 9;
+
     /**
      * 入力された数値で九九の計算を行い、コンソールに表示します。
      * 
@@ -55,18 +69,7 @@ public class Java4 {
         // 切替モードオン・オフ
         boolean displaySwitching = false;
 
-        System.out.println("***********************************");
-        System.out.println("処理モードを選択してください");
-        System.out.println("1.九九表示");
-        System.out.println("2.指定の段のみ表示");
-        if (displaySwitching) {
-            System.out.println("3.モード切替(世界のナベアツ⇒通常)");
-        } else {
-            System.out.println("3.モード切替(通常⇒世界のナベアツ)");
-        }
-
-        System.out.println("9.終了");
-        System.out.println("***********************************");
+        displaySentence(displaySwitching);
 
         while (scanner.hasNext()) {
 
@@ -78,62 +81,43 @@ public class Java4 {
                 int line = Integer.valueOf(input).intValue();
 
                 // 1が入力された場合
-                if (line == 1) {
+                if (line == MODE_DISPLAY_MULTIPLICATION_TABLE) {
                     // 九九表示処理
                     displayMultiplicationTable(displaySwitching);
+                    displaySentence(displaySwitching);
                     continue;
                 }
 
                 // 2が入力された場合
-                if (line == 2) {
-                    System.out.println("表示する段を入力してください");
-
-                    while (scanner.hasNext()) {
-
-                        // 数値か判定
-                        try {
-                            int inputLine = Integer.valueOf(scanner.next()).intValue();
-
-                            // 入力許容範囲外はエラー
-                            if (!isWithinRange(inputLine, USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE)) {
-                                System.out.println(NON_NUMERIC_ERROR);
-                                System.out.println(NUMBER_INPUT_SENTENCES);
-                                continue;
-                            }
-
-                            test(displaySwitching, inputLine);
-                            break;
-                        } catch (NumberFormatException e) {
-                            // 入力内容が数値以外の場合
-                            System.out.println(NON_NUMERIC_ERROR);
-                            System.out.println(NUMBER_INPUT_SENTENCES);
-                        }
-
-                    }
-
+                if (line == MODE_DISPLAY_MULTIPLICATION_LINE) {
+                    displayMultiplicationLine(scanner, displaySwitching);
+                    displaySentence(displaySwitching);
                     continue;
                 }
 
                 // 3が入力された場合
-                if (line == 3) {
+                if (line == MODE_SWITCHING) {
                     // 切替
-                    if (displaySwitching) {
-                        displaySwitching = false;
-                    } else {
-                        displaySwitching = true;
-                    }
-
+                    displaySwitching = displaySwitching ? false : true;
                     System.out.println("モードを切り替えました。");
+                    displaySentence(displaySwitching);
                     continue;
                 }
 
                 // 9が入力された場合
-                if (line == 9) {
+                if (line == MODE_END) {
                     System.out.println("終了します。");
                     break;
                 }
 
-                System.out.println("1,2,3,9のいずれかを入力してください。");
+                // 指定数値以外の場合
+                List<String> list = Arrays.asList(String.valueOf(MODE_DISPLAY_MULTIPLICATION_TABLE),
+                        String.valueOf(MODE_DISPLAY_MULTIPLICATION_LINE), String.valueOf(MODE_SWITCHING),
+                        String.valueOf(MODE_END));
+
+                System.out.println(String.join(",", list) + "のいずれかを入力してください。");
+
+                displaySentence(displaySwitching);
                 continue;
 
             } catch (NumberFormatException e) {
@@ -166,10 +150,11 @@ public class Java4 {
      * @param displaySwitching 切替モードの状態
      * @param inputNumber      入力文字
      */
-    private static void test(boolean displaySwitching, int inputNumber) {
+    private static void displaySingleLine(boolean displaySwitching, int inputNumber) {
 
         // 切替モードオンの場合
         if (displaySwitching) {
+            // TODO NA表示？
             displaySwitchingModeOn(inputNumber);
             return;
         }
@@ -233,5 +218,59 @@ public class Java4 {
 
         });
 
+    }
+
+    /**
+     * 九九１行表示の入力判定処理
+     * 
+     * @param scanner          入力情報
+     * @param displaySwitching 切替モードの状態
+     */
+    private static void displayMultiplicationLine(Scanner scanner, boolean displaySwitching) {
+        System.out.println("表示する段を入力してください");
+
+        while (scanner.hasNext()) {
+
+            // 数値か判定
+            try {
+                int inputLine = Integer.valueOf(scanner.next()).intValue();
+
+                // 入力許容範囲外はエラー
+                if (!isWithinRange(inputLine, USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE)) {
+                    System.out.println(NON_NUMERIC_ERROR);
+                    System.out.println(NUMBER_INPUT_SENTENCES);
+                    continue;
+                }
+
+                displaySingleLine(displaySwitching, inputLine);
+                break;
+            } catch (NumberFormatException e) {
+                // 入力内容が数値以外の場合
+                System.out.println(NON_NUMERIC_ERROR);
+                System.out.println(NUMBER_INPUT_SENTENCES);
+            }
+
+        }
+    }
+
+    /**
+     * コンソールに表示する文言
+     * 
+     * @param displaySwitching 切替モードの状態
+     */
+    private static void displaySentence(boolean displaySwitching) {
+
+        System.out.println("***********************************");
+        System.out.println("処理モードを選択してください");
+        System.out.println(MODE_DISPLAY_MULTIPLICATION_TABLE + ".九九表示");
+        System.out.println(MODE_DISPLAY_MULTIPLICATION_LINE + ".指定の段のみ表示");
+        if (displaySwitching) {
+            System.out.println(MODE_SWITCHING + ".モード切替(世界のナベアツ⇒通常)");
+        } else {
+            System.out.println(MODE_SWITCHING + ".モード切替(通常⇒世界のナベアツ)");
+        }
+
+        System.out.println(MODE_END + ".終了");
+        System.out.println("***********************************");
     }
 }
