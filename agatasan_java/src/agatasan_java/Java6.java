@@ -41,11 +41,8 @@ public class Java6 {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println(USER_INPUT_SENTENCES);
-        System.out.println("endで入力を終了します。");
+        displaySentence();
 
-        // エラーがでる
-//        int userInput[] = new int[10];
         List<Integer> list = new ArrayList<>();
 
         while (scanner.hasNext()) {
@@ -65,8 +62,7 @@ public class Java6 {
 
                 // 入力許容範囲外はエラー
                 if (!isWithinRange(line, USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE)) {
-                    System.out.println(NON_NUMERIC_ERROR);
-                    System.out.println(NUMBER_INPUT_SENTENCES);
+                    displayErrSentence();
                     continue;
                 }
 
@@ -82,8 +78,8 @@ public class Java6 {
                         System.out.println(number);
                     }
                     // 10個入力したので初期化
-                    System.out.println(USER_INPUT_MAX_NUMBER_OF_TIMES + "回入力されたので、初期化しました。");
-                    System.out.println(USER_INPUT_SENTENCES);
+                    System.out.println(USER_INPUT_MAX_NUMBER_OF_TIMES + "回入力されたので、リセットしました。");
+                    displaySentence();
                     list = new ArrayList<>();
                     continue;
                 }
@@ -93,8 +89,7 @@ public class Java6 {
 
             } catch (NumberFormatException e) {
                 // 入力内容が数値以外の場合
-                System.out.println(NON_NUMERIC_ERROR);
-                System.out.println(NUMBER_INPUT_SENTENCES);
+                displayErrSentence();
             }
 
         }
@@ -117,4 +112,21 @@ public class Java6 {
         return (minValue <= targetNumber && targetNumber <= maxValue);
     }
 
+    /**
+     * コンソールに表示する文言
+     * 
+     */
+    private static void displaySentence() {
+        System.out.println(USER_INPUT_SENTENCES);
+        System.out.println("endで入力を終了します。");
+    }
+
+    /**
+     * 入力内容が数値以外の場合、コンソールに表示する文言
+     * 
+     */
+    private static void displayErrSentence() {
+        System.out.println(NON_NUMERIC_ERROR);
+        System.out.println(NUMBER_INPUT_SENTENCES);
+    }
 }
