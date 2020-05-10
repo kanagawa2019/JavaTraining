@@ -3,10 +3,11 @@ package agatasan_java;
 import java.util.stream.IntStream;
 
 /**
- * Java課題３(分岐制御） 九九表示クラス(3の倍数はNA表示)
+ * Java課題３(分岐制御） 九九表示クラス(3の倍数 or 3がつく場合はNA表示)
  *
  * @author 菱田 美紀
  * @version 1.0 2020/05/02 新規作成
+ * @version 1.1 2020/05/09 3がつく場合も別表示するように修正
  */
 public class Java3 {
 
@@ -34,8 +35,8 @@ public class Java3 {
         IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
             IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(j -> {
 
-                // 3の倍数は別表示
-                if ((i * j) % MULTIPLE == 0) {
+                // 3の倍数 or 3がつく場合は別表示
+                if ((i * j) % MULTIPLE == 0 || checkMultiple(i * j)) {
                     System.out.printf(DISPLAY_FORMAT, MULTIPLE_DISPLAY, " ");
                 } else {
                     System.out.printf(DISPLAY_FORMAT, i * j, " ");
@@ -44,6 +45,17 @@ public class Java3 {
             System.out.printf("%n");
         });
 
+    }
+
+    /**
+     * 3が含まれるかチェック
+     * 
+     * @param number
+     * @return true:3が含まれる
+     */
+    private static boolean checkMultiple(int number) {
+        String numberStr = String.valueOf(number);
+        return numberStr.contains(String.valueOf(MULTIPLE));
     }
 
 }
