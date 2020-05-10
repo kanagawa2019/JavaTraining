@@ -21,13 +21,13 @@ public class Java6 {
     private static final int USER_INPUT_MAX_NUMBER_OF_TIMES = 10;
 
     /** ユーザー入力促し文言 */
-    private static final String USER_INPUT_SENTENCES = "数値を" + USER_INPUT_MAX_NUMBER_OF_TIMES + "回入力してください。";
+    private static final String USER_INPUT_SENTENCES = "数値を入力してください。";
 
     /** 入力許容最小値 */
-    private static final int USER_INPUT_MIN_VALUE = 1;
+    private static final int USER_INPUT_MIN_VALUE = -1000;
 
     /** 入力許容最大値 */
-    private static final int USER_INPUT_MAX_VALUE = 100;
+    private static final int USER_INPUT_MAX_VALUE = 1000;
 
     /** 入力許容範囲 */
     private static final String USER_INPUT_RANGE = USER_INPUT_MIN_VALUE + "～" + USER_INPUT_MAX_VALUE;
@@ -56,41 +56,42 @@ public class Java6 {
                 break;
             }
 
+            int line = 0;
             // 数値か判定
             try {
-                int line = Integer.valueOf(input).intValue();
-
-                // 入力許容範囲外はエラー
-                if (!isWithinRange(line, USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE)) {
-                    displayErrSentence();
-                    continue;
-                }
-
-                // 10個目の場合、表示
-                if (list.size() == (USER_INPUT_MAX_NUMBER_OF_TIMES - 1)) {
-
-                    list.add(line);
-
-                    Integer[] array = list.toArray(new Integer[list.size()]);
-
-                    Arrays.sort(array);
-                    for (int number : array) {
-                        System.out.println(number);
-                    }
-                    // 10個入力したので初期化
-                    System.out.println(USER_INPUT_MAX_NUMBER_OF_TIMES + "回入力されたので、リセットしました。");
-                    displaySentence();
-                    list = new ArrayList<>();
-                    continue;
-                }
-
-                list.add(line);
-                System.out.printf(list.size() + "個めが入力されました。%n引き続き、数値を入力してください。%n");
-
+                line = Integer.valueOf(input).intValue();
             } catch (NumberFormatException e) {
                 // 入力内容が数値以外の場合
                 displayErrSentence();
+                continue;
             }
+
+            // 入力許容範囲外はエラー
+            if (!isWithinRange(line, USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE)) {
+                displayErrSentence();
+                continue;
+            }
+
+            // 10個目の場合、表示
+            if (list.size() == (USER_INPUT_MAX_NUMBER_OF_TIMES - 1)) {
+
+                list.add(line);
+
+                Integer[] array = list.toArray(new Integer[list.size()]);
+
+                Arrays.sort(array);
+                for (int number : array) {
+                    System.out.println(number);
+                }
+                // 10個入力したので初期化
+                System.out.println(USER_INPUT_MAX_NUMBER_OF_TIMES + "回入力されたので、リセットしました。");
+                displaySentence();
+                list = new ArrayList<>();
+                continue;
+            }
+
+            list.add(line);
+            System.out.printf(list.size() + "個めが入力されました。%n引き続き、数値を入力してください。%n");
 
         }
 

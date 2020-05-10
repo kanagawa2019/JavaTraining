@@ -23,6 +23,9 @@ public class Java3 {
     /** 倍数 */
     private static final int MULTIPLE = 3;
 
+    /** 数値 */
+    private static final int NUMERICAL_VALUE = 3;
+
     /** 倍数時の表示 */
     private static final String MULTIPLE_DISPLAY = "NA";
 
@@ -35,8 +38,8 @@ public class Java3 {
         IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
             IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(j -> {
 
-                // 3の倍数 or 3がつく場合は別表示
-                if ((i * j) % MULTIPLE == 0 || checkMultiple(i * j)) {
+                // 指定の倍数 or 指定の数字がつく場合は別表示
+                if ((i * j) % MULTIPLE == 0 || checkNumericalValue(i * j)) {
                     System.out.printf(DISPLAY_FORMAT, MULTIPLE_DISPLAY, " ");
                 } else {
                     System.out.printf(DISPLAY_FORMAT, i * j, " ");
@@ -48,14 +51,14 @@ public class Java3 {
     }
 
     /**
-     * 3が含まれるかチェック
+     * 指定の数値が含まれるかチェック
      * 
      * @param number
-     * @return true:3が含まれる
+     * @return true:数値が含まれる
      */
-    private static boolean checkMultiple(int number) {
+    private static boolean checkNumericalValue(int number) {
         String numberStr = String.valueOf(number);
-        return numberStr.contains(String.valueOf(MULTIPLE));
+        return numberStr.contains(String.valueOf(NUMERICAL_VALUE));
     }
 
 }
