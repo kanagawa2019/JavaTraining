@@ -39,7 +39,7 @@ public class Java3 {
             IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(j -> {
 
                 // 指定の倍数 or 指定の数字がつく場合は別表示
-                if ((i * j) % MULTIPLE == 0 || checkNumericalValue(i * j)) {
+                if ((i * j) % MULTIPLE == 0 || hasContainedCharacter(NUMERICAL_VALUE, (i * j))) {
                     System.out.printf(DISPLAY_FORMAT, MULTIPLE_DISPLAY, " ");
                 } else {
                     System.out.printf(DISPLAY_FORMAT, i * j, " ");
@@ -51,14 +51,15 @@ public class Java3 {
     }
 
     /**
-     * 指定の数値が含まれるかチェック
+     * 検索対象に判定文字が含まれるかチェック
      * 
-     * @param number
-     * @return true:数値が含まれる
+     * @param judgmentCharacter 判定文字
+     * @param target            検索対象
+     * @return true:判定文字が含まれる
      */
-    private static boolean checkNumericalValue(int number) {
-        String numberStr = String.valueOf(number);
-        return numberStr.contains(String.valueOf(NUMERICAL_VALUE));
+    private static boolean hasContainedCharacter(int judgmentCharacter, int target) {
+        String targetStr = String.valueOf(target);
+        return targetStr.contains(String.valueOf(judgmentCharacter));
     }
 
 }
