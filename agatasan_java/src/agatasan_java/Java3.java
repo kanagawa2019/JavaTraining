@@ -8,6 +8,7 @@ import java.util.stream.IntStream;
  * @author 菱田 美紀
  * @version 1.0 2020/05/02 新規作成
  * @version 1.1 2020/05/09 3がつく場合も別表示するように修正
+ * @version 1.2 2020/05/14 指定文字がある場合の判定チェックを修正
  */
 public class Java3 {
 
