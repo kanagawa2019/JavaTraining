@@ -9,6 +9,7 @@ import java.util.stream.IntStream;
  * @version 1.0 2020/05/02 新規作成
  * @version 1.1 2020/05/09 3がつく場合も別表示するように修正
  * @version 1.2 2020/05/14 指定文字がある場合の判定チェックを修正
+ * @version 1.3 2020/05/16 定数の名称を修正
  */
 public class Java3 {
 
@@ -21,14 +22,14 @@ public class Java3 {
     /** 表示形式 */
     private static final String DISPLAY_FORMAT = "%2s  ";
 
-    /** 倍数 */
-    private static final int MULTIPLE = 3;
+    /** 計算結果を除算する数値 */
+    private static final int DIVIDE_BY_NUMBER = 3;
 
-    /** 数値 */
-    private static final int NUMERICAL_VALUE = 3;
+    /** 計算結果に含まれる数値 */
+    private static final int CONTAINS_NUMBER = 3;
 
-    /** 倍数時の表示 */
-    private static final String MULTIPLE_DISPLAY = "NA";
+    /** 指定数値で割り切れる、または指定数字を含む場合の表示 */
+    private static final String DISPLAY_WHEN_MATCHING_CONDITIONS = "NA";
 
     /**
      * 九九の計算を行い、コンソールに表示します。
@@ -39,9 +40,9 @@ public class Java3 {
         IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
             IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(j -> {
 
-                // 指定の倍数 or 指定の数字がつく場合は別表示
-                if ((i * j) % MULTIPLE == 0 || hasContainedCharacter(NUMERICAL_VALUE, (i * j))) {
-                    System.out.printf(DISPLAY_FORMAT, MULTIPLE_DISPLAY, " ");
+                // 指定した数値で割り切れる or 指定の数値を含む場合は別表示
+                if ((i * j) % DIVIDE_BY_NUMBER == 0 || hasContainedCharacter(CONTAINS_NUMBER, (i * j))) {
+                    System.out.printf(DISPLAY_FORMAT, DISPLAY_WHEN_MATCHING_CONDITIONS, " ");
                 } else {
                     System.out.printf(DISPLAY_FORMAT, i * j, " ");
                 }
