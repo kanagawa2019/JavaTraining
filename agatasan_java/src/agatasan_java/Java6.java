@@ -1,8 +1,6 @@
 package agatasan_java;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -43,7 +41,8 @@ public class Java6 {
         Scanner scanner = new Scanner(System.in);
         displaySentence();
 
-        List<Integer> list = new ArrayList<>();
+        int[] inputNumbers = new int[USER_INPUT_MAX_NUMBER_OF_TIMES];
+        int count = 0;
 
         while (scanner.hasNext()) {
 
@@ -72,26 +71,29 @@ public class Java6 {
                 continue;
             }
 
-            // 10個目の場合、表示
-            if (list.size() == (USER_INPUT_MAX_NUMBER_OF_TIMES - 1)) {
+            // 配列へ追加
+            if (count < 10) {
+                inputNumbers[count] = line;
+            }
 
-                list.add(line);
+            // 最大入力回数入力時の場合、入力値を表示
+            if (count == USER_INPUT_MAX_NUMBER_OF_TIMES - 1) {
 
-                Integer[] array = list.toArray(new Integer[list.size()]);
-
-                Arrays.sort(array);
-                for (int number : array) {
+                System.out.println("並び替えて表示します。");
+                Arrays.sort(inputNumbers);
+                for (int number : inputNumbers) {
                     System.out.println(number);
                 }
-                // 10個入力したので初期化
+                // 最大入力回数分入力したので初期化
                 System.out.println(USER_INPUT_MAX_NUMBER_OF_TIMES + "回入力されたので、リセットしました。");
                 displaySentence();
-                list = new ArrayList<>();
+                Arrays.fill(inputNumbers, 0);
+                count = 0;
                 continue;
             }
 
-            list.add(line);
-            System.out.printf(list.size() + "個めが入力されました。%n引き続き、数値を入力してください。%n");
+            count++;
+            System.out.printf(count + "個めが入力されました。%n引き続き、" + USER_INPUT_SENTENCES + "%n");
 
         }
 
