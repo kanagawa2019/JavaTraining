@@ -78,7 +78,7 @@ public class Java7 {
             if (list.size() == USER_INPUT_MAX_NUMBER_OF_TIMES) {
 
                 Collections.sort(list);
-                System.out.println("入力値を昇順で表示します。");
+                System.out.println("並び替えて表示します。");
                 list.forEach(System.out::println);
 
                 // 最大入力回数分入力したので初期化
