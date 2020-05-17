@@ -28,7 +28,7 @@ public class Java3 {
     /** 計算結果に含まれる数値 */
     private static final int CONTAINS_NUMBER = 3;
 
-    /** 指定数値で割り切れる、または指定数字を含む場合の表示 */
+    /** 指定数値で割り切れる、または指定数値を含む場合の表示 */
     private static final String DISPLAY_WHEN_MATCHING_CONDITIONS = "NA";
 
     /**
