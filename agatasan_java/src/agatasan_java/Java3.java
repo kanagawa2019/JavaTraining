@@ -22,10 +22,10 @@ public class Java3 {
     /** 表示形式 */
     private static final String DISPLAY_FORMAT = "%2s  ";
 
-    /** 計算結果を除算する数値 */
+    /** 九九の計算結果を除算する数値 */
     private static final int DIVIDE_BY_NUMBER = 3;
 
-    /** 計算結果に含まれる数値 */
+    /** 九九の計算結果に含まれる数値 */
     private static final int CONTAINS_NUMBER = 3;
 
     /** 指定数値で割り切れる、または指定数値を含む場合の表示 */

@@ -40,7 +40,7 @@ public enum Mode {
     }
 
     /**
-     * 番号を取得する。
+     * 番号を取得します。
      * 
      * @return 番号
      */
@@ -48,6 +48,12 @@ public enum Mode {
         return this.num;
     }
 
+    /**
+     * 引数に指定された処理モードを取得します。
+     * 
+     * @param num 取得したい処理モードの番号
+     * @return
+     */
     public static Mode getTypeByValue(int num) {
         for (Mode v : values()) {
             if (v.getValue() == (num)) {
@@ -55,6 +61,5 @@ public enum Mode {
             }
         }
         throw new IllegalArgumentException("undefined : " + num);
-//        return 99;
     }
 }

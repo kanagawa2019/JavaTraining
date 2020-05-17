@@ -10,7 +10,7 @@ import java.util.Scanner;
  * Java7クラス Java課題７(リスト）
  *
  * @author 菱田 美紀
- * @version 1.0 2020/05/17
+ * @version 1.0 2020/05/17 新規作成
  */
 public class Java7 {
 
@@ -72,10 +72,10 @@ public class Java7 {
                 continue;
             }
 
-            // 最大入力回数入力時の場合、入力値を表示
-            if (list.size() == (USER_INPUT_MAX_NUMBER_OF_TIMES - 1)) {
+            list.add(line);
 
-                list.add(line);
+            // 最大入力回数入力時の場合、入力値を表示
+            if (list.size() == USER_INPUT_MAX_NUMBER_OF_TIMES) {
 
                 Collections.sort(list);
                 System.out.println("入力値を昇順で表示します。");
@@ -88,8 +88,7 @@ public class Java7 {
                 continue;
             }
 
-            list.add(line);
-            System.out.printf(list.size() + "個めが入力されました。%n引き続き、数値を入力してください。%n");
+            System.out.printf(list.size() + "個めが入力されました。%n引き続き、" + USER_INPUT_SENTENCES + "%n");
 
         }
 
