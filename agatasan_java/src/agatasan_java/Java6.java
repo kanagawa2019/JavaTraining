@@ -1,6 +1,5 @@
 package agatasan_java;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -8,7 +7,8 @@ import java.util.Scanner;
  * Java6クラス Java課題６(配列）
  *
  * @author 菱田 美紀
- * @version 1.0 2020/05/05
+ * @version 1.0 2020/05/05 新規作成
+ * @version 1.1 2020/05/24 文字列結合、main処理関数化
  */
 public class Java6 {
 
@@ -30,12 +30,10 @@ public class Java6 {
     /** 入力許容範囲 */
     private static final String USER_INPUT_RANGE = USER_INPUT_MIN_VALUE + "～" + USER_INPUT_MAX_VALUE;
 
-    /** 数値入力促し文言 */
-    private static final String NUMBER_INPUT_SENTENCES = USER_INPUT_RANGE + "の" + USER_INPUT_SENTENCES;
-
-    /** 数値以外の入力時エラー文言 */
-    private static final String NON_NUMERIC_ERROR = "エラー！！" + USER_INPUT_RANGE + "以外の数値が入力されました。";
-
+    /**
+     * 入力された数値を昇順でコンソールに表示します。
+     * 
+     */
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
@@ -55,10 +53,10 @@ public class Java6 {
                 break;
             }
 
-            int line = 0;
+            int userInputNumber = 0;
             // 数値か判定
             try {
-                line = Integer.valueOf(input).intValue();
+                userInputNumber = Integer.valueOf(input).intValue();
             } catch (NumberFormatException e) {
                 // 入力内容が数値以外の場合
                 displayErrSentence();
@@ -66,34 +64,30 @@ public class Java6 {
             }
 
             // 入力許容範囲外はエラー
-            if (!isWithinRange(line, USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE)) {
+            if (!isWithinRange(userInputNumber, USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE)) {
                 displayErrSentence();
                 continue;
             }
 
             // 配列へ追加
-            if (count < 10) {
-                inputNumbers[count] = line;
+            if (count < USER_INPUT_MAX_NUMBER_OF_TIMES) {
+                inputNumbers[count] = userInputNumber;
             }
 
-            // 最大入力回数入力時の場合、入力値を表示
+            // 最大入力回数入力時の場合
             if (count == USER_INPUT_MAX_NUMBER_OF_TIMES - 1) {
 
-                System.out.println("並び替えて表示します。");
-                Arrays.sort(inputNumbers);
-                for (int number : inputNumbers) {
-                    System.out.println(number);
-                }
+                // 入力値を表示
+                displayInputNumbers(inputNumbers);
+
                 // 最大入力回数分入力したので初期化
-                System.out.println(USER_INPUT_MAX_NUMBER_OF_TIMES + "回入力されたので、リセットしました。");
-                displaySentence();
-                Arrays.fill(inputNumbers, 0);
-                count = 0;
+                InitializationForReset(inputNumbers, count);
+
                 continue;
             }
 
             count++;
-            System.out.printf(count + "個めが入力されました。%n引き続き、" + USER_INPUT_SENTENCES + "%n");
+            System.out.printf(String.format("%s個めが入力されました。%n引き続き、%s%n", count, USER_INPUT_SENTENCES));
 
         }
 
@@ -129,7 +123,58 @@ public class Java6 {
      * 
      */
     private static void displayErrSentence() {
-        System.out.println(NON_NUMERIC_ERROR);
-        System.out.println(NUMBER_INPUT_SENTENCES);
+        System.out.println(String.format("エラー！！%s以外の数値が入力されました。", USER_INPUT_RANGE));
+        System.out.println(String.format("%sの%s", USER_INPUT_RANGE, USER_INPUT_SENTENCES));
     }
+
+    /**
+     * 入力された数値を表示
+     * 
+     * @param inputNumbers 入力された数値
+     */
+    private static void displayInputNumbers(int[] inputNumbers) {
+        System.out.println("並び替えて表示します。");
+        // 昇順にソート
+        int[] afterSortArray = sortArrayInAsc(inputNumbers);
+
+        for (int number : afterSortArray) {
+            System.out.println(number);
+        }
+    }
+
+    /**
+     * 数値配列を昇順に並び替え
+     * 
+     * @param numericalArray 並び替え対象の配列
+     * @return 並び替え後の配列
+     */
+    static int[] sortArrayInAsc(int[] numericalArray) {
+
+        for (int i = 0; i < numericalArray.length - 1; i++) {
+            for (int j = numericalArray.length - 1; j > i; j--) {
+                if (numericalArray[j - 1] > numericalArray[j]) {
+                    int tmp = numericalArray[j - 1];
+                    numericalArray[j - 1] = numericalArray[j];
+                    numericalArray[j] = tmp;
+                }
+            }
+        }
+        return numericalArray;
+    }
+
+    /**
+     * リセットのため初期化
+     * 
+     * @param inputNumbers 入力された数値
+     * @param count        入力回数
+     */
+    static void InitializationForReset(int[] inputNumbers, int count) {
+
+        System.out.println(String.format("%s回入力されたので、リセットしました。", USER_INPUT_MAX_NUMBER_OF_TIMES));
+        displaySentence();
+        inputNumbers = new int[USER_INPUT_MAX_NUMBER_OF_TIMES];
+        count = 0;
+
+    }
+
 }

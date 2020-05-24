@@ -11,6 +11,7 @@ import java.util.Scanner;
  *
  * @author 菱田 美紀
  * @version 1.0 2020/05/17 新規作成
+ * @version 1.1 2020/05/24 文字列結合、main処理関数化
  */
 public class Java7 {
 
@@ -32,18 +33,16 @@ public class Java7 {
     /** 入力許容範囲文言 */
     private static final String USER_INPUT_RANGE = USER_INPUT_MIN_VALUE + "～" + USER_INPUT_MAX_VALUE;
 
-    /** 数値入力促し文言 */
-    private static final String NUMBER_INPUT_SENTENCES = USER_INPUT_RANGE + "の" + USER_INPUT_SENTENCES;
-
-    /** 数値以外の入力時エラー文言 */
-    private static final String NON_NUMERIC_ERROR = "エラー！！" + USER_INPUT_RANGE + "以外の数値が入力されました。";
-
+    /**
+     * 入力された数値を昇順でコンソールに表示します。
+     * 
+     */
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
         displaySentence();
 
-        List<Integer> list = new ArrayList<>();
+        List<Integer> inputList = new ArrayList<>();
 
         while (scanner.hasNext()) {
 
@@ -56,10 +55,10 @@ public class Java7 {
                 break;
             }
 
-            int line = 0;
+            int userInputNumber = 0;
             // 数値か判定
             try {
-                line = Integer.valueOf(input).intValue();
+                userInputNumber = Integer.valueOf(input).intValue();
             } catch (NumberFormatException e) {
                 // 入力内容が数値以外の場合
                 displayErrSentence();
@@ -67,28 +66,26 @@ public class Java7 {
             }
 
             // 入力許容範囲外はエラー
-            if (!isWithinRange(line, USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE)) {
+            if (!isWithinRange(userInputNumber, USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE)) {
                 displayErrSentence();
                 continue;
             }
 
-            list.add(line);
+            inputList.add(userInputNumber);
 
             // 最大入力回数入力時の場合、入力値を表示
-            if (list.size() == USER_INPUT_MAX_NUMBER_OF_TIMES) {
+            if (inputList.size() == USER_INPUT_MAX_NUMBER_OF_TIMES) {
 
-                Collections.sort(list);
-                System.out.println("並び替えて表示します。");
-                list.forEach(System.out::println);
+                // 入力値を表示
+                displayInputNumbers(inputList);
 
                 // 最大入力回数分入力したので初期化
-                System.out.println(USER_INPUT_MAX_NUMBER_OF_TIMES + "回入力されたので、リセットしました。");
-                displaySentence();
-                list = new ArrayList<>();
+                InitializationForReset(inputList);
+
                 continue;
             }
 
-            System.out.printf(list.size() + "個めが入力されました。%n引き続き、" + USER_INPUT_SENTENCES + "%n");
+            System.out.printf(String.format("%s個めが入力されました。%n引き続き、%s%n", inputList.size(), USER_INPUT_SENTENCES));
 
         }
 
@@ -124,7 +121,31 @@ public class Java7 {
      * 
      */
     private static void displayErrSentence() {
-        System.out.println(NON_NUMERIC_ERROR);
-        System.out.println(NUMBER_INPUT_SENTENCES);
+        System.out.println(String.format("エラー！！%s以外の数値が入力されました。", USER_INPUT_RANGE));
+        System.out.println(String.format("%sの%s", USER_INPUT_RANGE, USER_INPUT_SENTENCES));
+    }
+
+    /**
+     * 入力された数値を表示
+     * 
+     * @param list 入力された数値のリスト
+     */
+    private static void displayInputNumbers(List<Integer> list) {
+        // 昇順にソート
+        Collections.sort(list);
+        System.out.println("並び替えて表示します。");
+        list.forEach(System.out::println);
+    }
+
+    /**
+     * リセットのため初期化
+     * 
+     * @param list 入力された数値のリスト
+     */
+    static void InitializationForReset(List<Integer> list) {
+
+        System.out.println(String.format("%s回入力されたので、リセットしました。", USER_INPUT_MAX_NUMBER_OF_TIMES));
+        displaySentence();
+        list = new ArrayList<>();
     }
 }

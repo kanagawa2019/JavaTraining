@@ -20,7 +20,7 @@ public class Java3 {
     private static final int MULTIPLICATION_TABLE_RANGE_END = 9;
 
     /** 表示形式 */
-    private static final String DISPLAY_FORMAT = "%2s  ";
+    private static final String DISPLAY_FORMAT = "%2s ";
 
     /** 九九の計算結果を除算する数値 */
     private static final int DIVIDE_BY_NUMBER = 3;
@@ -40,11 +40,14 @@ public class Java3 {
         IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
             IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(j -> {
 
+                int calculationResult = i * j;
+
                 // 指定した数値で割り切れる or 指定の数値を含む場合は別表示
-                if ((i * j) % DIVIDE_BY_NUMBER == 0 || hasContainedCharacter(CONTAINS_NUMBER, (i * j))) {
-                    System.out.printf(DISPLAY_FORMAT, DISPLAY_WHEN_MATCHING_CONDITIONS, " ");
+                if ((calculationResult) % DIVIDE_BY_NUMBER == 0
+                        || hasContainedCharacter((calculationResult), CONTAINS_NUMBER)) {
+                    System.out.printf(DISPLAY_FORMAT, DISPLAY_WHEN_MATCHING_CONDITIONS);
                 } else {
-                    System.out.printf(DISPLAY_FORMAT, i * j, " ");
+                    System.out.printf(DISPLAY_FORMAT, calculationResult);
                 }
             });
             System.out.printf("%n");
@@ -55,11 +58,11 @@ public class Java3 {
     /**
      * 検索対象に判定文字が含まれるかチェック
      * 
-     * @param judgmentCharacter 判定文字
      * @param target            検索対象
+     * @param judgmentCharacter 判定文字
      * @return true:判定文字が含まれる
      */
-    private static boolean hasContainedCharacter(int judgmentCharacter, int target) {
+    private static boolean hasContainedCharacter(int target, int judgmentCharacter) {
         String targetStr = String.valueOf(target);
         return targetStr.contains(String.valueOf(judgmentCharacter));
     }

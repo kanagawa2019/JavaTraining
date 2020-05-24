@@ -19,7 +19,7 @@ public class Java4 {
     private static final int MULTIPLICATION_TABLE_RANGE_END = 9;
 
     /** 表示形式 */
-    private static final String DISPLAY_FORMAT = "%2s  ";
+    private static final String DISPLAY_FORMAT = "%2s ";
 
     /** 九九の計算結果を除算する数値 */
     private static final int DIVIDE_BY_NUMBER = 3;
@@ -66,11 +66,11 @@ public class Java4 {
             // 値取得
             String input = scanner.next();
 
-            int line = 0;
+            int userInputMode = 0;
 
             // 数値か判定
             try {
-                line = Integer.valueOf(input).intValue();
+                userInputMode = Integer.valueOf(input).intValue();
             } catch (NumberFormatException e) {
                 // 入力内容が数値以外の場合
                 System.out.println(NON_NUMERIC_ERROR);
@@ -80,23 +80,23 @@ public class Java4 {
 
             // 入力値によって処理を変更
             try {
-                switch (Mode.getTypeByValue(line)) {
+                switch (Mode.getTypeByValue(userInputMode)) {
 
-                case MULTIPLICATION_TABLE:
-                    displayMultiplicationTable(displaySwitching);
-                    break;
-                case MULTIPLICATION_LINE:
-                    displayMultiplicationLine(scanner, displaySwitching);
-                    break;
-                case SWITCHING:
-                    displaySwitching = displaySwitching ? false : true;
-                    System.out.println("モードを切り替えました。");
-                    break;
-                case END:
-                    System.out.println("終了します。");
-                    break;
-                default:
-                    break;
+                    case MULTIPLICATION_TABLE:
+                        displayMultiplicationTable(displaySwitching);
+                        break;
+                    case MULTIPLICATION_LINE:
+                        displayMultiplicationLine(scanner, displaySwitching);
+                        break;
+                    case SWITCHING:
+                        displaySwitching = displaySwitching ? false : true;
+                        System.out.println("モードを切り替えました。");
+                        break;
+                    case END:
+                        System.out.println("終了します。");
+                        break;
+                    default:
+                        break;
                 }
             } catch (IllegalArgumentException e) {
                 // 指定数値以外の場合
@@ -105,12 +105,11 @@ public class Java4 {
             }
 
             // 終了が入力された場合
-            if (line == Mode.END.getValue()) {
+            if (userInputMode == Mode.END.getValue()) {
                 break;
             }
 
             displaySentence(displaySwitching);
-            continue;
 
         }
 
@@ -157,7 +156,7 @@ public class Java4 {
     private static void displaySwitchingModeOff(int inputNumber) {
 
         IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
-            System.out.printf(DISPLAY_FORMAT, i * inputNumber, " ");
+            System.out.printf(DISPLAY_FORMAT, i * inputNumber);
         });
         System.out.printf("%n");
     }
@@ -171,12 +170,14 @@ public class Java4 {
 
         IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
 
+            int calculationResult = i * inputNumber;
+
             // 3の倍数は別表示
-            if ((i * inputNumber) % DIVIDE_BY_NUMBER == 0
-                    || hasContainedCharacter(CONTAINS_NUMBER, (i * inputNumber))) {
-                System.out.printf(DISPLAY_FORMAT, DISPLAY_WHEN_MATCHING_CONDITIONS, " ");
+            if (calculationResult % DIVIDE_BY_NUMBER == 0
+                    || hasContainedCharacter(calculationResult, CONTAINS_NUMBER)) {
+                System.out.printf(DISPLAY_FORMAT, DISPLAY_WHEN_MATCHING_CONDITIONS);
             } else {
-                System.out.printf(DISPLAY_FORMAT, i * inputNumber, " ");
+                System.out.printf(DISPLAY_FORMAT, calculationResult);
             }
 
         });
@@ -263,11 +264,11 @@ public class Java4 {
     /**
      * 検索対象に判定文字が含まれるかチェック
      * 
-     * @param judgmentCharacter 判定文字
      * @param target            検索対象
+     * @param judgmentCharacter 判定文字
      * @return true:判定文字が含まれる
      */
-    private static boolean hasContainedCharacter(int judgmentCharacter, int target) {
+    private static boolean hasContainedCharacter(int target, int judgmentCharacter) {
         String targetStr = String.valueOf(target);
         return targetStr.contains(String.valueOf(judgmentCharacter));
     }
