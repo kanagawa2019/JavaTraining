@@ -48,6 +48,9 @@ public class Java4 {
     /** 数値以外の入力時エラー文言 */
     private static final String NON_NUMERIC_ERROR = "エラー！！" + USER_INPUT_RANGE + "以外の数値が入力されました。";
 
+    /** 切替モード */
+    private static boolean displaySwitching = false;
+
     /**
      * 入力された数値で九九の計算を行い、コンソールに表示します。
      * 
@@ -56,64 +59,55 @@ public class Java4 {
 
         Scanner scanner = new Scanner(System.in);
 
-        // 切替モードオン・オフ
-        boolean displaySwitching = false;
-
         displaySentence(displaySwitching);
 
-        while (scanner.hasNext()) {
+        // 値取得
+        String input = scanner.next();
 
-            // 値取得
-            String input = scanner.next();
+        int userInputMode = 0;
 
-            int userInputMode = 0;
-
-            // 数値か判定
-            try {
-                userInputMode = Integer.valueOf(input).intValue();
-            } catch (NumberFormatException e) {
-                // 入力内容が数値以外の場合
-                System.out.println(NON_NUMERIC_ERROR);
-                System.out.println(NUMBER_INPUT_SENTENCES);
-                continue;
-            }
-
-            // 入力値によって処理を変更
-            try {
-                switch (Mode.getTypeByValue(userInputMode)) {
-
-                    case MULTIPLICATION_TABLE:
-                        displayMultiplicationTable(displaySwitching);
-                        break;
-                    case MULTIPLICATION_LINE:
-                        displayMultiplicationLine(scanner, displaySwitching);
-                        break;
-                    case SWITCHING:
-                        displaySwitching = displaySwitching ? false : true;
-                        System.out.println("モードを切り替えました。");
-                        break;
-                    case END:
-                        System.out.println("終了します。");
-                        break;
-                    default:
-                        break;
-                }
-            } catch (IllegalArgumentException e) {
-                // 指定数値以外の場合
-                String[] arrayMode = createArrayMode();
-                System.out.println(String.join(",", arrayMode) + "のいずれかを入力してください。");
-            }
-
-            // 終了が入力された場合
-            if (userInputMode == Mode.END.getValue()) {
-                break;
-            }
-
-            displaySentence(displaySwitching);
-
+        // 数値か判定
+        try {
+            userInputMode = Integer.valueOf(input).intValue();
+        } catch (NumberFormatException e) {
+            // 入力内容が数値以外の場合
+            System.out.println(NON_NUMERIC_ERROR);
+            System.out.println(NUMBER_INPUT_SENTENCES);
+            main(args);
         }
 
-        scanner.close();
+        // 入力値によって処理を変更
+        try {
+            switch (Mode.getTypeByValue(userInputMode)) {
+
+                case MULTIPLICATION_TABLE:
+                    displayMultiplicationTable(displaySwitching);
+                    break;
+                case MULTIPLICATION_LINE:
+                    displayMultiplicationLine(scanner, displaySwitching);
+                    break;
+                case SWITCHING:
+                    displaySwitching = displaySwitching ? false : true;
+                    System.out.println("モードを切り替えました。");
+                    break;
+                case END:
+                    System.out.println("終了します。");
+                    break;
+                default:
+                    break;
+            }
+        } catch (IllegalArgumentException e) {
+            // 指定数値以外の場合
+            String[] arrayMode = createArrayMode();
+            System.out.println(String.format("%sのいずれかを入力してください。", String.join(",", arrayMode)));
+        }
+
+        // 終了が入力された場合
+        if (userInputMode == Mode.END.getValue()) {
+            System.exit(0);
+        }
+
+        main(args);
 
     }
 
@@ -249,15 +243,16 @@ public class Java4 {
 
         System.out.println("***********************************");
         System.out.println("処理モードを選択してください");
-        System.out.println(Mode.MULTIPLICATION_TABLE.getValue() + ".九九表示");
-        System.out.println(Mode.MULTIPLICATION_LINE.getValue() + ".指定の段のみ表示");
+        System.out.println(String.format("%s.九九表示", Mode.MULTIPLICATION_TABLE.getValue()));
+        System.out.println(String.format("%s.指定の段のみ表示", Mode.MULTIPLICATION_LINE.getValue()));
+
         if (displaySwitching) {
-            System.out.println(Mode.SWITCHING.getValue() + ".モード切替(世界のナベアツ⇒通常)");
+            System.out.println(String.format("%s.モード切替(世界のナベアツ⇒通常)", Mode.SWITCHING.getValue()));
         } else {
-            System.out.println(Mode.SWITCHING.getValue() + ".モード切替(通常⇒世界のナベアツ)");
+            System.out.println(String.format("%s.モード切替(通常⇒世界のナベアツ)", Mode.SWITCHING.getValue()));
         }
 
-        System.out.println(Mode.END.getValue() + ".終了");
+        System.out.println(String.format("%s.終了", Mode.END.getValue()));
         System.out.println("***********************************");
     }
 
