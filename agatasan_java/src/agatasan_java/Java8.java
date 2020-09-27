@@ -87,7 +87,7 @@ public class Java8 {
         System.out.println(inputMsg);
         do {
             try {
-                System.out.println(CURSOL);
+                System.out.print(CURSOL);
                 input = scanner.next();
                 isCheck = true;
             } catch (Exception e) {
@@ -138,7 +138,7 @@ public class Java8 {
 
         do {
             try {
-                System.out.println(CURSOL);
+                System.out.print(CURSOL);
                 input = scanner.next();
                 num = Integer.parseInt(input);
                 isCheck = true;
