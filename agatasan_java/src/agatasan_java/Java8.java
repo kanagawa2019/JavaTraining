@@ -113,7 +113,7 @@ public class Java8 {
             input = inputStr(inputMsg);
             // ƒ†[ƒU[–¼d•¡ƒ`ƒFƒbƒN
             if (userInfoMap.containsKey(input)) {
-                System.out.println(String.format("%d‰~‚ª“o˜^Ï‚İ‚Å‚·B", userInfoMap.get(input)));
+                System.out.println(String.format("\\%d‰~‚ª“o˜^Ï‚İ‚Å‚·B", userInfoMap.get(input)));
                 continue;
             }
             isCheck = true;
