@@ -10,11 +10,15 @@ import java.util.Scanner;
  * @author 菱田 美紀
  * @version 1.0 2020/08/10 新規作成
  * @version 1.1 2020/10/02 指摘No.41～45を対応
+ * @version 1.2 2020/10/03 指摘No.41,43,44,46を対応
  */
 public class Java8 {
 
+    // --------------------------------------------------
+    // メンバ変数
+    // --------------------------------------------------
     /** スキャナー（コンソール入力） */
-    private static Scanner scanner = new Scanner(System.in);
+    private static Scanner mScanner = new Scanner(System.in);
 
     // --------------------------------------------------
     // 定数
@@ -45,31 +49,22 @@ public class Java8 {
             String inputName = null;
             do {
                 // ユーザー名取得
-                inputName = getUserName("ユーザ名を入力してください。", userInfoMap);
+                inputName = inputStr("ユーザ名を入力してください。");
 
                 // ユーザー名登録重複チェック
-                if (userInfoMap.containsKey(inputName)) {
-                    System.out.println(String.format("\\%d円が登録済みです。", userInfoMap.get(inputName)));
-                    nameloopFlag = true;
-                } else {
-                    nameloopFlag = false;
-                }
+                nameloopFlag = isDuplicate(userInfoMap, inputName);
+
             } while (nameloopFlag);
 
             boolean moneyloopFlag = false;
             int inputMoney = 0;
             do {
                 // 金額取得
-                inputMoney = getUserMoney("金額を入力してください。");
+                inputMoney = inputInt("金額を入力してください。");
 
                 // 金額限度額チェック
-                if (!isWithinRange(inputMoney, USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE)) {
-                    System.out.println(
-                            String.format("数値範囲外です。%d～%dの数値を入力してください。", USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE));
-                    moneyloopFlag = true;
-                } else {
-                    moneyloopFlag = false;
-                }
+                moneyloopFlag = isOutOfRange(inputMoney);
+
             } while (moneyloopFlag);
 
             // 保存
@@ -80,7 +75,7 @@ public class Java8 {
         } while (isContinue());
 
         // 終了処理
-        scanner.close();
+        mScanner.close();
         System.out.println("処理を終了しました。");
 
     }
@@ -121,6 +116,7 @@ public class Java8 {
                 default:
                     System.out.println(
                             String.format("(%s/%s)以外が入力されました。\n再入力をお願いします。", PROCESSING_CONTINUE, PROCESSING_END));
+                    break;
             }
 
         } while (!isCheck);
@@ -142,30 +138,11 @@ public class Java8 {
         do {
             try {
                 System.out.print(CURSOL);
-                input = scanner.next();
+                input = mScanner.next();
                 isCheck = true;
             } catch (Exception e) {
                 System.out.println("申し訳ありません。正しく処理が行えませんでした。\n再入力をお願いします。");
             }
-        } while (!isCheck);
-        return input;
-    }
-
-    /**
-     * ユーザー名を取得
-     * 
-     * @param inputMsg    入力コンソール
-     * @param userInfoMap ユーザー入力値保存マップ
-     * @return 入力値
-     */
-    public static String getUserName(final String inputMsg, Map<String, Integer> userInfoMap) {
-        String input = null;
-        boolean isCheck = false;
-
-        do {
-            // 入力文字取得
-            input = inputStr(inputMsg);
-            isCheck = true;
         } while (!isCheck);
         return input;
     }
@@ -188,7 +165,7 @@ public class Java8 {
         do {
             try {
                 System.out.print(CURSOL);
-                input = scanner.next();
+                input = mScanner.next();
                 num = Integer.parseInt(input);
                 isCheck = true;
             } catch (Exception e) {
@@ -200,21 +177,35 @@ public class Java8 {
     }
 
     /**
-     * 金額を取得
+     * ユーザー名登録重複チェック
      * 
-     * @param inputMsg 入力コンソール
-     * @return 入力値
+     * @param userInfoMap ユーザー名、金額保持マップ
+     * @param inputName   入力されたユーザー名
+     * @return ユーザー名がすでに登録されている場合はTrue。登録されていない場合はfalse。
      */
-    public static int getUserMoney(final String inputMsg) {
-        int input = 0;
-        boolean isCheck = false;
+    public static boolean isDuplicate(Map<String, Integer> userInfoMap, String inputName) {
 
-        do {
-            // 入力数値取得
-            input = inputInt(inputMsg);
-            isCheck = true;
-        } while (!isCheck);
-        return input;
+        // ユーザー名が既に登録されている場合
+        if (userInfoMap.containsKey(inputName)) {
+            System.out.println(String.format("\\%d円が登録済みです。", userInfoMap.get(inputName)));
+            return true;
+        }
+
+        return false;
     }
 
+    /**
+     * 
+     * @param inputMoney 入力された金額
+     * @return 入力された金額が限度範囲外の場合はTrue。範囲内の場合はfalse。
+     */
+    public static boolean isOutOfRange(int inputMoney) {
+
+        // 金額が範囲外の場合
+        if (!isWithinRange(inputMoney, USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE)) {
+            System.out.println(String.format("数値範囲外です。%d～%dの数値を入力してください。", USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE));
+            return true;
+        }
+        return false;
+    }
 }
