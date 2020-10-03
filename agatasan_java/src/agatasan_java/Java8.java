@@ -195,6 +195,7 @@ public class Java8 {
     }
 
     /**
+     * 金額限度額チェック
      * 
      * @param inputMoney 入力された金額
      * @return 入力された金額が限度範囲外の場合はTrue。範囲内の場合はfalse。
