@@ -183,7 +183,7 @@ public class Java8 {
      * @param inputName   入力されたユーザー名
      * @return ユーザー名がすでに登録されている場合はTrue。登録されていない場合はfalse。
      */
-    public static boolean isDuplicate(Map<String, Integer> userInfoMap, String inputName) {
+    public static boolean isDuplicate(final Map<String, Integer> userInfoMap, final String inputName) {
 
         // ユーザー名が既に登録されている場合
         if (userInfoMap.containsKey(inputName)) {
@@ -200,7 +200,7 @@ public class Java8 {
      * @param inputMoney 入力された金額
      * @return 入力された金額が限度範囲外の場合はTrue。範囲内の場合はfalse。
      */
-    public static boolean isOutOfRange(int inputMoney) {
+    public static boolean isOutOfRange(final int inputMoney) {
 
         // 金額が範囲外の場合
         if (!isWithinRange(inputMoney, USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE)) {
