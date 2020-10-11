@@ -51,7 +51,6 @@ public class Java8 {
                 // ユーザー名取得
                 inputName = inputStr("ユーザ名を入力してください。");
 
-                // ユーザー名登録重複チェック
             } while (isDuplicate(userInfoMap, inputName));
 
             int inputMoney = 0;
@@ -59,7 +58,6 @@ public class Java8 {
                 // 金額取得
                 inputMoney = inputInt("金額を入力してください。");
 
-                // 金額限度額チェック
             } while (isOutOfRange(inputMoney));
 
             // 保存

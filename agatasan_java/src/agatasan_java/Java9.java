@@ -16,6 +16,7 @@ import java.util.Scanner;
  *
  * @author 菱田 美紀
  * @version 1.0 2020/10/03 新規作成
+ * @version 1.1 2020/10/10 指摘No.48を対応
  */
 public class Java9 {
 
@@ -52,27 +53,19 @@ public class Java9 {
 
         do {
 
-            boolean nameloopFlag = false;
             String inputName = null;
             do {
                 // ユーザー名取得
                 inputName = inputStr("ユーザ名を入力してください。");
 
-                // ユーザー名登録重複チェック
-                nameloopFlag = isDuplicate(userInfoMap, inputName);
+            } while (isDuplicate(userInfoMap, inputName));
 
-            } while (nameloopFlag);
-
-            boolean moneyloopFlag = false;
             int inputMoney = 0;
             do {
                 // 金額取得
                 inputMoney = inputInt("金額を入力してください。");
 
-                // 金額限度額チェック
-                moneyloopFlag = isOutOfRange(inputMoney);
-
-            } while (moneyloopFlag);
+            } while (isOutOfRange(inputMoney));
 
             // 保存
             userInfoMap.put(inputName, inputMoney);
