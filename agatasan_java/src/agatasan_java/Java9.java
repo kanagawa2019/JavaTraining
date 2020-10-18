@@ -3,12 +3,14 @@ package agatasan_java;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Scanner;
 
 /**
@@ -40,42 +42,54 @@ public class Java9 {
     /** 処理終了 */
     private static final String PROCESSING_END = "N";
     /** ファイル出力パス */
-    private static final String FILE_OUTPUT_PATH = "C:\\Users\\green3\\Documents\\git_java_training\\gittest\\agatasan_java\\userInfo.txt";
+//    private static final String FILE_OUTPUT_PATH = "C:\\Users\\green3\\Documents\\git_java_training\\gittest\\agatasan_java\\userInfo.txt";
+    private static final String FILE_OUTPUT_PATH = "FILE_OUTPUT_PATH";
+    /** プロパティ設定パス */
+//    private static final String INIT_PROPERTIES_PATH = "C:\\Users\\green3\\Documents\\git_java_training\\gittest\\agatasan_java\\Setting.properties";
+    private static final String INIT_PROPERTIES_PATH = "." + File.separator + "Setting.properties";
+
+//    /** プロパティファイル名 */
+//    private static final String INIT_PROPERTIES = "Setting.properties";
 
     /**
      * 入力されたユーザー名と金額を表示します。
      * 
+     * @throws IOException
+     * 
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        // 前回のユーザー情報を取得
-        Map<String, Integer> userInfoMap = getUserInfo();
+        try {
+            // 前回のユーザー情報を取得
+            Map<String, Integer> userInfoMap = getUserInfo();
 
-        do {
-
-            String inputName = null;
             do {
-                // ユーザー名取得
-                inputName = inputStr("ユーザ名を入力してください。");
 
-            } while (isDuplicate(userInfoMap, inputName));
+                String inputName = null;
+                do {
+                    // ユーザー名取得
+                    inputName = inputStr("ユーザ名を入力してください。");
 
-            int inputMoney = 0;
-            do {
-                // 金額取得
-                inputMoney = inputInt("金額を入力してください。");
+                } while (isDuplicate(userInfoMap, inputName));
 
-            } while (isOutOfRange(inputMoney));
+                int inputMoney = 0;
+                do {
+                    // 金額取得
+                    inputMoney = inputInt("金額を入力してください。");
 
-            // 保存
-            userInfoMap.put(inputName, inputMoney);
+                } while (isOutOfRange(inputMoney));
 
-            System.out.println(String.format("登録しました。"));
+                // 保存
+                userInfoMap.put(inputName, inputMoney);
 
-        } while (isContinue());
+                System.out.println("登録しました。");
 
-        // 次回再開時用にユーザー情報をファイルに保存
-        createFile(userInfoMap);
+            } while (isContinue());
+
+            // 次回再開時用にユーザー情報をファイルに保存
+            createFile(userInfoMap);
+        } catch (FileReadException e) {
+        }
 
         // 終了処理
         mScanner.close();
@@ -117,8 +131,7 @@ public class Java9 {
                     isCheck = true;
                     break;
                 default:
-                    System.out.println(
-                            String.format("(%s/%s)以外が入力されました。\n再入力をお願いします。", PROCESSING_CONTINUE, PROCESSING_END));
+                    System.out.println(String.format("(%s/%s)以外が入力されました。\n再入力をお願いします。", PROCESSING_CONTINUE, PROCESSING_END));
                     break;
             }
 
@@ -190,7 +203,7 @@ public class Java9 {
 
         // ユーザー名が既に登録されている場合
         if (userInfoMap.containsKey(inputName)) {
-            System.out.println(String.format("\\%d円が登録済みです。", userInfoMap.get(inputName)));
+            System.out.println(String.format("\\%,d円が登録済みです。", userInfoMap.get(inputName)));
             return true;
         }
 
@@ -207,7 +220,7 @@ public class Java9 {
 
         // 金額が範囲外の場合
         if (!isWithinRange(inputMoney, USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE)) {
-            System.out.println(String.format("数値範囲外です。%d～%dの数値を入力してください。", USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE));
+            System.out.println(String.format("数値範囲外です。%,d～%,dの数値を入力してください。", USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE));
             return true;
         }
         return false;
@@ -245,30 +258,79 @@ public class Java9 {
      * 前回のユーザー情報を取得
      * 
      * @return 前回入力したユーザー情報
+     * @throws IOException
      */
-    public static Map<String, Integer> getUserInfo() {
+    public static Map<String, Integer> getUserInfo() throws FileReadException, IOException {
 
         Map<String, Integer> map = new HashMap<>();
 
+//        try {
+//            File file = new File(FILE_OUTPUT_PATH);
+//            FileReader fileReader = new FileReader(file);
+//            BufferedReader br = new BufferedReader(fileReader);
+//            String str = br.readLine();
+//            while (str != null) {
+//                String[] array = str.split(",");
+//                map.put(array[0], Integer.parseInt(array[1]));
+//                str = br.readLine();
+//            }
+//            // 閉じる処理
+//            br.close();
+//        } catch (FileNotFoundException e) {
+//            // ファイルが存在しない場合
+//            // 最初に初期化したmapを返す
+//            return map;
+//        } catch (IOException e) {
+//            System.out.println("ユーザー情報のファイル読み込みに失敗しました。");
+//            e.printStackTrace();
+//        }
+
+//        String osname = System.getProperty("os.name");
+//        if (osname.indexOf("Windows") >= 0) {
+//            // Windowsであったときの処理
+//
+//        } else if (osname.indexOf("Linux") >= 0) {
+//            // Linuxであったときの処理
+//        } else if (osname.indexOf("Mac") >= 0) {
+//            // MacOSであったときの処理
+//        } else {
+//            // その他の環境だったときの処理
+//        }
+
+//        String path = new File(".").getAbsoluteFile().getParent();
+//        System.out.println(path);
+//
+//        File file2 = new File("Setting.properties");
+
+        // ファイルパスを取得する
+//        String str2 = file2.getAbsolutePath();
+
+        Properties properties = new Properties();
+
+        String strPass = null;
+        BufferedReader br = null;
         try {
-            File file = new File(FILE_OUTPUT_PATH);
+            InputStream istream = new FileInputStream(INIT_PROPERTIES_PATH);
+            properties.load(istream);
+
+            strPass = properties.getProperty(FILE_OUTPUT_PATH);
+
+            File file = new File(strPass);
             FileReader fileReader = new FileReader(file);
-            BufferedReader br = new BufferedReader(fileReader);
+            br = new BufferedReader(fileReader);
             String str = br.readLine();
             while (str != null) {
                 String[] array = str.split(",");
                 map.put(array[0], Integer.parseInt(array[1]));
                 str = br.readLine();
             }
+
+        } catch (IOException e) {
+            throw new FileReadException(strPass, e);
+
+        } finally {
             // 閉じる処理
             br.close();
-        } catch (FileNotFoundException e) {
-            // ファイルが存在しない場合
-            // 最初に初期化したmapを返す
-            return map;
-        } catch (IOException e) {
-            System.out.println("ユーザー情報のファイル読み込みに失敗しました。");
-            e.printStackTrace();
         }
         return map;
     }
