@@ -4,11 +4,14 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
@@ -18,7 +21,7 @@ import java.util.Scanner;
  *
  * @author 菱田 美紀
  * @version 1.0 2020/10/03 新規作成
- * @version 1.1 2020/10/10 指摘No.48を対応
+ * @version 1.1 2020/10/10 指摘No.48,54を対応
  */
 public class Java9 {
 
@@ -42,22 +45,19 @@ public class Java9 {
     /** 処理終了 */
     private static final String PROCESSING_END = "N";
     /** ファイル出力パス */
-//    private static final String FILE_OUTPUT_PATH = "C:\\Users\\green3\\Documents\\git_java_training\\gittest\\agatasan_java\\userInfo.txt";
     private static final String FILE_OUTPUT_PATH = "FILE_OUTPUT_PATH";
     /** プロパティ設定パス */
-//    private static final String INIT_PROPERTIES_PATH = "C:\\Users\\green3\\Documents\\git_java_training\\gittest\\agatasan_java\\Setting.properties";
     private static final String INIT_PROPERTIES_PATH = "." + File.separator + "Setting.properties";
-
-//    /** プロパティファイル名 */
-//    private static final String INIT_PROPERTIES = "Setting.properties";
+    /** ファイル保存識別子 */
+    private static final String SAVE_IDENTIFIER = "'";
+    /** ファイル区切り識別子 */
+    private static final String SAVA_SEPARATION = ",";
 
     /**
      * 入力されたユーザー名と金額を表示します。
      * 
-     * @throws IOException
-     * 
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         try {
             // 前回のユーザー情報を取得
@@ -70,7 +70,7 @@ public class Java9 {
                     // ユーザー名取得
                     inputName = inputStr("ユーザ名を入力してください。");
 
-                } while (isDuplicate(userInfoMap, inputName));
+                } while (isChecked(userInfoMap, inputName));
 
                 int inputMoney = 0;
                 do {
@@ -88,7 +88,9 @@ public class Java9 {
 
             // 次回再開時用にユーザー情報をファイルに保存
             createFile(userInfoMap);
-        } catch (FileReadException e) {
+
+            // closeさせるためにcatchする
+        } catch (PropertyFileReadException | FileWriteException | FileReadException | IOException e) {
         }
 
         // 終了処理
@@ -193,17 +195,23 @@ public class Java9 {
     }
 
     /**
-     * ユーザー名登録重複チェック
+     * 登録可否チェック
      * 
      * @param userInfoMap ユーザー名、金額保持マップ
      * @param inputName   入力されたユーザー名
-     * @return ユーザー名がすでに登録されている場合はTrue。登録されていない場合はfalse。
+     * @return ユーザー名が登録不可の場合True。登録可能の場合はfalse。
      */
-    public static boolean isDuplicate(final Map<String, Integer> userInfoMap, final String inputName) {
+    public static boolean isChecked(final Map<String, Integer> userInfoMap, final String inputName) {
 
         // ユーザー名が既に登録されている場合
         if (userInfoMap.containsKey(inputName)) {
             System.out.println(String.format("\\%,d円が登録済みです。", userInfoMap.get(inputName)));
+            return true;
+        }
+
+        // ファイル保存用の識別子は入力不可とする
+        if (inputName.contains(SAVE_IDENTIFIER)) {
+            System.out.println(String.format("%Sは登録できません。", SAVE_IDENTIFIER));
             return true;
         }
 
@@ -230,26 +238,40 @@ public class Java9 {
      * ユーザー情報をファイルに保存
      * 
      * @param map ユーザー情報
+     * @throws FileWriteException
+     * @throws FileReadException
+     * @throws PropertyFileReadException
+     * @throws IOException
      */
-    public static void createFile(final Map<String, Integer> map) {
+    public static void createFile(final Map<String, Integer> map)
+            throws FileWriteException, FileReadException, PropertyFileReadException, IOException {
 
+        String strPass = null;
+        BufferedWriter bw = null;
         try {
-            FileWriter fw = new FileWriter(FILE_OUTPUT_PATH);
-            BufferedWriter bw = new BufferedWriter(fw);
+            strPass = getPropertiesInfo();
+
+            FileWriter fw = new FileWriter(strPass);
+            bw = new BufferedWriter(fw);
 
             // ユーザー名と金額をカンマ区切りで連結
             for (Map.Entry<String, Integer> entry : map.entrySet()) {
-                String str = String.format("%s,%d", entry.getKey(), entry.getValue());
+                String str = String.format("%s%s%s%s%s%d%s", SAVE_IDENTIFIER, entry.getKey(), SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER,
+                        entry.getValue(), SAVE_IDENTIFIER);
                 // 書き込み
                 bw.write(str);
                 // 改行
                 bw.newLine();
             }
-            // 閉じる処理
-            bw.close();
-        } catch (IOException ex) {
-            System.out.println("ユーザー情報のファイル書き込みに失敗しました。");
-            ex.printStackTrace();
+        } catch (IOException e) {
+            throw new FileWriteException(strPass, e);
+
+        } finally {
+
+            if (bw != null) {
+                // 閉じる処理
+                bw.close();
+            }
         }
 
     }
@@ -258,70 +280,32 @@ public class Java9 {
      * 前回のユーザー情報を取得
      * 
      * @return 前回入力したユーザー情報
+     * @throws FileReadException
+     * @throws PropertyFileReadException
      * @throws IOException
      */
-    public static Map<String, Integer> getUserInfo() throws FileReadException, IOException {
+    public static Map<String, Integer> getUserInfo() throws FileReadException, PropertyFileReadException, IOException {
 
         Map<String, Integer> map = new HashMap<>();
-
-//        try {
-//            File file = new File(FILE_OUTPUT_PATH);
-//            FileReader fileReader = new FileReader(file);
-//            BufferedReader br = new BufferedReader(fileReader);
-//            String str = br.readLine();
-//            while (str != null) {
-//                String[] array = str.split(",");
-//                map.put(array[0], Integer.parseInt(array[1]));
-//                str = br.readLine();
-//            }
-//            // 閉じる処理
-//            br.close();
-//        } catch (FileNotFoundException e) {
-//            // ファイルが存在しない場合
-//            // 最初に初期化したmapを返す
-//            return map;
-//        } catch (IOException e) {
-//            System.out.println("ユーザー情報のファイル読み込みに失敗しました。");
-//            e.printStackTrace();
-//        }
-
-//        String osname = System.getProperty("os.name");
-//        if (osname.indexOf("Windows") >= 0) {
-//            // Windowsであったときの処理
-//
-//        } else if (osname.indexOf("Linux") >= 0) {
-//            // Linuxであったときの処理
-//        } else if (osname.indexOf("Mac") >= 0) {
-//            // MacOSであったときの処理
-//        } else {
-//            // その他の環境だったときの処理
-//        }
-
-//        String path = new File(".").getAbsoluteFile().getParent();
-//        System.out.println(path);
-//
-//        File file2 = new File("Setting.properties");
-
-        // ファイルパスを取得する
-//        String str2 = file2.getAbsolutePath();
-
-        Properties properties = new Properties();
 
         String strPass = null;
         BufferedReader br = null;
         try {
-            InputStream istream = new FileInputStream(INIT_PROPERTIES_PATH);
-            properties.load(istream);
-
-            strPass = properties.getProperty(FILE_OUTPUT_PATH);
+            strPass = getPropertiesInfo();
 
             File file = new File(strPass);
+
+            // ファイルが存在しない場合(=処理1回目の場合)
+            if (!file.exists()) {
+                return map;
+            }
+
             FileReader fileReader = new FileReader(file);
             br = new BufferedReader(fileReader);
             String str = br.readLine();
             while (str != null) {
-                String[] array = str.split(",");
-                map.put(array[0], Integer.parseInt(array[1]));
+                List<String> splitList = fileSplit(str);
+                map.put(splitList.get(0), Integer.parseInt(splitList.get(1)));
                 str = br.readLine();
             }
 
@@ -329,9 +313,82 @@ public class Java9 {
             throw new FileReadException(strPass, e);
 
         } finally {
-            // 閉じる処理
-            br.close();
+
+            if (br != null) {
+                // 閉じる処理
+                br.close();
+            }
         }
         return map;
     }
+
+    /**
+     * プロパティファイルの値を取得
+     * 
+     * @return ユーザー情報が記載されてファイルの格納パス
+     * @throws FileNotFoundException
+     * @throws PropertyFileReadException
+     * @throws FileReadException
+     * @throws IOException
+     */
+    private static String getPropertiesInfo() throws FileNotFoundException, PropertyFileReadException, FileReadException, IOException {
+        Properties properties = new Properties();
+
+        String strPass = null;
+        try {
+            InputStream istream = new FileInputStream(INIT_PROPERTIES_PATH);
+            properties.load(istream);
+
+            strPass = properties.getProperty(FILE_OUTPUT_PATH);
+
+            // 設定ファイル読み込み失敗時
+            if (strPass == null) {
+                throw new PropertyFileReadException();
+            }
+
+        } catch (FileNotFoundException e) {
+            throw new PropertyFileReadException();
+        } catch (IOException e) {
+            throw new FileReadException(strPass, e);
+
+        }
+        return strPass;
+    }
+
+    /**
+     * ファイルの1行分をユーザー名と金額に分割する
+     * 
+     * @param line 読み込み行
+     * @return 分割後のリスト。1つ目がユーザー名、2つ目が金額。
+     */
+    private static List<String> fileSplit(final String line) {
+        char c;
+        StringBuilder sb = new StringBuilder();
+        List<String> data = new ArrayList<String>();
+        boolean singleQuoteFlag = false;
+        char[] separation = SAVA_SEPARATION.toCharArray();
+        char[] identifier = SAVE_IDENTIFIER.toCharArray();
+
+        for (int i = 0; i < line.length(); i++) {
+            c = line.charAt(i);
+            if (c == separation[0] && !singleQuoteFlag) {
+                data.add(sb.toString());
+                sb.delete(0, sb.length());
+            } else if (c == separation[0] && singleQuoteFlag) {
+                sb.append(c);
+            } else if (c == identifier[0]) {
+                singleQuoteFlag = !singleQuoteFlag;
+            } else {
+                sb.append(c);
+            }
+
+            // 金額を設定
+            if (i == line.length() - 1) {
+                data.add(sb.toString());
+            }
+        }
+        return data;
+
+    }
+
 }
