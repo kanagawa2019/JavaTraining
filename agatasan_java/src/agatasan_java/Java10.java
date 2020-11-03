@@ -1,13 +1,17 @@
 package agatasan_java;
 
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 /**
  * Java10クラス Java課題１０(オブジェクト指向１）
  *
  * @author 菱田 美紀
- * @version 1.0 2020/10/04 新規作成
+ * @version 1.0 2020/11/03 新規作成
  */
 public class Java10 {
 
@@ -22,14 +26,12 @@ public class Java10 {
     // --------------------------------------------------
     /** 入力カーソル */
     private static final String CURSOL = ">";
-    /** 入力許容最小値 */
-    private static final int USER_INPUT_MIN_VALUE = -1000000;
-    /** 入力許容最大値 */
-    private static final int USER_INPUT_MAX_VALUE = 1000000;
     /** 処理継続 */
     private static final String PROCESSING_CONTINUE = "Y";
     /** 処理終了 */
     private static final String PROCESSING_END = "N";
+    /** 日付形式 ：yyyyMMdd */
+    private static final String DATE_OF_BIRTH = "yyyyMMdd";
 
     /**
      * 処理モード
@@ -78,12 +80,86 @@ public class Java10 {
             }
             for (final Mode t : Mode.values()) {
                 if (t.id == Integer.parseInt(inputMode)) {
-                    // TODO モード返すにはなぜ？
                     return t;
                 }
             }
             return null;
+        }
 
+    }
+
+    /**
+     * 性別
+     */
+    private static enum Sex {
+
+        MALE(1, "男性"), FEMALE(2, "女性"), OTHER(3, "その他");
+
+        /** id */
+        private final int id;
+        /** 名称 */
+        private final String name;
+
+        /**
+         * コンストラクタ
+         * 
+         * @param id
+         */
+        private Sex(final int id, final String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        /**
+         * 性別表示文字列取得
+         * 
+         * @return 性別表示文字列
+         */
+        public static String getSelectSexString() {
+            final StringBuffer sb = new StringBuffer();
+            int cnt = 0;
+            for (final Sex t : Sex.values()) {
+                sb.append(t.id).append(".").append(t.name);
+                if (Sex.values().length - 1 > cnt) {
+                    sb.append("、");
+                }
+                cnt++;
+            }
+            return sb.toString();
+        }
+
+        /**
+         * 性別の名称取得
+         * 
+         * @param inputId 入力値
+         * @return 性別の名称が存在しない場合はnull値
+         */
+        public static String getByid(final int inputId) {
+            for (final Sex t : Sex.values()) {
+                if (t.id == inputId) {
+                    return t.name;
+                }
+            }
+            return null;
+
+        }
+
+        /**
+         * 性別取得
+         * 
+         * @param inputSex 入力値
+         * @return 性別が存在しない場合はnull値
+         */
+        public static Sex getSex(final String inputSex) {
+            if (inputSex == null) {
+                return null;
+            }
+            for (final Sex t : Sex.values()) {
+                if (t.id == Integer.parseInt(inputSex)) {
+                    return t;
+                }
+            }
+            return null;
         }
 
     }
@@ -94,6 +170,7 @@ public class Java10 {
      */
     public static void main(String[] args) {
 
+        List<User> userList = new ArrayList<User>();
         do {
             // --------------------------------------------------
             // 入力
@@ -103,6 +180,19 @@ public class Java10 {
             // --------------------------------------------------
             // 処理・出力
             // --------------------------------------------------
+
+            switch (mode) {
+                case ENTRY:
+                    // 登録処理
+                    userList.add(inputUserInfo());
+                    break;
+                case ALL:
+                    // 全体表示
+                    getDisplayUserInfo(userList);
+                    break;
+                default:
+                    break;
+            }
 
         } while (isContinue());
 
@@ -143,15 +233,18 @@ public class Java10 {
     }
 
     /**
-     * 数値範囲チェック
-     * 
-     * @param targetNumber チェック対象数値
-     * @param minValue     最小値
-     * @param maxValue     最大値
-     * @return true:最小値～最大値の範囲内にある
+     * 性別入力
      */
-    private static boolean isWithinRange(final int targetNumber, final int minValue, final int maxValue) {
-        return (minValue <= targetNumber && targetNumber <= maxValue);
+    private static Sex inputSex() {
+        Sex sex = null;
+        do {
+            sex = Sex.getSex(inputStr(String.format("性別を入力してください(%S)", Sex.getSelectSexString())));
+            if (sex == null) {
+                System.out.println("該当する性別が見つかりませんでした。");
+            }
+
+        } while (sex == null);
+        return sex;
     }
 
     /**
@@ -176,8 +269,7 @@ public class Java10 {
                     isCheck = true;
                     break;
                 default:
-                    System.out.println(
-                            String.format("(%s/%s)以外が入力されました。\n再入力をお願いします。", PROCESSING_CONTINUE, PROCESSING_END));
+                    System.out.println(String.format("(%s/%s)以外が入力されました。\n再入力をお願いします。", PROCESSING_CONTINUE, PROCESSING_END));
                     break;
             }
 
@@ -210,66 +302,124 @@ public class Java10 {
     }
 
     /**
-     * 数値入力(int型)
+     * ユーザー情報の取得
      * 
-     * @param inputMsg 入力コンソール
-     * @return 入力値
+     * @return ユーザー情報
      */
-    public static int inputInt(final String inputMsg) {
-        int num = 0;
-        String input = null;
-        boolean isCheck = false;
+    public static User inputUserInfo() {
+        User user = new User();
 
-        if (inputMsg != null) {
-            System.out.println(inputMsg);
-        }
+        // 氏名を取得
+        String inputName = inputStr("氏名を入力してください");
+        user.setName(inputName);
 
+        // 性別の取得
+        Sex sex = inputSex();
+        user.setSex(sex.id);
+
+        // 誕生日の取得
+        String birthday = null;
         do {
-            try {
-                System.out.print(CURSOL);
-                input = mScanner.next();
-                num = Integer.parseInt(input);
-                isCheck = true;
-            } catch (Exception e) {
-                System.out.println("申し訳ありません。正しく処理が行えませんでした。\n再入力をお願いします。");
-            }
-        } while (!isCheck);
-        return num;
+            birthday = inputStr("生年月日を入力してください(yyyymmdd)");
+        } while (!isConsistency(birthday));
+        user.setBirthday(birthday);
+
+        // 得意言語の取得
+        String inputLanguage = inputStr("得意言語を入力してください");
+        user.setFavoriteLanguage(inputLanguage);
+
+        return user;
+    }
+
+    /**
+     * 入力された日付が存在するかのチェック
+     * 
+     * @param birthDay 入力された年月日
+     * @return 正当な日付はTrue。不正な日付はfalse。
+     */
+    public static boolean isConsistency(String birthDay) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_OF_BIRTH);
+        sdf.setLenient(false);
+        try {
+            sdf.parse(birthDay);
+        } catch (ParseException e) {
+            System.out.println("正しい日付ではありません");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * ユーザー情報表示
+     * 
+     * @param userList ユーザー情報リスト
+     */
+    private static void getDisplayUserInfo(List<User> userList) {
+
+        // userListが空の場合
+        if (userList.size() == 0) {
+            System.out.println("表示するデータがありません。");
+            return;
+        }
+
+        for (User ur : userList) {
+            System.out.println("---------------------------");
+            System.out.println(String.format("氏　　名：%S", ur.getName()));
+            System.out.println(String.format("性　　別：%S", Sex.getByid(ur.getSex())));
+            System.out.println(String.format("生年月日：%S(%d歳)", conversionBirthday(ur.getBirthday()), calcAge(StringToDate(ur.getBirthday()))));
+            System.out.println(String.format("得意言語：%S", ur.getFavoriteLanguage()));
+            System.out.println("---------------------------");
+        }
+    }
+
+    /**
+     * 生年月日に年月日をつけて返す
+     * 
+     * @param birthday 生年月日
+     * @return yyyy年MM月dd日
+     */
+    private static String conversionBirthday(String birthday) {
+
+        // 文字列から日付型変換
+        Date formatDate = StringToDate(birthday);
+
+        // 日付から年月日に変換
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+        return sdf.format(formatDate);
 
     }
 
     /**
-     * ユーザー名登録重複チェック
+     * 誕生日から年齢を計算して返す
      * 
-     * @param userInfoMap ユーザー名、金額保持マップ
-     * @param inputName   入力されたユーザー名
-     * @return ユーザー名がすでに登録されている場合はTrue。登録されていない場合はfalse。
+     * @param formatDate 誕生日
+     * @return 年齢
      */
-    public static boolean isDuplicate(final Map<String, Integer> userInfoMap, final String inputName) {
-
-        // ユーザー名が既に登録されている場合
-        if (userInfoMap.containsKey(inputName)) {
-            System.out.println(String.format("\\%d円が登録済みです。", userInfoMap.get(inputName)));
-            return true;
-        }
-
-        return false;
+    public static int calcAge(Date formatDate) {
+        Date dateObj = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_OF_BIRTH);
+        return (Integer.parseInt(sdf.format(dateObj)) - Integer.parseInt(sdf.format(formatDate))) / 10000;
     }
 
     /**
-     * 金額限度額チェック
+     * 文字列の日付をDate型の日付に変換する
      * 
-     * @param inputMoney 入力された金額
-     * @return 入力された金額が限度範囲外の場合はTrue。範囲内の場合はfalse。
+     * @param date 文字列の日付
+     * @return Date型の日付
      */
-    public static boolean isOutOfRange(final int inputMoney) {
-
-        // 金額が範囲外の場合
-        if (!isWithinRange(inputMoney, USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE)) {
-            System.out.println(String.format("数値範囲外です。%d～%dの数値を入力してください。", USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE));
-            return true;
+    public static Date StringToDate(String date) {
+        if (date == null) {
+            return null;
         }
-        return false;
+        // 文字列から日付型変換
+        SimpleDateFormat tempSdf = new SimpleDateFormat(DATE_OF_BIRTH);
+        Date formatDate = new Date();
+        try {
+            formatDate = tempSdf.parse(date);
+        } catch (ParseException e) {
+            // 入力時にチェックしているのでありえない
+        }
+        return formatDate;
     }
-
 }
