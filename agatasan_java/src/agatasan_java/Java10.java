@@ -12,6 +12,7 @@ import java.util.Scanner;
  *
  * @author 菱田 美紀
  * @version 1.0 2020/11/03 新規作成
+ * @version 1.1 2020/11/07 No.60～63指摘対応
  */
 public class Java10 {
 
@@ -80,82 +81,6 @@ public class Java10 {
             }
             for (final Mode t : Mode.values()) {
                 if (t.id == Integer.parseInt(inputMode)) {
-                    return t;
-                }
-            }
-            return null;
-        }
-
-    }
-
-    /**
-     * 性別
-     */
-    private static enum Sex {
-
-        MALE(1, "男性"), FEMALE(2, "女性"), OTHER(3, "その他");
-
-        /** id */
-        private final int id;
-        /** 名称 */
-        private final String name;
-
-        /**
-         * コンストラクタ
-         * 
-         * @param id
-         */
-        private Sex(final int id, final String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        /**
-         * 性別表示文字列取得
-         * 
-         * @return 性別表示文字列
-         */
-        public static String getSelectSexString() {
-            final StringBuffer sb = new StringBuffer();
-            int cnt = 0;
-            for (final Sex t : Sex.values()) {
-                sb.append(t.id).append(".").append(t.name);
-                if (Sex.values().length - 1 > cnt) {
-                    sb.append("、");
-                }
-                cnt++;
-            }
-            return sb.toString();
-        }
-
-        /**
-         * 性別の名称取得
-         * 
-         * @param inputId 入力値
-         * @return 性別の名称が存在しない場合はnull値
-         */
-        public static String getByid(final int inputId) {
-            for (final Sex t : Sex.values()) {
-                if (t.id == inputId) {
-                    return t.name;
-                }
-            }
-            return null;
-
-        }
-
-        /**
-         * 性別取得
-         * 
-         * @param inputSex 入力値
-         * @return 性別が存在しない場合はnull値
-         */
-        public static Sex getSex(final String inputSex) {
-            if (inputSex == null) {
-                return null;
-            }
-            for (final Sex t : Sex.values()) {
-                if (t.id == Integer.parseInt(inputSex)) {
                     return t;
                 }
             }
@@ -235,10 +160,10 @@ public class Java10 {
     /**
      * 性別入力
      */
-    private static Sex inputSex() {
-        Sex sex = null;
+    private static User.Sex inputSex(String msg) {
+        User.Sex sex = null;
         do {
-            sex = Sex.getSex(inputStr(String.format("性別を入力してください(%S)", Sex.getSelectSexString())));
+            sex = User.Sex.getSex(inputStr(String.format(msg, User.Sex.getSelectSexString())));
             if (sex == null) {
                 System.out.println("該当する性別が見つかりませんでした。");
             }
@@ -307,26 +232,18 @@ public class Java10 {
      * @return ユーザー情報
      */
     public static User inputUserInfo() {
-        User user = new User();
 
         // 氏名を取得
         String inputName = inputStr("氏名を入力してください");
-        user.setName(inputName);
-
         // 性別の取得
-        Sex sex = inputSex();
-        user.setSex(sex.id);
-
+        User.Sex sex = inputSex("性別を入力してください(%S)");
         // 誕生日の取得
-        String birthday = null;
-        do {
-            birthday = inputStr("生年月日を入力してください(yyyymmdd)");
-        } while (!isConsistency(birthday));
-        user.setBirthday(birthday);
-
+        String birthdayStr = inputBirthday("生年月日を入力してください(yyyymmdd)");
         // 得意言語の取得
         String inputLanguage = inputStr("得意言語を入力してください");
-        user.setFavoriteLanguage(inputLanguage);
+
+        // 値を設定
+        User user = new User(inputName, sex, StringToDate(birthdayStr), inputLanguage);
 
         return user;
     }
@@ -366,8 +283,8 @@ public class Java10 {
         for (User ur : userList) {
             System.out.println("---------------------------");
             System.out.println(String.format("氏　　名：%S", ur.getName()));
-            System.out.println(String.format("性　　別：%S", Sex.getByid(ur.getSex())));
-            System.out.println(String.format("生年月日：%S(%d歳)", conversionBirthday(ur.getBirthday()), calcAge(StringToDate(ur.getBirthday()))));
+            System.out.println(String.format("性　　別：%S", User.Sex.getByid(ur.getSex().getId())));
+            System.out.println(String.format("生年月日：%S(%d歳)", conversionBirthday(ur.getBirthday()), calcAge(ur.getBirthday())));
             System.out.println(String.format("得意言語：%S", ur.getFavoriteLanguage()));
             System.out.println("---------------------------");
         }
@@ -379,14 +296,11 @@ public class Java10 {
      * @param birthday 生年月日
      * @return yyyy年MM月dd日
      */
-    private static String conversionBirthday(String birthday) {
-
-        // 文字列から日付型変換
-        Date formatDate = StringToDate(birthday);
+    private static String conversionBirthday(Date birthday) {
 
         // 日付から年月日に変換
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
-        return sdf.format(formatDate);
+        return sdf.format(birthday);
 
     }
 
@@ -421,5 +335,16 @@ public class Java10 {
             // 入力時にチェックしているのでありえない
         }
         return formatDate;
+    }
+
+    /**
+     * 誕生日入力
+     */
+    private static String inputBirthday(String msg) {
+        String birthdayStr = null;
+        do {
+            birthdayStr = inputStr("生年月日を入力してください(yyyymmdd)");
+        } while (!isConsistency(birthdayStr));
+        return birthdayStr;
     }
 }
