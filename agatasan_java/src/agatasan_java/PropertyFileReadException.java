@@ -5,6 +5,7 @@ package agatasan_java;
  *
  * @author 菱田 美紀
  * @version 1.0 2020/10/18 新規作成
+ * @version 1.0 2020/11/08 No.57指摘対応
  */
 public class PropertyFileReadException extends Exception {
 
@@ -13,11 +14,12 @@ public class PropertyFileReadException extends Exception {
     /**
      * エラーメッセージ表示
      * 
-     * @param strPass 読み込みファイルまでのパス
-     * @param e       エラー情報
+     * @param e   エラー情報
+     * @param msg 表示メッセージ
      */
-    public PropertyFileReadException() {
-        System.out.println("プロパティファイルの書き込みに失敗しました。");
+    public PropertyFileReadException(Exception e, String msg) {
+        super(msg);
+        e.printStackTrace();
     }
 
 }
