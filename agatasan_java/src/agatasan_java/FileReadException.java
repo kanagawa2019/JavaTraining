@@ -5,6 +5,7 @@ package agatasan_java;
  *
  * @author 菱田 美紀
  * @version 1.0 2020/10/18 新規作成
+ * @version 1.0 2020/11/08 No.57,58指摘対応
  */
 public class FileReadException extends Exception {
 
@@ -13,11 +14,11 @@ public class FileReadException extends Exception {
     /**
      * エラーメッセージ表示
      * 
-     * @param strPass 読み込みファイルまでのパス
-     * @param e       エラー情報
+     * @param e   エラー情報
+     * @param msg 表示メッセージ
      */
-    public FileReadException(String strPass, Exception e) {
-        System.out.println(String.format("ファイルの読み込みに失敗しました。ファイル名:%s", strPass));
+    public FileReadException(Exception e, String msg) {
+        super(msg);
         e.printStackTrace();
     }
 

@@ -52,6 +52,8 @@ public class Java9 {
     private static final String SAVE_IDENTIFIER = "'";
     /** ファイル区切り識別子 */
     private static final String SAVA_SEPARATION = ",";
+    /** エスケープ識別子 */
+    private static final char SAVA_ESCAPE = '\\';
 
     /**
      * 入力されたユーザー名と金額を表示します。
@@ -90,7 +92,8 @@ public class Java9 {
             createFile(userInfoMap);
 
             // closeさせるためにcatchする
-        } catch (PropertyFileReadException | FileWriteException | FileReadException | IOException e) {
+        } catch (FileWriteException | FileReadException | IOException e) {
+            System.out.println("処理を中断しました。システム管理者へ問い合わせしてください。");
         }
 
         // 終了処理
@@ -209,12 +212,6 @@ public class Java9 {
             return true;
         }
 
-        // ファイル保存用の識別子は入力不可とする
-        if (inputName.contains(SAVE_IDENTIFIER)) {
-            System.out.println(String.format("%Sは登録できません。", SAVE_IDENTIFIER));
-            return true;
-        }
-
         return false;
     }
 
@@ -240,11 +237,9 @@ public class Java9 {
      * @param map ユーザー情報
      * @throws FileWriteException
      * @throws FileReadException
-     * @throws PropertyFileReadException
      * @throws IOException
      */
-    public static void createFile(final Map<String, Integer> map)
-            throws FileWriteException, FileReadException, PropertyFileReadException, IOException {
+    public static void createFile(final Map<String, Integer> map) throws FileWriteException, FileReadException, IOException {
 
         String strPass = null;
         BufferedWriter bw = null;
@@ -256,15 +251,15 @@ public class Java9 {
 
             // ユーザー名と金額をカンマ区切りで連結
             for (Map.Entry<String, Integer> entry : map.entrySet()) {
-                String str = String.format("%s%s%s%s%s%d%s", SAVE_IDENTIFIER, entry.getKey(), SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER,
-                        entry.getValue(), SAVE_IDENTIFIER);
+                String str = String.format("%s%s%s%s%s%d%s", SAVE_IDENTIFIER, conversionEscape(entry.getKey()), SAVE_IDENTIFIER, SAVA_SEPARATION,
+                        SAVE_IDENTIFIER, entry.getValue(), SAVE_IDENTIFIER);
                 // 書き込み
                 bw.write(str);
                 // 改行
                 bw.newLine();
             }
         } catch (IOException e) {
-            throw new FileWriteException(strPass, e);
+            throw new FileWriteException(e, String.format("ファイルの書き込みに失敗しました。ファイル名:%s", strPass));
 
         } finally {
 
@@ -281,10 +276,9 @@ public class Java9 {
      * 
      * @return 前回入力したユーザー情報
      * @throws FileReadException
-     * @throws PropertyFileReadException
      * @throws IOException
      */
-    public static Map<String, Integer> getUserInfo() throws FileReadException, PropertyFileReadException, IOException {
+    public static Map<String, Integer> getUserInfo() throws FileReadException, IOException {
 
         Map<String, Integer> map = new HashMap<>();
 
@@ -310,7 +304,7 @@ public class Java9 {
             }
 
         } catch (IOException e) {
-            throw new FileReadException(strPass, e);
+            throw new FileReadException(e, "前回のユーザー情報を保存したファイルを読み込めませんでした。");
 
         } finally {
 
@@ -327,11 +321,10 @@ public class Java9 {
      * 
      * @return ユーザー情報が記載されてファイルの格納パス
      * @throws FileNotFoundException
-     * @throws PropertyFileReadException
      * @throws FileReadException
      * @throws IOException
      */
-    private static String getPropertiesInfo() throws FileNotFoundException, PropertyFileReadException, FileReadException, IOException {
+    private static String getPropertiesInfo() throws FileNotFoundException, FileReadException, IOException {
         Properties properties = new Properties();
 
         String strPass = null;
@@ -343,13 +336,13 @@ public class Java9 {
 
             // 設定ファイル読み込み失敗時
             if (strPass == null) {
-                throw new PropertyFileReadException();
+                throw new FileReadException(new Exception(), "プロパティファイルに記載されている定義が見つかりませんでした。");
             }
 
         } catch (FileNotFoundException e) {
-            throw new PropertyFileReadException();
+            throw new FileReadException(e, "プロパティファイルが見つかりませんでした。");
         } catch (IOException e) {
-            throw new FileReadException(strPass, e);
+            throw new FileReadException(e, "プロパティファイルの読み込みに失敗しました。");
 
         }
         return strPass;
@@ -366,18 +359,24 @@ public class Java9 {
         StringBuilder sb = new StringBuilder();
         List<String> data = new ArrayList<String>();
         boolean singleQuoteFlag = false;
+        boolean singleQuoteKeepingFlag = false;
         char[] separation = SAVA_SEPARATION.toCharArray();
         char[] identifier = SAVE_IDENTIFIER.toCharArray();
 
         for (int i = 0; i < line.length(); i++) {
             c = line.charAt(i);
-            if (c == separation[0] && !singleQuoteFlag) {
+            if (c == identifier[0] && singleQuoteFlag && singleQuoteKeepingFlag) {
+                singleQuoteKeepingFlag = !singleQuoteKeepingFlag;
+                sb.append(c);
+            } else if (c == separation[0] && !singleQuoteFlag) {
                 data.add(sb.toString());
                 sb.delete(0, sb.length());
             } else if (c == separation[0] && singleQuoteFlag) {
                 sb.append(c);
             } else if (c == identifier[0]) {
                 singleQuoteFlag = !singleQuoteFlag;
+            } else if (c == SAVA_ESCAPE) {
+                singleQuoteKeepingFlag = !singleQuoteKeepingFlag;
             } else {
                 sb.append(c);
             }
@@ -389,6 +388,27 @@ public class Java9 {
         }
         return data;
 
+    }
+
+    /**
+     * 入力値をエスケープ処理をして返す
+     * 
+     * @param input 入力値
+     * @return エスケープ処理
+     */
+    private static String conversionEscape(final String input) {
+        char c;
+        StringBuilder sb = new StringBuilder();
+        char[] identifier = SAVE_IDENTIFIER.toCharArray();
+        for (int i = 0; i < input.length(); i++) {
+            c = input.charAt(i);
+            if (c == identifier[0]) {
+                sb.append(SAVA_ESCAPE);
+            }
+            sb.append(c);
+
+        }
+        return sb.toString();
     }
 
 }

@@ -8,6 +8,7 @@ import java.util.Date;
  * @author 菱田 美紀
  * @version 1.0 2020/11/03 新規作成
  * @version 1.1 2020/11/07 No.60,62,63指摘対応
+ * @version 1.2 2020/11/14 No.67指摘対応
  */
 public class User {
 
@@ -28,7 +29,7 @@ public class User {
      * @param birthday         生年月日
      * @param favoriteLanguage 得意言語
      */
-    public User(final String name, final Sex sex, final Date birthday, String favoriteLanguage) {
+    public User(final String name, final Sex sex, final Date birthday, final String favoriteLanguage) {
         this.name = name;
         this.sex = sex;
         this.birthday = birthday;
@@ -76,12 +77,12 @@ public class User {
         }
 
         /**
-         * 性別の名称取得
+         * 数字から性別の名称取得
          * 
          * @param inputId 入力値
          * @return 性別の名称が存在しない場合はnull値
          */
-        public static String getByid(final int inputId) {
+        public static String convertSexNameById(final int inputId) {
             for (final Sex t : Sex.values()) {
                 if (t.id == inputId) {
                     return t.name;
@@ -97,12 +98,20 @@ public class User {
          * @param inputSex 入力値
          * @return 性別が存在しない場合はnull値
          */
-        public static Sex getSex(final String inputSex) {
+        public static Sex convertSex(final String inputSex) {
             if (inputSex == null) {
                 return null;
             }
+
+            int sex = 0;
+            try {
+                sex = Integer.parseInt(inputSex);
+            } catch (NumberFormatException e) {
+                return null;
+            }
+
             for (final Sex t : Sex.values()) {
-                if (t.id == Integer.parseInt(inputSex)) {
+                if (t.id == sex) {
                     return t;
                 }
             }

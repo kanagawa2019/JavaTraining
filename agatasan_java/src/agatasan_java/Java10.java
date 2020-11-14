@@ -13,6 +13,7 @@ import java.util.Scanner;
  * @author 菱田 美紀
  * @version 1.0 2020/11/03 新規作成
  * @version 1.1 2020/11/07 No.60～63指摘対応
+ * @version 1.2 2020/11/14 REV2回目指摘対応
  */
 public class Java10 {
 
@@ -75,12 +76,20 @@ public class Java10 {
          * @param inputMode入力値
          * @return モードが存在しない場合はnull値
          */
-        public static Mode getMode(final String inputMode) {
+        public static Mode convertMode(final String inputMode) {
             if (inputMode == null) {
                 return null;
             }
+
+            int mode = 0;
+            try {
+                mode = Integer.parseInt(inputMode);
+            } catch (NumberFormatException e) {
+                return null;
+            }
+
             for (final Mode t : Mode.values()) {
-                if (t.id == Integer.parseInt(inputMode)) {
+                if (t.id == mode) {
                     return t;
                 }
             }
@@ -148,7 +157,7 @@ public class Java10 {
     private static Mode inputMode() {
         Mode mode = null;
         do {
-            mode = Mode.getMode(inputStr(getDisplayModeString()));
+            mode = Mode.convertMode(inputStr(getDisplayModeString()));
             if (mode == null) {
                 System.out.println("該当する処理モードが見つかりませんでした。");
             }
@@ -163,7 +172,7 @@ public class Java10 {
     private static User.Sex inputSex(String msg) {
         User.Sex sex = null;
         do {
-            sex = User.Sex.getSex(inputStr(String.format(msg, User.Sex.getSelectSexString())));
+            sex = User.Sex.convertSex(inputStr(String.format(msg, User.Sex.getSelectSexString())));
             if (sex == null) {
                 System.out.println("該当する性別が見つかりませんでした。");
             }
@@ -179,7 +188,6 @@ public class Java10 {
      */
     public static boolean isContinue() {
         boolean isCheck = false;
-        boolean isProcessingContinue = false;
 
         do {
             String input = inputStr(String.format("処理を続けますか？(%s/%s)", PROCESSING_CONTINUE, PROCESSING_END));
@@ -187,12 +195,9 @@ public class Java10 {
             // 入力値の判定
             switch (input.toUpperCase()) {
                 case PROCESSING_CONTINUE:
-                    isCheck = true;
-                    isProcessingContinue = true;
-                    break;
+                    return true;
                 case PROCESSING_END:
-                    isCheck = true;
-                    break;
+                    return false;
                 default:
                     System.out.println(String.format("(%s/%s)以外が入力されました。\n再入力をお願いします。", PROCESSING_CONTINUE, PROCESSING_END));
                     break;
@@ -200,7 +205,7 @@ public class Java10 {
 
         } while (!isCheck);
 
-        return isProcessingContinue;
+        return false;
     }
 
     /**
@@ -238,12 +243,12 @@ public class Java10 {
         // 性別の取得
         User.Sex sex = inputSex("性別を入力してください(%S)");
         // 誕生日の取得
-        String birthdayStr = inputBirthday("生年月日を入力してください(yyyymmdd)");
+        Date birthday = inputBirthday("生年月日を入力してください(yyyymmdd)");
         // 得意言語の取得
         String inputLanguage = inputStr("得意言語を入力してください");
 
         // 値を設定
-        User user = new User(inputName, sex, StringToDate(birthdayStr), inputLanguage);
+        User user = new User(inputName, sex, birthday, inputLanguage);
 
         return user;
     }
@@ -283,7 +288,7 @@ public class Java10 {
         for (User ur : userList) {
             System.out.println("---------------------------");
             System.out.println(String.format("氏　　名：%S", ur.getName()));
-            System.out.println(String.format("性　　別：%S", User.Sex.getByid(ur.getSex().getId())));
+            System.out.println(String.format("性　　別：%S", User.Sex.convertSexNameById(ur.getSex().getId())));
             System.out.println(String.format("生年月日：%S(%d歳)", conversionBirthday(ur.getBirthday()), calcAge(ur.getBirthday())));
             System.out.println(String.format("得意言語：%S", ur.getFavoriteLanguage()));
             System.out.println("---------------------------");
@@ -340,11 +345,14 @@ public class Java10 {
     /**
      * 誕生日入力
      */
-    private static String inputBirthday(String msg) {
+    private static Date inputBirthday(String msg) {
         String birthdayStr = null;
         do {
             birthdayStr = inputStr("生年月日を入力してください(yyyymmdd)");
         } while (!isConsistency(birthdayStr));
-        return birthdayStr;
+
+        Date date = StringToDate(birthdayStr);
+
+        return date;
     }
 }
