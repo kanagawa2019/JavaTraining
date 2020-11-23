@@ -14,6 +14,7 @@ import java.util.Scanner;
  * @version 1.0 2020/11/03 新規作成
  * @version 1.1 2020/11/07 No.60～63指摘対応
  * @version 1.2 2020/11/14 REV2回目指摘対応
+ * @version 1.3 2020/11/21 REV3回目指摘対応
  */
 public class Java10 {
 
@@ -34,6 +35,8 @@ public class Java10 {
     private static final String PROCESSING_END = "N";
     /** 日付形式 ：yyyyMMdd */
     private static final String DATE_OF_BIRTH = "yyyyMMdd";
+    /** 日付形式 ：yyyy年MM月dd日 */
+    private static final String DATE_OF_STANDARD_BIRTH = "yyyy年MM月dd日";
 
     /**
      * 処理モード
@@ -125,6 +128,7 @@ public class Java10 {
                     getDisplayUserInfo(userList);
                     break;
                 default:
+                    System.out.println("想定された処理はありません。システム管理者に連絡してください。");
                     break;
             }
 
@@ -156,8 +160,9 @@ public class Java10 {
      */
     private static Mode inputMode() {
         Mode mode = null;
+        String displayMsg = getDisplayModeString();
         do {
-            mode = Mode.convertMode(inputStr(getDisplayModeString()));
+            mode = Mode.convertMode(inputStr(displayMsg));
             if (mode == null) {
                 System.out.println("該当する処理モードが見つかりませんでした。");
             }
@@ -171,8 +176,9 @@ public class Java10 {
      */
     private static User.Sex inputSex(String msg) {
         User.Sex sex = null;
+
         do {
-            sex = User.Sex.convertSex(inputStr(String.format(msg, User.Sex.getSelectSexString())));
+            sex = User.Sex.convertSex(inputStr(msg));
             if (sex == null) {
                 System.out.println("該当する性別が見つかりませんでした。");
             }
@@ -189,8 +195,10 @@ public class Java10 {
     public static boolean isContinue() {
         boolean isCheck = false;
 
+        String displayMsg = String.format("処理を続けますか？(%s/%s)", PROCESSING_CONTINUE, PROCESSING_END);
+
         do {
-            String input = inputStr(String.format("処理を続けますか？(%s/%s)", PROCESSING_CONTINUE, PROCESSING_END));
+            String input = inputStr(displayMsg);
 
             // 入力値の判定
             switch (input.toUpperCase()) {
@@ -241,9 +249,9 @@ public class Java10 {
         // 氏名を取得
         String inputName = inputStr("氏名を入力してください");
         // 性別の取得
-        User.Sex sex = inputSex("性別を入力してください(%S)");
+        User.Sex sex = inputSex(String.format("性別を入力してください(%S)", User.Sex.getSelectSexString()));
         // 誕生日の取得
-        Date birthday = inputBirthday("生年月日を入力してください(yyyymmdd)");
+        Date birthday = inputBirthday(String.format("生年月日を入力してください(yyyy%sdd)", DATE_OF_BIRTH.substring(4, 6).toLowerCase()));
         // 得意言語の取得
         String inputLanguage = inputStr("得意言語を入力してください");
 
@@ -280,7 +288,7 @@ public class Java10 {
     private static void getDisplayUserInfo(List<User> userList) {
 
         // userListが空の場合
-        if (userList.size() == 0) {
+        if (userList == null || userList.size() == 0) {
             System.out.println("表示するデータがありません。");
             return;
         }
@@ -304,7 +312,7 @@ public class Java10 {
     private static String conversionBirthday(Date birthday) {
 
         // 日付から年月日に変換
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_OF_STANDARD_BIRTH);
         return sdf.format(birthday);
 
     }
@@ -348,7 +356,7 @@ public class Java10 {
     private static Date inputBirthday(String msg) {
         String birthdayStr = null;
         do {
-            birthdayStr = inputStr("生年月日を入力してください(yyyymmdd)");
+            birthdayStr = inputStr(msg);
         } while (!isConsistency(birthdayStr));
 
         Date date = StringToDate(birthdayStr);
