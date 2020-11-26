@@ -15,6 +15,7 @@ import java.util.Scanner;
  * @version 1.1 2020/11/07 No.60`63w“E‘Î‰
  * @version 1.2 2020/11/14 REV2‰ñ–Úw“E‘Î‰
  * @version 1.3 2020/11/21 REV3‰ñ–Úw“E‘Î‰
+ * @version 1.4 2020/11/27 No.74Äw“E‘Î‰
  */
 public class Java10 {
 
@@ -251,7 +252,7 @@ public class Java10 {
         // «•Ê‚Ìæ“¾
         User.Sex sex = inputSex(String.format("«•Ê‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢(%S)", User.Sex.getSelectSexString()));
         // ’a¶“ú‚Ìæ“¾
-        Date birthday = inputBirthday(String.format("¶”NŒ“ú‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢(yyyy%sdd)", DATE_OF_BIRTH.substring(4, 6).toLowerCase()));
+        Date birthday = inputBirthday(String.format("¶”NŒ“ú‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢(%s)", DATE_OF_BIRTH.toLowerCase()));
         // “¾ˆÓŒ¾Œê‚Ìæ“¾
         String inputLanguage = inputStr("“¾ˆÓŒ¾Œê‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
 
