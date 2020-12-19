@@ -384,7 +384,7 @@ public class Java11 {
      * @param userList ユーザー情報リスト
      * @return ユーザー情報リスト
      */
-    private static List<User> modifyUserInfo(List<User> userList) {
+    private static List<User> modifyUserInfo(final List<User> userList) {
 
         // userListが空の場合
         if (userList == null || userList.size() == 0) {
@@ -452,7 +452,7 @@ public class Java11 {
      * @param userList ユーザー情報リスト
      * @return 表示文言
      */
-    private static String displayToModifyPerson(List<User> userList) {
+    private static String displayToModifyPerson(final List<User> userList) {
 
         System.out.println("どのユーザを修正しますか？");
 
@@ -477,7 +477,7 @@ public class Java11 {
      * @param modifyName 修正する人物名称
      * @return 表示文言
      */
-    private static String displayToModifyProperty(String modifyName) {
+    private static String displayToModifyProperty(final String modifyName) {
 
         StringBuffer sb = new StringBuffer();
 
@@ -529,7 +529,7 @@ public class Java11 {
      * @param maxValue     最大値
      * @return true:最小値～最大値の範囲内にある
      */
-    private static boolean isWithinRange(int targetNumber, int minValue, int maxValue) {
+    private static boolean isWithinRange(final int targetNumber, final int minValue, final int maxValue) {
         return (minValue <= targetNumber && targetNumber <= maxValue);
     }
 
@@ -576,19 +576,14 @@ public class Java11 {
      * @param userList          ユーザーリスト
      * @return 修正するユーザー番号
      */
-    private static int getModifyPerson(String toModifyPersonMsg, List<User> userList) {
+    private static int getModifyPerson(final String toModifyPersonMsg, final List<User> userList) {
         int personOfNumber = 0;
         do {
             // 修正する人物の番号を取得
             personOfNumber = inputInt(toModifyPersonMsg);
 
-            // 入力範囲チェック
-            if (isWithinRange(Integer.valueOf(personOfNumber), RANGE_MIN, userList.size())) {
-                return personOfNumber;
-            }
-
-            System.out.println(String.format(WITHIN_RANGE, RANGE_MIN, userList.size()));
-        } while (true);
+        } while (isOutOfRange(personOfNumber, RANGE_MIN, userList.size()));
+        return personOfNumber;
     }
 
     /**
@@ -597,18 +592,31 @@ public class Java11 {
      * @param toModifyPropertyMsg コンソールに表示する文言
      * @return 修正番号
      */
-    private static int getModifyUserInfo(String toModifyPropertyMsg) {
+    private static int getModifyUserInfo(final String toModifyPropertyMsg) {
         int propertyOfNumber = 0;
         do {
             // 入力値を取得
             propertyOfNumber = inputInt(toModifyPropertyMsg);
 
-            // 入力範囲チェック
-            if (isWithinRange(propertyOfNumber, RANGE_MIN, RANGE_MAX)) {
-                return propertyOfNumber;
-            }
+        } while (isOutOfRange(propertyOfNumber, RANGE_MIN, RANGE_MAX));
+        return propertyOfNumber;
+    }
 
-            System.out.println(String.format(WITHIN_RANGE, RANGE_MIN, RANGE_MAX));
-        } while (true);
+    /**
+     * 入力数値範囲外チェック
+     * 
+     * @param number 入力された数値
+     * @param min    最小値
+     * @param max    最大値
+     * @return 入力された数値が範囲外の場合はTrue。範囲内の場合はfalse。
+     */
+    public static boolean isOutOfRange(final int number, int min, int max) {
+
+        // 範囲外の場合
+        if (!isWithinRange(number, min, max)) {
+            System.out.println(String.format(WITHIN_RANGE, min, max));
+            return true;
+        }
+        return false;
     }
 }
