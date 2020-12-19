@@ -9,6 +9,7 @@ import java.util.Date;
  * @version 1.0 2020/11/03 新規作成
  * @version 1.1 2020/11/07 No.60,62,63指摘対応
  * @version 1.2 2020/11/14 No.67指摘対応
+ * @version 1.3 2020/12/16 No.82指摘対応
  */
 public class User {
 
@@ -20,6 +21,15 @@ public class User {
     private Date birthday;
     /** 得意言語 */
     private String favoriteLanguage;
+
+    /** 番号_氏名 */
+    public static final int NUMBER_NAME = 1;
+    /** 番号_性別 */
+    public static final int NUMBER_SEX = 2;
+    /** 番号_生年月日 */
+    public static final int NUMBER_BIRTHDAY = 3;
+    /** 番号_得意言語 */
+    public static final int NUMBER_FAVORITELANGUAGE = 4;
 
     /**
      * コンストラクタ
@@ -34,6 +44,20 @@ public class User {
         this.sex = sex;
         this.birthday = birthday;
         this.favoriteLanguage = favoriteLanguage;
+    }
+
+    /**
+     * メンバ変数文字列取得
+     * 
+     * @return メンバ変数文字列取得
+     */
+    public static String getSelectPropertyString() {
+        final StringBuffer sb = new StringBuffer();
+        sb.append(Integer.valueOf(NUMBER_NAME)).append(".氏名").append("\n");
+        sb.append(Integer.valueOf(NUMBER_SEX)).append(".性別").append("\n");
+        sb.append(Integer.valueOf(NUMBER_BIRTHDAY)).append(".生年月日").append("\n");
+        sb.append(Integer.valueOf(NUMBER_FAVORITELANGUAGE)).append(".得意言語").append("\n");
+        return sb.toString();
     }
 
     /**

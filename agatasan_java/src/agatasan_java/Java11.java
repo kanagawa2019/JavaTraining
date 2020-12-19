@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Java10クラス Java課題１１(オブジェクト指向２）
+ * Java11クラス Java課題１１(オブジェクト指向２）
  *
  * @author 菱田 美紀
  * @version 1.0 2020/12/12 新規作成
+ * @version 1.1 2020/12/19 No.79～82指摘対応
  */
 public class Java11 {
 
@@ -42,6 +43,10 @@ public class Java11 {
     private static final String UNEXPECTED_ERR = "想定された処理はありません。システム管理者に連絡してください。";
     /** 前に戻るのメッセージ */
     private static final String BACK = "0.前に戻る";
+    /** 選択肢の最小値 */
+    private static final int RANGE_MIN = 0;
+    /** 選択肢の最大値 */
+    private static final int RANGE_MAX = 4;
 
     /**
      * 処理モード
@@ -387,72 +392,57 @@ public class Java11 {
             return userList;
         }
 
-        // 修正する人物表示文言作成
-        String toModifyPersonMsg = displayToModifyPerson(userList);
-
         do {
+            // 修正する人物表示文言作成
+            String toModifyPersonMsg = displayToModifyPerson(userList);
 
-            int personOfNumber = 0;
-            do {
-                // 修正する人物の番号を取得
-                personOfNumber = inputInt(toModifyPersonMsg);
-
-                // 入力範囲チェック
-                if (isWithinRange(Integer.valueOf(personOfNumber), 0, userList.size())) {
-                    break;
-                }
-
-                System.out.println(String.format(WITHIN_RANGE, 0, userList.size()));
-            } while (true);
+            // 修正する人物の番号を取得
+            int personOfNumber = getModifyPerson(toModifyPersonMsg, userList);
 
             // 0の場合は、処理モードに戻る
             if (personOfNumber == 0) {
                 return userList;
             }
 
-            // 入力された番号に紐づく名前を取得
             int idx = personOfNumber - 1;
+            // 入力された番号に紐づく名前を取得
             String modifyName = userList.get(idx).getName();
-
-            // 修正する属性の番号を取得
-            String toModifyPropertyMsg = displayToModifyProperty(modifyName);
-
-            int propertyOfNumber = 0;
             do {
-                // 入力値を取得
-                propertyOfNumber = inputInt(toModifyPropertyMsg);
 
-                // 入力範囲チェック
-                if (isWithinRange(propertyOfNumber, 0, 4)) {
+                // 修正する属性の番号を取得
+                String toModifyPropertyMsg = displayToModifyProperty(modifyName);
+
+                // 修正するユーザー情報番号を取得
+                int propertyOfNumber = getModifyUserInfo(toModifyPropertyMsg);
+
+                // 0 の場合、修正人物を選択する処理まで戻る
+                if (propertyOfNumber == 0) {
                     break;
                 }
 
-                System.out.println(String.format(WITHIN_RANGE, 0, 4));
+                // 修正処理
+                switch (propertyOfNumber) {
+                    case User.NUMBER_NAME:
+                        String newName = inputName();
+                        userList.get(idx).setName(newName);
+                        modifyName = newName;
+                        break;
+                    case User.NUMBER_SEX:
+                        userList.get(idx).setSex(inputSex());
+                        break;
+                    case User.NUMBER_BIRTHDAY:
+                        userList.get(idx).setBirthday(inputBirthday());
+                        break;
+                    case User.NUMBER_FAVORITELANGUAGE:
+                        userList.get(idx).setFavoriteLanguage(inputLanguage());
+                        break;
+                    default:
+                        System.out.println(UNEXPECTED_ERR);
+                        break;
+
+                }
             } while (true);
 
-            // 0 の場合、修正人物を選択する処理まで戻る
-            if (propertyOfNumber == 0) {
-                continue;
-            }
-
-            switch (propertyOfNumber) {
-                case 1:
-                    userList.get(idx).setName(inputName());
-                    break;
-                case 2:
-                    userList.get(idx).setSex(inputSex());
-                    break;
-                case 3:
-                    userList.get(idx).setBirthday(inputBirthday());
-                    break;
-                case 4:
-                    userList.get(idx).setFavoriteLanguage(inputLanguage());
-                    break;
-                default:
-                    System.out.println(UNEXPECTED_ERR);
-                    break;
-
-            }
         } while (true);
     }
 
@@ -495,10 +485,7 @@ public class Java11 {
         sb.append("どの情報を修正しますか？").append("\n");
         sb.append("---------------------------").append("\n");
         sb.append(BACK).append("\n");
-        sb.append("1.氏名").append("\n");
-        sb.append("2.性別").append("\n");
-        sb.append("3.生年月日").append("\n");
-        sb.append("4.得意言語").append("\n");
+        sb.append(User.getSelectPropertyString());
         sb.append("---------------------------").append("\n");
 
         return sb.toString();
@@ -582,4 +569,46 @@ public class Java11 {
         return inputStr("得意言語を入力してください");
     }
 
+    /**
+     * 修正する対象ユーザーを取得
+     * 
+     * @param toModifyPersonMsg コンソールに表示する文言
+     * @param userList          ユーザーリスト
+     * @return 修正するユーザー番号
+     */
+    private static int getModifyPerson(String toModifyPersonMsg, List<User> userList) {
+        int personOfNumber = 0;
+        do {
+            // 修正する人物の番号を取得
+            personOfNumber = inputInt(toModifyPersonMsg);
+
+            // 入力範囲チェック
+            if (isWithinRange(Integer.valueOf(personOfNumber), RANGE_MIN, userList.size())) {
+                return personOfNumber;
+            }
+
+            System.out.println(String.format(WITHIN_RANGE, RANGE_MIN, userList.size()));
+        } while (true);
+    }
+
+    /**
+     * 修正する情報を取得
+     * 
+     * @param toModifyPropertyMsg コンソールに表示する文言
+     * @return 修正番号
+     */
+    private static int getModifyUserInfo(String toModifyPropertyMsg) {
+        int propertyOfNumber = 0;
+        do {
+            // 入力値を取得
+            propertyOfNumber = inputInt(toModifyPropertyMsg);
+
+            // 入力範囲チェック
+            if (isWithinRange(propertyOfNumber, RANGE_MIN, RANGE_MAX)) {
+                return propertyOfNumber;
+            }
+
+            System.out.println(String.format(WITHIN_RANGE, RANGE_MIN, RANGE_MAX));
+        } while (true);
+    }
 }
