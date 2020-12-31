@@ -8,28 +8,23 @@ import java.util.Scanner;
  * @author 菱田 美紀
  * @version 1.0 2020/12/29 新規作成
  */
-public class Java13 extends Multiplication {
+public class Java13 extends Multiplication implements Display {
 
-//    /** ユーザー入力促し文言 */
-//    private static final String USER_INPUT_SENTENCES = "数値を入力してください。";
-//
-//    /** 入力許容最小値 */
-//    private static final int USER_INPUT_MIN_VALUE = 1;
-//
-//    /** 入力許容最大値 */
-//    private static final int USER_INPUT_MAX_VALUE = 9;
-//
-//    /** 入力許容範囲 */
-//    private static final String USER_INPUT_RANGE = USER_INPUT_MIN_VALUE + "～" + USER_INPUT_MAX_VALUE;
-//
-//    /** 数値入力促し文言 */
-//    private static final String NUMBER_INPUT_SENTENCES = USER_INPUT_RANGE + "の" + USER_INPUT_SENTENCES;
-//
-//    /** 数値以外の入力時エラー文言 */
-//    private static final String NON_NUMERIC_ERROR = "エラー！！" + USER_INPUT_RANGE + "以外の数値が入力されました。";
-
+    // --------------------------------------------------
+    // メンバ変数
+    // --------------------------------------------------
+    /** スキャナー（コンソール入力） */
+    private static Scanner mScanner = new Scanner(System.in);
     /** 切替モード */
     private static boolean displaySwitching = false;
+
+    // --------------------------------------------------
+    // 定数
+    // --------------------------------------------------
+    /** 処理継続 */
+    private static final String PROCESSING_CONTINUE = "Y";
+    /** 処理終了 */
+    private static final String PROCESSING_END = "N";
 
     /**
      * 入力された数値で九九の計算を行い、コンソールに表示します。
@@ -37,34 +32,22 @@ public class Java13 extends Multiplication {
      */
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
+        do {
+            // --------------------------------------------------
+            // 入力
+            // --------------------------------------------------
+            // 処理モード入力
+            final DisplayMode displayMode = inputDisplayMode();
+            // --------------------------------------------------
+            // 処理・出力
+            // --------------------------------------------------
 
-        displaySentence(displaySwitching);
-
-        // 値取得
-        String input = scanner.next();
-
-        int userInputMode = 0;
-
-        // 数値か判定
-        try {
-            userInputMode = Integer.valueOf(input).intValue();
-        } catch (NumberFormatException e) {
-            // 入力内容が数値以外の場合
-            System.out.println(NON_NUMERIC_ERROR);
-            System.out.println(NUMBER_INPUT_SENTENCES);
-            main(args);
-        }
-
-        // 入力値によって処理を変更
-        try {
-            switch (Mode.getTypeByValue(userInputMode)) {
-
+            switch (displayMode) {
                 case MULTIPLICATION_TABLE:
                     displayMultiplicationTable(displaySwitching);
                     break;
                 case MULTIPLICATION_LINE:
-                    displayMultiplicationLineTest(scanner, displaySwitching);
+                    displayMultiplicationLine(mScanner, displaySwitching);
                     break;
                 case SWITCHING:
                     displaySwitching = displaySwitching ? false : true;
@@ -72,90 +55,54 @@ public class Java13 extends Multiplication {
                     break;
                 case END:
                     System.out.println("終了します。");
-                    break;
+                    // 終了処理
+                    mScanner.close();
+                    return;
                 default:
                     break;
             }
-        } catch (IllegalArgumentException e) {
-            // 指定数値以外の場合
-            String[] arrayMode = createArrayMode();
-            System.out.println(String.format("%sのいずれかを入力してください。", String.join(",", arrayMode)));
-        }
 
-        // 終了が入力された場合
-        if (userInputMode == Mode.END.getValue()) {
-            System.exit(0);
-        }
-
-        main(args);
+        } while (isContinue());
 
     }
 
-//    /**
-//     * 数値範囲チェック
-//     * 
-//     * @param targetNumber チェック対象数値
-//     * @param minValue     最小値
-//     * @param maxValue     最大値
-//     * @return true:最小値～最大値の範囲内にある
-//     */
-//    private static boolean isWithinRange(int targetNumber, int minValue, int maxValue) {
-//        return (minValue <= targetNumber && targetNumber <= maxValue);
-//    }
+    // --------------------------------------------------
+    // public関数
+    // --------------------------------------------------
+    /**
+     * モード選択表示文言取得
+     */
+    @Override
+    public String getDisplayModeString() {
+        final StringBuffer sb = new StringBuffer();
+        sb.append("***********************************").append("\n");
+        sb.append("処理モードを選択してください").append("\n");
+        sb.append(DisplayMode.getSelectDisplayModeString(displaySwitching));
+        sb.append("***********************************");
+        return sb.toString();
+    }
 
+    // --------------------------------------------------
+    // private関数
+    // --------------------------------------------------
     /**
      * 九九１行表示の処理
      * 
      * @param displaySwitching 切替モードの状態
      * @param inputNumber      入力文字
      */
-    private static void displaySingleLine(boolean displaySwitching, int inputNumber) {
+    private static void calcSingleLine(boolean displaySwitching, int inputNumber) {
 
         // 切替モードオンの場合
         if (displaySwitching) {
-            displaySwitchingModeOn(displaySwitching, inputNumber);
+            displaySwitchingMode(displaySwitching, inputNumber);
             return;
         }
 
         // 切替モードオフの場合
-        displaySwitchingModeOffTest(inputNumber);
+        displaySwitchingMode(inputNumber);
 
     }
-
-//    /**
-//     * 切替モードオフの場合の表示
-//     * 
-//     * @param inputNumber 入力文字
-//     */
-//    private static void displaySwitchingModeOff(int inputNumber) {
-//
-//        IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
-//            System.out.printf(DISPLAY_FORMAT, i * inputNumber);
-//        });
-//        System.out.printf("%n");
-//    }
-//
-//    /**
-//     * 切替モードオンの場合の表示
-//     * 
-//     * @param inputNumber 入力文字
-//     */
-//    private static void displaySwitchingModeOn(int inputNumber) {
-//
-//        IntStream.rangeClosed(Multiplication.MULTIPLICATION_TABLE_RANGE_START, Multiplication.MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
-//
-//            int calculationResult = i * inputNumber;
-//
-//            // 3の倍数は別表示
-//            if (calculationResult % DIVIDE_BY_NUMBER == 0 || hasContainedCharacter(calculationResult, CONTAINS_NUMBER)) {
-//                System.out.printf(Multiplication.DISPLAY_FORMAT, DISPLAY_WHEN_MATCHING_CONDITIONS);
-//            } else {
-//                System.out.printf(Multiplication.DISPLAY_FORMAT, calculationResult);
-//            }
-//
-//        });
-//        System.out.printf("%n");
-//    }
 
     /**
      * 九九表示の処理
@@ -166,12 +113,12 @@ public class Java13 extends Multiplication {
 
         // 切替モードオンの場合
         if (displaySwitching) {
-            displayMultiplicationTableTest(displaySwitching);
+            calcMultiplicationTable(displaySwitching);
             return;
         }
 
         // 切替モードオフの場合
-        displayMultiplicationTableTest();
+        calcMultiplicationTable();
 
     }
 
@@ -181,84 +128,58 @@ public class Java13 extends Multiplication {
      * @param scanner          入力情報
      * @param displaySwitching 切替モードの状態
      */
-    private static void displayMultiplicationLineTest(Scanner scanner, boolean displaySwitching) {
+    private static void displayMultiplicationLine(Scanner scanner, boolean displaySwitching) {
 
-        int line = displayMultiplicationLine(scanner, displaySwitching);
+        int line = calcMultiplicationLine();
 
-        displaySingleLine(displaySwitching, line);
+        calcSingleLine(displaySwitching, line);
 
-//        System.out.println("表示する段を入力してください");
-
-//        while (scanner.hasNext()) {
-//
-//            // 数値か判定
-//            try {
-//                int inputLine = Integer.valueOf(scanner.next()).intValue();
-//
-//                // 入力許容範囲外はエラー
-//                if (!isWithinRange(inputLine, USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE)) {
-//                    System.out.println(NON_NUMERIC_ERROR);
-//                    System.out.println(NUMBER_INPUT_SENTENCES);
-//                    continue;
-//                }
-//
-//                displaySingleLine(displaySwitching, inputLine);
-//                break;
-//            } catch (NumberFormatException e) {
-//                // 入力内容が数値以外の場合
-//                System.out.println(NON_NUMERIC_ERROR);
-//                System.out.println(NUMBER_INPUT_SENTENCES);
-//            }
-//
-//        }
     }
-
-//    /**
-//     * コンソールに表示する文言
-//     * 
-//     * @param displaySwitching 切替モードの状態
-//     */
-//    private static void displaySentence(boolean displaySwitching) {
-//
-//        System.out.println("***********************************");
-//        System.out.println("処理モードを選択してください");
-//        System.out.println(String.format("%s.九九表示", Mode.MULTIPLICATION_TABLE.getValue()));
-//        System.out.println(String.format("%s.指定の段のみ表示", Mode.MULTIPLICATION_LINE.getValue()));
-//
-//        if (displaySwitching) {
-//            System.out.println(String.format("%s.モード切替(世界のナベアツ⇒通常)", Mode.SWITCHING.getValue()));
-//        } else {
-//            System.out.println(String.format("%s.モード切替(通常⇒世界のナベアツ)", Mode.SWITCHING.getValue()));
-//        }
-//
-//        System.out.println(String.format("%s.終了", Mode.END.getValue()));
-//        System.out.println("***********************************");
-//    }
-
-//    /**
-//     * 検索対象に判定文字が含まれるかチェック
-//     * 
-//     * @param target            検索対象
-//     * @param judgmentCharacter 判定文字
-//     * @return true:判定文字が含まれる
-//     */
-//    private static boolean hasContainedCharacter(int target, int judgmentCharacter) {
-//        String targetStr = String.valueOf(target);
-//        return targetStr.contains(String.valueOf(judgmentCharacter));
-//    }
 
     /**
-     * Modeの全種類が入った配列を取得
+     * 処理継続確認
      * 
-     * @return enumのModeの全種類がはいった配列
+     * @return isProcessingContinue 処理継続はTrue。処理終了はfalse。
      */
-    private static String[] createArrayMode() {
-        String[] arrayMode = new String[Mode.values().length];
-        int count = 0;
-        for (Mode t : Mode.values()) {
-            arrayMode[count] = String.valueOf(t.getValue());
-            count++;
-        }
-        return arrayMode;
+    private static boolean isContinue() {
+        boolean isCheck = false;
+
+        String displayMsg = String.format("処理を続けますか？(%s/%s)", PROCESSING_CONTINUE, PROCESSING_END);
+
+        do {
+            String input = inputStr(displayMsg);
+
+            // 入力値の判定
+            switch (input.toUpperCase()) {
+                case PROCESSING_CONTINUE:
+                    return true;
+                case PROCESSING_END:
+                    return false;
+                default:
+                    System.out.println(String.format("(%s/%s)以外が入力されました。\n再入力をお願いします。", PROCESSING_CONTINUE, PROCESSING_END));
+                    break;
+            }
+
+        } while (!isCheck);
+
+        return false;
     }
+
+    /**
+     * モード入力
+     */
+    private static DisplayMode inputDisplayMode() {
+        DisplayMode displayMode = null;
+        Display display = new Java13();
+        String displayMsg = display.getDisplayModeString();
+        do {
+            displayMode = DisplayMode.convertDisplayMode(inputStr(displayMsg));
+            if (displayMode == null) {
+                System.out.println("該当する処理モードが見つかりませんでした。");
+            }
+
+        } while (displayMode == null);
+        return displayMode;
+    }
+
 }
