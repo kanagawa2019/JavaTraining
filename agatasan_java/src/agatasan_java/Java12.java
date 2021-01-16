@@ -456,7 +456,7 @@ public class Java12 {
      * @param msg
      * @return •\Ž¦•¶Œ¾
      */
-    private static String displayToCorrectPerson(final List<User> userList, String msg) {
+    private static String displayToCorrectPerson(final List<User> userList, final String msg) {
 
         System.out.println(msg);
 
