@@ -624,7 +624,7 @@ public class Java12 {
     }
 
     /**
-     * 
+     * ユーザー情報の削除
      * 
      * @param userList ユーザーリスト
      * @return ユーザーリスト
