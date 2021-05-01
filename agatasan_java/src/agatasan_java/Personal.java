@@ -38,20 +38,6 @@ public class Personal {
     }
 
     /**
-     * ƒƒ“ƒo•Ï”•¶š—ñæ“¾
-     * 
-     * @return ƒƒ“ƒo•Ï”•¶š—ñæ“¾
-     */
-    public static String getSelectPersonalString() {
-        final StringBuffer sb = new StringBuffer();
-        int cnt = 0;
-        sb.append(++cnt).append(".–¼").append("\n");
-        sb.append(++cnt).append(".ŒûÀ”Ô†").append("\n");
-        sb.append(++cnt).append(".c‚").append("\n");
-        return sb.toString();
-    }
-
-    /**
      * –¼‚ğæ“¾
      * 
      * @return name

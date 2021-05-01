@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
@@ -58,6 +59,10 @@ public class Java14 {
 
     /** ファイル出力パス */
     private static final String ACCOUNT_FILE_OUTPUT_PATH = "ACCOUNT_FILE_OUTPUT_PATH";
+    /** 採番用口座ファイル出力パス */
+    private static final String NUMBERING_ACCOUNT_FILE_OUTPUT_PATH = "NUMBERING_ACCOUNT_FILE_OUTPUT_PATH";
+    /** 取引履歴ファイル出力パス */
+    private static final String ACCOUNT_HISTORY_FILE_OUTPUT_PATH = "ACCOUNT_HISTORY_FILE_OUTPUT_PATH";
     /** プロパティ設定パス */
     private static final String INIT_PROPERTIES_PATH = "." + File.separator + "Setting.properties";
     /** ファイル保存識別子 */
@@ -130,68 +135,68 @@ public class Java14 {
 
     }
 
-    /**
-     * 処理モード
-     */
-    private static enum Bank {
-
-        DEPOSIT(1, "入金"), TRANSFER(2, "振込"), BALANCE(3, "残高表示"), HISTORY(9, "お取引履歴表示");
-
-        /** id */
-        private final int id;
-        /** 名称 */
-        private final String name;
-
-        /**
-         * コンストラクタ
-         * 
-         * @param id
-         */
-        private Bank(final int id, final String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        /**
-         * モード表示文字列取得
-         * 
-         * @return モード表示文字列
-         */
-        public static String getSelectBankString() {
-            final StringBuffer sb = new StringBuffer();
-            for (final Bank t : Bank.values()) {
-                sb.append(t.id).append(".").append(t.name).append("\n");
-            }
-            return sb.toString();
-        }
-
-        /**
-         * モード取得
-         * 
-         * @param inputBank入力値
-         * @return モードが存在しない場合はnull値
-         */
-        public static Bank convertBank(final String inputBank) {
-            if (inputBank == null) {
-                return null;
-            }
-
-            int bank = 0;
-            try {
-                bank = Integer.parseInt(inputBank);
-            } catch (NumberFormatException e) {
-                return null;
-            }
-
-            for (final Bank t : Bank.values()) {
-                if (t.id == bank) {
-                    return t;
-                }
-            }
-            return null;
-        }
-
-    }
+//    /**
+//     * 処理モード
+//     */
+//    public static enum Bank {
+//
+//        DEPOSIT(1, "入金"), TRANSFER(2, "振込"), BALANCE(3, "残高表示"), HISTORY(9, "お取引履歴表示");
+//
+//        /** id */
+//        private final int id;
+//        /** 名称 */
+//        private final String name;
+//
+//        /**
+//         * コンストラクタ
+//         * 
+//         * @param id
+//         */
+//        private Bank(final int id, final String name) {
+//            this.id = id;
+//            this.name = name;
+//        }
+//
+//        /**
+//         * モード表示文字列取得
+//         * 
+//         * @return モード表示文字列
+//         */
+//        public static String getSelectBankString() {
+//            final StringBuffer sb = new StringBuffer();
+//            for (final Bank t : Bank.values()) {
+//                sb.append(t.id).append(".").append(t.name).append("\n");
+//            }
+//            return sb.toString();
+//        }
+//
+//        /**
+//         * モード取得
+//         * 
+//         * @param inputBank入力値
+//         * @return モードが存在しない場合はnull値
+//         */
+//        public static Bank convertBank(final String inputBank) {
+//            if (inputBank == null) {
+//                return null;
+//            }
+//
+//            int bank = 0;
+//            try {
+//                bank = Integer.parseInt(inputBank);
+//            } catch (NumberFormatException e) {
+//                return null;
+//            }
+//
+//            for (final Bank t : Bank.values()) {
+//                if (t.id == bank) {
+//                    return t;
+//                }
+//            }
+//            return null;
+//        }
+//
+//    }
 
     /**
      * 入力された処理モードの処理を表示します。
@@ -215,23 +220,8 @@ public class Java14 {
                     personalList.add(inputUserInfo());
                 }
 
-                // ユーザー選択
-
-                // 修正する人物表示文言作成
-                String toModifyPersonMsg = displayToCorrectPerson(personalList, "どのユーザの処理をしますか？");
-
-                // 修正する人物の番号を取得
-                int personOfNumber = getCorrectPerson(toModifyPersonMsg, personalList);
-
-                // 0の場合は、最初に戻る
-                if (personOfNumber == 0) {
-                    continue;
-                }
-
-                int idx = personOfNumber - 1;
-
-                // 個別の処理
-                changePersonal(personalList, idx);
+                // 口座操作の処理
+                changePersonal(personalList);
 
             } while (isContinue());
 
@@ -252,50 +242,72 @@ public class Java14 {
     // private関数
     // --------------------------------------------------
 
-    private static void changePersonal(List<Personal> personalList, int idx) {
-
-        // 入力された番号に紐づく名前を取得
-        String modifyName = personalList.get(idx).getName();
-        Personal personal = personalList.get(idx);
+    private static void changePersonal(List<Personal> personalList) {
 
         do {
 
-            // 修正する属性の番号を取得
-            String toCorrectPropertyMsg = displayToCorrectProperty(modifyName);
+            // 修正する人物表示文言作成
+            String toModifyPersonMsg = displayToCorrectPerson(personalList, "どのユーザの処理をしますか？");
 
-            // 修正するユーザー情報番号を取得
-            int propertyOfNumber = getModifyUserInfo(toCorrectPropertyMsg);
+            // 修正する人物の番号を取得
+            int personOfNumber = getCorrectPerson(toModifyPersonMsg, personalList);
 
-            // 0 の場合、修正人物を選択する処理まで戻る
-            if (propertyOfNumber == 0) {
-                break;
+            // 0の場合は、最初に戻る
+            if (personOfNumber == 0) {
+                return;
             }
 
-            // --------------------------------------------------
-            // 処理・出力
-            // --------------------------------------------------
+            int idx = personOfNumber - 1;
 
-            switch (Bank.convertBank(String.valueOf(propertyOfNumber))) {
-                case DEPOSIT:
-                    // 入金処理
-                    personal.setBalance(depositMoney(personal.getBalance()));
-                    break;
-                case TRANSFER:
-                    // 振込処理
-//                    personalList = modifyUserInfo(personalList);
-                    break;
-                case BALANCE:
-                    // 残高表示処理
-                    displayBalance(personal.getBalance());
-                    break;
-                case HISTORY:
-                    // お取引履歴表示
-                    // TODO
-                    displayHistory(personal.getAccountNumber());
-                    break;
-                default:
-                    System.out.println(UNEXPECTED_ERR);
-                    break;
+            // 入力された番号に紐づく名前を取得
+            String modifyName = personalList.get(idx).getName();
+            Personal personal = personalList.get(idx);
+
+            try {
+
+                do {
+
+                    // 修正する属性の番号を取得
+                    String toCorrectPropertyMsg = displayToCorrectProperty(modifyName);
+
+                    // 修正するユーザー情報番号を取得
+                    int propertyOfNumber = getModifyUserInfo(toCorrectPropertyMsg);
+
+                    // 0 の場合、修正人物を選択する処理まで戻る
+                    if (propertyOfNumber == 0) {
+                        break;
+                    }
+
+                    // --------------------------------------------------
+                    // 処理・出力
+                    // --------------------------------------------------
+
+                    switch (Bank.convertBank(String.valueOf(propertyOfNumber))) {
+                        case DEPOSIT:
+                            // 入金処理
+                            personal.setBalance(depositMoney(personal.getBalance()));
+                            break;
+                        case TRANSFER:
+                            // 振込処理
+//                        personalList = modifyUserInfo(personalList);
+                            break;
+                        case BALANCE:
+                            // 残高表示処理
+                            displayBalance(personal.getBalance());
+                            break;
+                        case HISTORY:
+                            // お取引履歴表示
+                            // TODO
+                            displayHistory(personal.getAccountNumber());
+                            break;
+                        default:
+                            System.out.println(UNEXPECTED_ERR);
+                            break;
+                    }
+
+                } while (true);
+            } catch (FileReadException | IOException e) {
+                System.out.println("処理を中断しました。システム管理者へ問い合わせしてください。");
             }
 
         } while (true);
@@ -306,14 +318,124 @@ public class Java14 {
         System.out.println(String.format("残高は、%,d円です", balance));
     }
 
-    private static void displayHistory(String accountNumber) {
+    private static void displayHistory(String accountNumber) throws FileReadException, IOException {
 
         // 履歴データ取得
+        List<AccountHistory> historyList = getAccountHistory();
 
-        // 履歴の中で口座番号一致のものを取得
+        // 履歴がない場合
+        if (historyList.size() == 0 || historyList == null) {
+            System.out.println("お取引履歴はありません。");
+            return;
+        }
 
-        // 表示
+        // 履歴の中で口座番号一致のものを表示
+        matchAccountNo(accountNumber, historyList);
 
+    }
+
+    private static void matchAccountNo(String accountNumber, List<AccountHistory> historyList) {
+
+        StringBuffer sb = new StringBuffer();
+
+        sb.append("***********************************").append("\n");
+
+        for (AccountHistory history : historyList) {
+            if (accountNumber.equals(history.getAccountNumber())) {
+
+                sb.append("お取引日、区分、金額").append("\n");
+                // TODO 区分を日本語か
+                sb.append(dateToString(history.getDate())).append("、").append(history.getClassification()).append("、")
+                        .append(String.format("%,d円", history.getTransactionAmount())).append("\n");
+
+            }
+
+        }
+
+        sb.append("***********************************");
+
+        System.out.println(sb.toString());
+    }
+
+    private static String dateToString(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_OF_STANDARD_BIRTH);
+        return dateFormat.format(date);
+    }
+
+    /**
+     * 取引履歴を取得
+     * 
+     * @return 前回入力したユーザー情報
+     * @throws FileReadException
+     * @throws IOException
+     */
+    private static List<AccountHistory> getAccountHistory() throws FileReadException, IOException {
+
+        List<AccountHistory> list = new ArrayList<>();
+
+        String strPass = null;
+        BufferedReader br = null;
+        try {
+            strPass = getHistoryInfo();
+
+            File file = new File(strPass);
+
+            // ファイルが存在しない場合(=処理1回目の場合)
+            if (!file.exists()) {
+                return list;
+            }
+
+            FileReader fileReader = new FileReader(file);
+            br = new BufferedReader(fileReader);
+            String str = br.readLine();
+            while (str != null) {
+
+                List<String> splitList = fileSplit(str);
+
+                AccountHistory line = new AccountHistory();
+
+                line.setDate(StringToDate(splitList.get(0)));
+                line.setAccountNumber(splitList.get(1));
+                line.setClassification(Bank.convertBank(splitList.get(2)));
+                line.setTransactionAmount(Integer.parseInt(splitList.get(3)));
+                line.setBalance(Integer.parseInt(splitList.get(4)));
+
+                list.add(line);
+                str = br.readLine();
+            }
+
+        } catch (IOException e) {
+            throw new FileReadException(e, "前回の履歴を保存したファイルを読み込めませんでした。");
+
+        } finally {
+
+            if (br != null) {
+                // 閉じる処理
+                br.close();
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 文字列の日付をDate型の日付に変換する
+     * 
+     * @param date 文字列の日付
+     * @return Date型の日付
+     */
+    private static Date StringToDate(String date) {
+        if (date == null) {
+            return null;
+        }
+        // 文字列から日付型変換
+        SimpleDateFormat tempSdf = new SimpleDateFormat(DATE_OF_BIRTH);
+        Date formatDate = new Date();
+        try {
+            formatDate = tempSdf.parse(date);
+        } catch (ParseException e) {
+            // サーバーで設定するのでありえない
+        }
+        return formatDate;
     }
 
     /**
@@ -370,7 +492,7 @@ public class Java14 {
     }
 
     /**
-     * ファイルの1行分をユーザー名と金額に分割する
+     * ファイルの1行分を口座番号とユーザー名と残高に分割する
      * 
      * @param line 読み込み行
      * @return 分割後のリスト。1つ目が口座番号、2つ目がユーザー名、3つ目が残高。
@@ -402,13 +524,81 @@ public class Java14 {
                 sb.append(c);
             }
 
-            // 金額を設定
+            // TODO 金額を設定
             if (i == line.length() - 1) {
                 data.add(sb.toString());
             }
         }
         return data;
 
+    }
+
+    private static String accountFileSplit(final String line) {
+        char c;
+        StringBuilder sb = new StringBuilder();
+        String data = null;
+        boolean singleQuoteFlag = false;
+        boolean singleQuoteKeepingFlag = false;
+        char[] separation = SAVA_SEPARATION.toCharArray();
+        char[] identifier = SAVE_IDENTIFIER.toCharArray();
+
+        for (int i = 0; i < line.length(); i++) {
+            c = line.charAt(i);
+            if (c == identifier[0] && singleQuoteFlag && singleQuoteKeepingFlag) {
+                singleQuoteKeepingFlag = !singleQuoteKeepingFlag;
+                sb.append(c);
+            } else if (c == separation[0] && !singleQuoteFlag) {
+                data = sb.toString();
+                sb.delete(0, sb.length());
+            } else if (c == separation[0] && singleQuoteFlag) {
+                sb.append(c);
+            } else if (c == identifier[0]) {
+                singleQuoteFlag = !singleQuoteFlag;
+            } else if (c == SAVA_ESCAPE) {
+                singleQuoteKeepingFlag = !singleQuoteKeepingFlag;
+            } else {
+                sb.append(c);
+            }
+
+//            // TODO 金額を設定
+//            if (i == line.length() - 1) {
+//                data.add(sb.toString());
+//            }
+        }
+        return data;
+
+    }
+
+    /**
+     * プロパティファイルの値を取得
+     * 
+     * @return ユーザー情報が記載されてファイルの格納パス
+     * @throws FileNotFoundException
+     * @throws FileReadException
+     * @throws IOException
+     */
+    private static String getHistoryInfo() throws FileNotFoundException, FileReadException, IOException {
+        Properties properties = new Properties();
+
+        String strPass = null;
+        try {
+            InputStream istream = new FileInputStream(INIT_PROPERTIES_PATH);
+            properties.load(istream);
+
+            strPass = properties.getProperty(ACCOUNT_HISTORY_FILE_OUTPUT_PATH);
+
+            // 設定ファイル読み込み失敗時
+            if (strPass == null) {
+                throw new FileReadException(new Exception(), "プロパティファイルに記載されている定義が見つかりませんでした。");
+            }
+
+        } catch (FileNotFoundException e) {
+            throw new FileReadException(e, "プロパティファイルが見つかりませんでした。");
+        } catch (IOException e) {
+            throw new FileReadException(e, "プロパティファイルの読み込みに失敗しました。");
+
+        }
+        return strPass;
     }
 
     /**
@@ -463,8 +653,9 @@ public class Java14 {
 
             // 口座番号、ユーザー名、金額をカンマ区切りで連結
             for (Personal p : list) {
-                String str = String.format("%s%s%s%s%s%s%s%s%d%s", SAVE_IDENTIFIER, p.getAccountNumber(), SAVE_IDENTIFIER, SAVE_IDENTIFIER,
-                        conversionEscape(p.getName()), SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, p.getBalance(), SAVE_IDENTIFIER);
+                String str = String.format("%s%s%s%s%s%s%s%s%s%d%s", SAVE_IDENTIFIER, p.getAccountNumber(), SAVE_IDENTIFIER, SAVA_SEPARATION,
+                        SAVE_IDENTIFIER, conversionEscape(p.getName()), SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, p.getBalance(),
+                        SAVE_IDENTIFIER);
                 // 書き込み
                 bw.write(str);
                 // 改行
@@ -613,7 +804,7 @@ public class Java14 {
      * 
      * @return ユーザー情報
      */
-    private static Personal inputUserInfo() {
+    private static Personal inputUserInfo() throws FileWriteException, FileReadException, IOException {
 
         // 氏名を取得
         String inputName = inputName();
@@ -621,14 +812,135 @@ public class Java14 {
         int inputDeposit = depositMoney(0);
         // 口座番号は新規採番
         // TODO
-        String balance = "001";
+        String accountNumber = createNewAccountNo();
 
         // 値を設定
-        Personal personal = new Personal(inputName, balance, inputDeposit);
+        Personal personal = new Personal(inputName, accountNumber, inputDeposit);
 
         System.out.println("口座を新規登録しました。");
 
         return personal;
+    }
+
+    private static String createNewAccountNo() throws FileWriteException, FileReadException, IOException {
+        // 採番用のファイルを読み込み
+        // +1する
+        int nextAccountNo = sumUpAccountNo(getAccountNo());
+
+        // 採番した番号を採番用のファイルに書き込み
+        createAccountNoFile(nextAccountNo);
+
+        // 番号を文字列に変換して返す
+        return String.valueOf(nextAccountNo);
+
+    }
+
+    public static String getAccountNo() throws FileReadException, IOException {
+
+        String retValue = null;
+
+        String strPass = null;
+        BufferedReader br = null;
+        try {
+            strPass = getPropertiesInfo2();
+
+            File file = new File(strPass);
+
+            // ファイルが存在しない場合(=処理1回目の場合)
+            if (!file.exists()) {
+                return "1";
+            }
+
+            FileReader fileReader = new FileReader(file);
+            br = new BufferedReader(fileReader);
+            String str = br.readLine();
+            while (str != null) {
+
+                // 読み取り
+                retValue = accountFileSplit(str);
+
+            }
+
+        } catch (IOException e) {
+            throw new FileReadException(e, "口座採番用ファイルを読み込めませんでした。");
+
+        } finally {
+
+            if (br != null) {
+                // 閉じる処理
+                br.close();
+            }
+        }
+        return retValue;
+    }
+
+    private static int sumUpAccountNo(String accountNo) {
+        // 文字から数値に変換
+        int retVlalue = Integer.parseInt(accountNo);
+        // 加算
+        return ++retVlalue;
+
+    }
+
+    public static void createAccountNoFile(int nextAccountNo) throws FileWriteException, FileReadException, IOException {
+
+        String strPass = null;
+        BufferedWriter bw = null;
+        try {
+            strPass = getPropertiesInfo2();
+
+            FileWriter fw = new FileWriter(strPass);
+            bw = new BufferedWriter(fw);
+
+            String str = String.format("%s%d%s", SAVE_IDENTIFIER, nextAccountNo, SAVE_IDENTIFIER);
+            // 書き込み
+            bw.write(str);
+            // 改行
+            bw.newLine();
+
+        } catch (IOException e) {
+            throw new FileWriteException(e, String.format("ファイルの書き込みに失敗しました。ファイル名:%s", strPass));
+
+        } finally {
+
+            if (bw != null) {
+                // 閉じる処理
+                bw.close();
+            }
+        }
+
+    }
+
+    /**
+     * プロパティファイルの値を取得
+     * 
+     * @return ユーザー情報が記載されてファイルの格納パス
+     * @throws FileNotFoundException
+     * @throws FileReadException
+     * @throws IOException
+     */
+    private static String getPropertiesInfo2() throws FileNotFoundException, FileReadException, IOException {
+        Properties properties = new Properties();
+
+        String strPass = null;
+        try {
+            InputStream istream = new FileInputStream(INIT_PROPERTIES_PATH);
+            properties.load(istream);
+
+            strPass = properties.getProperty(NUMBERING_ACCOUNT_FILE_OUTPUT_PATH);
+
+            // 設定ファイル読み込み失敗時
+            if (strPass == null) {
+                throw new FileReadException(new Exception(), "プロパティファイルに記載されている定義が見つかりませんでした。");
+            }
+
+        } catch (FileNotFoundException e) {
+            throw new FileReadException(e, "プロパティファイルが見つかりませんでした。");
+        } catch (IOException e) {
+            throw new FileReadException(e, "プロパティファイルの読み込みに失敗しました。");
+
+        }
+        return strPass;
     }
 
     private static int depositMoney(int balance) {
@@ -663,25 +975,6 @@ public class Java14 {
             return true;
         }
         return false;
-    }
-
-    /**
-     * 入力された日付が存在するかのチェック
-     * 
-     * @param birthDay 入力された年月日
-     * @return 正当な日付はTrue。不正な日付はfalse。
-     */
-    private static boolean isConsistency(String birthDay) {
-
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_OF_BIRTH);
-        sdf.setLenient(false);
-        try {
-            sdf.parse(birthDay);
-        } catch (ParseException e) {
-            System.out.println("正しい日付ではありません");
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -723,7 +1016,7 @@ public class Java14 {
         sb.append("どの情報を修正しますか？").append("\n");
         sb.append("---------------------------").append("\n");
         sb.append(BACK).append("\n");
-        sb.append(Personal.getSelectPersonalString());
+        sb.append(Bank.getSelectBankString());
         sb.append("---------------------------").append("\n");
 
         return sb.toString();
