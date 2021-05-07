@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -285,7 +286,7 @@ public class Java14 {
                     switch (Bank.convertBank(String.valueOf(propertyOfNumber))) {
                         case DEPOSIT:
                             // 入金処理
-                            personal.setBalance(depositMoney(personal.getBalance()));
+                            personal.setBalance(depositMoney(personal));
                             break;
                         case TRANSFER:
                             // 振込処理
@@ -297,7 +298,6 @@ public class Java14 {
                             break;
                         case HISTORY:
                             // お取引履歴表示
-                            // TODO
                             displayHistory(personal.getAccountNumber());
                             break;
                         default:
@@ -306,11 +306,31 @@ public class Java14 {
                     }
 
                 } while (true);
-            } catch (FileReadException | IOException e) {
+
+            } catch (FileReadException | FileWriteException | IOException e) {
                 System.out.println("処理を中断しました。システム管理者へ問い合わせしてください。");
             }
 
         } while (true);
+
+    }
+
+    private static void modifyUserInfo(List<Personal> personalList) {
+        // 振込口座の指定
+        transferMoney(personalList);
+
+        // 履歴の更新
+//        writeHistory(personal.getAccountNumber(), Bank.TRANSFER.getId(), inputDeposit);
+
+        System.out.println("振込完了しました。");
+    }
+
+    private static void transferMoney(List<Personal> personalList) {
+        // 口座入力促す
+
+        // 自分の場合はエラー
+
+        //
 
     }
 
@@ -323,11 +343,13 @@ public class Java14 {
         // 履歴データ取得
         List<AccountHistory> historyList = getAccountHistory();
 
-        // 履歴がない場合
-        if (historyList.size() == 0 || historyList == null) {
-            System.out.println("お取引履歴はありません。");
-            return;
-        }
+        // TODO 不要？
+//        
+//        // 履歴がない場合
+//        if (historyList.size() == 0 || historyList == null) {
+//            System.out.println("お取引履歴はありません。");
+//            return;
+//        }
 
         // 履歴の中で口座番号一致のものを表示
         matchAccountNo(accountNumber, historyList);
@@ -337,15 +359,20 @@ public class Java14 {
     private static void matchAccountNo(String accountNumber, List<AccountHistory> historyList) {
 
         StringBuffer sb = new StringBuffer();
+        // 履歴あり
+        Boolean isExistHistory = false;
 
         sb.append("***********************************").append("\n");
+        sb.append("お取引日、区分、金額").append("\n");
 
         for (AccountHistory history : historyList) {
             if (accountNumber.equals(history.getAccountNumber())) {
 
-                sb.append("お取引日、区分、金額").append("\n");
-                // TODO 区分を日本語か
-                sb.append(dateToString(history.getDate())).append("、").append(history.getClassification()).append("、")
+                if (isExistHistory == false) {
+                    isExistHistory = true;
+                }
+
+                sb.append(dateToString(history.getDate())).append("、").append(history.getClassification().getName()).append("、")
                         .append(String.format("%,d円", history.getTransactionAmount())).append("\n");
 
             }
@@ -354,7 +381,7 @@ public class Java14 {
 
         sb.append("***********************************");
 
-        System.out.println(sb.toString());
+        System.out.println(isExistHistory == true ? sb.toString() : "お取引履歴はありません。");
     }
 
     private static String dateToString(Date date) {
@@ -398,7 +425,7 @@ public class Java14 {
                 line.setAccountNumber(splitList.get(1));
                 line.setClassification(Bank.convertBank(splitList.get(2)));
                 line.setTransactionAmount(Integer.parseInt(splitList.get(3)));
-                line.setBalance(Integer.parseInt(splitList.get(4)));
+//                line.setBalance(Integer.parseInt(splitList.get(4)));
 
                 list.add(line);
                 str = br.readLine();
@@ -545,6 +572,7 @@ public class Java14 {
         for (int i = 0; i < line.length(); i++) {
             c = line.charAt(i);
             if (c == identifier[0] && singleQuoteFlag && singleQuoteKeepingFlag) {
+//            if (c == identifier[0] && singleQuoteFlag) {
                 singleQuoteKeepingFlag = !singleQuoteKeepingFlag;
                 sb.append(c);
             } else if (c == separation[0] && !singleQuoteFlag) {
@@ -565,7 +593,8 @@ public class Java14 {
 //                data.add(sb.toString());
 //            }
         }
-        return data;
+
+        return sb.toString();
 
     }
 
@@ -808,14 +837,16 @@ public class Java14 {
 
         // 氏名を取得
         String inputName = inputName();
-        // 金額の取得
-        int inputDeposit = depositMoney(0);
+
         // 口座番号は新規採番
-        // TODO
         String accountNumber = createNewAccountNo();
 
         // 値を設定
-        Personal personal = new Personal(inputName, accountNumber, inputDeposit);
+        Personal personal = new Personal(inputName, accountNumber, 0);
+        // 金額の取得
+        int inputDeposit = depositMoney(personal);
+
+        personal.setBalance(inputDeposit);
 
         System.out.println("口座を新規登録しました。");
 
@@ -854,11 +885,9 @@ public class Java14 {
             FileReader fileReader = new FileReader(file);
             br = new BufferedReader(fileReader);
             String str = br.readLine();
-            while (str != null) {
-
+            if (str != null) {
                 // 読み取り
                 retValue = accountFileSplit(str);
-
             }
 
         } catch (IOException e) {
@@ -943,7 +972,22 @@ public class Java14 {
         return strPass;
     }
 
-    private static int depositMoney(int balance) {
+    private static int depositMoney(Personal personal) throws FileWriteException, FileReadException, IOException {
+
+        // 入金情報取得
+        int inputDeposit = getDeposit();
+
+        // 残高の合計
+        int sum = inputDeposit + personal.getBalance();
+        displayBalance(sum);
+
+        // 入金履歴
+        writeHistory(personal.getAccountNumber(), Bank.DEPOSIT.getId(), inputDeposit);
+
+        return sum;
+    }
+
+    private static int getDeposit() {
         int inputDeposit = 0;
         do {
             // 入力値を取得
@@ -951,12 +995,48 @@ public class Java14 {
 
         } while (isOutOfRange(inputDeposit, 1, 10000000));
 
-        // 残高の合計
-        displayBalance(inputDeposit + balance);
-
-        // TODO 入金履歴
-
         return inputDeposit;
+    }
+
+    private static void writeHistory(String accountNumber, int id, int balance) throws FileWriteException, FileReadException, IOException {
+
+        String strPass = null;
+        BufferedWriter bw = null;
+        try {
+            strPass = getHistoryInfo();
+
+            // 追加書き込み
+            FileWriter fw = new FileWriter(strPass, true);
+            bw = new BufferedWriter(fw);
+
+            // 日付、番号、取り扱い区分、金額
+            String str = String.format("%s%s%s%s%s%s%s%s%s%s%s%s%s%d%s", SAVE_IDENTIFIER, getToday(), SAVE_IDENTIFIER, SAVA_SEPARATION,
+                    SAVE_IDENTIFIER, accountNumber, SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, id, SAVE_IDENTIFIER, SAVA_SEPARATION,
+                    SAVE_IDENTIFIER, balance, SAVE_IDENTIFIER);
+
+            // 書き込み
+            bw.write(str);
+            // 改行
+            bw.newLine();
+
+        } catch (IOException e) {
+            throw new FileWriteException(e, String.format("ファイルの書き込みに失敗しました。ファイル名:%s", strPass));
+
+        } finally {
+
+            if (bw != null) {
+                // 閉じる処理
+                bw.close();
+            }
+        }
+
+    }
+
+    private static String getToday() {
+        Calendar cl = Calendar.getInstance();
+
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_OF_BIRTH);
+        return sdf.format(cl.getTime());
     }
 
     /**
@@ -967,7 +1047,7 @@ public class Java14 {
      * @param max    最大値
      * @return 入力された数値が範囲外の場合はTrue。範囲内の場合はfalse。
      */
-    public static boolean isOutOfRange(final int number, final int min, final int max) {
+    private static boolean isOutOfRange(final int number, final int min, final int max) {
 
         // 範囲外の場合
         if (!isWithinRange(number, min, max)) {
