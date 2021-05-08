@@ -136,6 +136,69 @@ public class Java14 {
 
     }
 
+    /**
+     * 振込処理
+     */
+    private static enum Transfer {
+
+        DIRECTLY(1, "手持ちから振込する"), ACCOUNT(2, "自分の口座から振込する");
+
+        /** id */
+        private final int id;
+        /** 名称 */
+        private final String name;
+
+        /**
+         * コンストラクタ
+         * 
+         * @param id
+         */
+        private Transfer(final int id, final String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        /**
+         * 口座処理表示文字列取得
+         * 
+         * @return 口座処理表示文字列
+         */
+        public static String getSelectTransferString() {
+            final StringBuffer sb = new StringBuffer();
+            for (final Transfer t : Transfer.values()) {
+                sb.append(t.id).append(".").append(t.name).append("\n");
+            }
+            return sb.toString();
+        }
+
+        /**
+         * 口座処理取得
+         * 
+         * @param inputAccount入力値
+         * @return 口座処理が存在しない場合はnull値
+         */
+        public static Transfer convertTransfer(final String inputTransfer) {
+            if (inputTransfer == null) {
+                return null;
+            }
+
+            int account = 0;
+            try {
+                account = Integer.parseInt(inputTransfer);
+            } catch (NumberFormatException e) {
+                return null;
+            }
+
+            for (final Transfer t : Transfer.values()) {
+                if (t.id == account) {
+                    return t;
+                }
+            }
+            return null;
+        }
+
+    }
+
 //    /**
 //     * 処理モード
 //     */
@@ -218,7 +281,8 @@ public class Java14 {
 
                 // 新規作成の場合
                 if (account == Account.NEW) {
-                    personalList.add(inputUserInfo());
+//                    personalList.add(inputUserInfo());
+                    inputUserInfo(personalList);
                 }
 
                 // 口座操作の処理
@@ -286,11 +350,15 @@ public class Java14 {
                     switch (Bank.convertBank(String.valueOf(propertyOfNumber))) {
                         case DEPOSIT:
                             // 入金処理
-                            personal.setBalance(depositMoney(personal));
+//                            personal.setBalance(depositMoney(personal));
+                            depositMoney(idx, personal, personalList);
+                            // 次回再開時用にユーザー情報をファイルに保存
+//                            createFile(personalList);
                             break;
                         case TRANSFER:
                             // 振込処理
-//                        personalList = modifyUserInfo(personalList);
+//                            personalList = modifyUserInfo(personal, personalList);
+                            modifyUserInfo(idx, personal, personalList);
                             break;
                         case BALANCE:
                             // 残高表示処理
@@ -315,24 +383,75 @@ public class Java14 {
 
     }
 
-    private static void modifyUserInfo(List<Personal> personalList) {
-        // 振込口座の指定
-        transferMoney(personalList);
+    private static void modifyUserInfo(int transferIdx, Personal transfer, List<Personal> personalList)
+            throws FileWriteException, FileReadException, IOException {
+        // 振込元Transfer
 
-        // 履歴の更新
-//        writeHistory(personal.getAccountNumber(), Bank.TRANSFER.getId(), inputDeposit);
+        // 振込元を除いたユーザーリスト作成
+        List<Personal> payeeList = new ArrayList<Personal>(personalList);
+        payeeList.remove(transferIdx);
 
-        System.out.println("振込完了しました。");
+        // 振込先 Payee
+        do {
+            String toModifyPersonMsg = displayToCorrectPerson(personalList, "どのユーザに振込しますか？");
+
+            // 修正する人物の番号を取得
+            int personOfNumber = getCorrectPerson(toModifyPersonMsg, personalList);
+
+            // 0の場合は、最初に戻る
+            if (personOfNumber == 0) {
+                return;
+            }
+
+            int idx = personOfNumber - 1;
+
+            // 入力された番号に紐づく名前を取得
+            String modifyName = personalList.get(idx).getName();
+            Personal personal = personalList.get(idx);
+
+            // 自分に振込は不可
+            if (transfer.getName().equals(personal.getName())) {
+                System.out.println("ご自分には振込めません。");
+                continue;
+            }
+            // 入金情報取得
+            int inputDeposit = getDeposit2(transfer, personal);
+
+            // 振込元
+            transfer.setBalance(transfer.getBalance() - inputDeposit);
+            // 振込先
+            personal.setBalance(personal.getBalance() + inputDeposit);
+
+            // 振込元履歴の更新
+            writeHistory(transfer.getAccountNumber(), Bank.TRANSFER.getId(), inputDeposit);
+
+            // 振込先履歴の更新
+            writeHistory(personal.getAccountNumber(), Bank.TRANSFER.getId(), inputDeposit);
+
+            System.out.println(String.format("%Sさんに振込完了しました。", modifyName));
+
+            break;
+        } while (true);
+
+        // 自分の口座からかの処理モード入力
+//        final Transfer payee = inputTransfer();
+
+//        switch (payee) {
+//            case DIRECTLY:
+//            case ACCOUNT:
+//            default:
+//                System.out.println(UNEXPECTED_ERR);
+//                break;
+//        }
+
+//        return personalList;
     }
 
-    private static void transferMoney(List<Personal> personalList) {
-        // 口座入力促す
-
-        // 自分の場合はエラー
-
-        //
-
-    }
+//    private static List<Personal> transferMoney(Personal transfer, List<Personal> personalList) {
+//
+//        //
+//
+//    }
 
     private static void displayBalance(int balance) {
         System.out.println(String.format("残高は、%,d円です", balance));
@@ -748,6 +867,22 @@ public class Java14 {
         return bank;
     }
 
+    /**
+     * 処理入力
+     */
+    private static Transfer inputTransfer() {
+        Transfer account = null;
+        String displayMsg = getDisplayString(Transfer.getSelectTransferString());
+        do {
+            account = Transfer.convertTransfer(inputStr(displayMsg));
+            if (account == null) {
+                System.out.println("該当する処理が見つかりませんでした。");
+            }
+
+        } while (account == null);
+        return account;
+    }
+
 //    /**
 //     * モード選択表示文言取得
 //     */
@@ -833,7 +968,8 @@ public class Java14 {
      * 
      * @return ユーザー情報
      */
-    private static Personal inputUserInfo() throws FileWriteException, FileReadException, IOException {
+//    private static Personal inputUserInfo(List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
+    private static void inputUserInfo(List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
 
         // 氏名を取得
         String inputName = inputName();
@@ -843,14 +979,16 @@ public class Java14 {
 
         // 値を設定
         Personal personal = new Personal(inputName, accountNumber, 0);
-        // 金額の取得
-        int inputDeposit = depositMoney(personal);
+        personalList.add(personal);
+        // 口座を更新
+//        int inputDeposit = depositMoney(personalList.size() - 1, personal, personalList);
+        depositMoney(personalList.size() - 1, personal, personalList);
 
-        personal.setBalance(inputDeposit);
+//        personal.setBalance(inputDeposit);
 
         System.out.println("口座を新規登録しました。");
 
-        return personal;
+//        return personal;
     }
 
     private static String createNewAccountNo() throws FileWriteException, FileReadException, IOException {
@@ -972,14 +1110,21 @@ public class Java14 {
         return strPass;
     }
 
-    private static int depositMoney(Personal personal) throws FileWriteException, FileReadException, IOException {
+    private static int depositMoney(int depositIdx, Personal personal, List<Personal> personalList)
+            throws FileWriteException, FileReadException, IOException {
 
         // 入金情報取得
         int inputDeposit = getDeposit();
 
         // 残高の合計
-        int sum = inputDeposit + personal.getBalance();
+        int sum = inputDeposit + personalList.get(depositIdx).getBalance();
         displayBalance(sum);
+
+        // 残高の設定
+        personalList.get(depositIdx).setBalance(sum);
+
+        // 口座の更新
+        createFile(personalList);
 
         // 入金履歴
         writeHistory(personal.getAccountNumber(), Bank.DEPOSIT.getId(), inputDeposit);
@@ -996,6 +1141,27 @@ public class Java14 {
         } while (isOutOfRange(inputDeposit, 1, 10000000));
 
         return inputDeposit;
+    }
+
+    private static int getDeposit2(Personal transfer, Personal personal) {
+        int inputDeposit = 0;
+        do {
+            // 入力値を取得
+            inputDeposit = inputDeposit();
+
+        } while (isOutOfRange(inputDeposit, 1, 10000000) || canPay(transfer, inputDeposit));
+
+        return inputDeposit;
+    }
+
+    private static boolean canPay(Personal transfer, int inputDeposit) {
+
+        // 自分の口座から払えない場合
+        if (transfer.getBalance() - inputDeposit < 0) {
+            System.out.println(String.format("ご自分の残高%,d円内で振り込んでください。", transfer.getBalance()));
+            return true;
+        }
+        return false;
     }
 
     private static void writeHistory(String accountNumber, int id, int balance) throws FileWriteException, FileReadException, IOException {
