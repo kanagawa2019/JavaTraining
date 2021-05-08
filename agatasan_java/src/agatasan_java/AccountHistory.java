@@ -11,7 +11,7 @@ import java.util.Date;
 public class AccountHistory {
 
     /** 口座番号 */
-    private String accountNumber;
+    private int accountNumber;
     /** 残高 */
     private int balance;
     /** 日付 */
@@ -34,7 +34,7 @@ public class AccountHistory {
      * 
      * @return accountNumber
      */
-    public String getAccountNumber() {
+    public int getAccountNumber() {
         return accountNumber;
     }
 
@@ -43,7 +43,7 @@ public class AccountHistory {
      * 
      * @param accountNumber 口座番号をセットする
      */
-    public void setAccountNumber(String accountNumber) {
+    public void setAccountNumber(int accountNumber) {
         this.accountNumber = accountNumber;
     }
 

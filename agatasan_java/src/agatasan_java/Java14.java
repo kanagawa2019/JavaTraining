@@ -323,7 +323,7 @@ public class Java14 {
      * @throws FileReadException
      * @throws IOException
      */
-    private static void displayHistory(final String accountNumber) throws FileReadException, IOException {
+    private static void displayHistory(final int accountNumber) throws FileReadException, IOException {
 
         // 履歴データ取得
         List<AccountHistory> historyList = getAccountHistory();
@@ -339,7 +339,7 @@ public class Java14 {
      * @param accountNumber 表示対象口座番号
      * @param historyList   取引履歴リスト
      */
-    private static void matchAccountNo(final String accountNumber, final List<AccountHistory> historyList) {
+    private static void matchAccountNo(final int accountNumber, final List<AccountHistory> historyList) {
 
         StringBuffer sb = new StringBuffer();
         // 履歴あり
@@ -349,7 +349,7 @@ public class Java14 {
         sb.append("お取引日、区分、金額").append("\n");
 
         for (AccountHistory history : historyList) {
-            if (accountNumber.equals(history.getAccountNumber())) {
+            if (accountNumber == history.getAccountNumber()) {
 
                 if (isExistHistory == false) {
                     isExistHistory = true;
@@ -411,7 +411,7 @@ public class Java14 {
                 AccountHistory line = new AccountHistory();
 
                 line.setDate(StringToDate(splitList.get(0)));
-                line.setAccountNumber(splitList.get(1));
+                line.setAccountNumber(Integer.parseInt(splitList.get(1)));
                 line.setClassification(Bank.convertBank(splitList.get(2)));
                 line.setTransactionAmount(Integer.parseInt(splitList.get(3)));
 
@@ -485,7 +485,7 @@ public class Java14 {
 
                 Personal line = new Personal();
 
-                line.setAccountNumber(splitList.get(0));
+                line.setAccountNumber(Integer.parseInt(splitList.get(0)));
                 line.setName(splitList.get(1));
                 line.setBalance(Integer.parseInt(splitList.get(2)));
 
@@ -754,7 +754,7 @@ public class Java14 {
         String inputName = inputName();
 
         // 口座番号は新規採番
-        String accountNumber = createNewAccountNo();
+        int accountNumber = createNewAccountNo();
 
         // 値を設定
         Personal personal = new Personal(inputName, accountNumber, 0);
@@ -774,7 +774,7 @@ public class Java14 {
      * @throws FileReadException
      * @throws IOException
      */
-    private static String createNewAccountNo() throws FileWriteException, FileReadException, IOException {
+    private static int createNewAccountNo() throws FileWriteException, FileReadException, IOException {
         // 採番用のファイルを読み込み
         // +1する
         int nextAccountNo = sumUpAccountNo(getAccountNo());
@@ -783,7 +783,7 @@ public class Java14 {
         createAccountNoFile(nextAccountNo);
 
         // 番号を文字列に変換して返す
-        return String.valueOf(nextAccountNo);
+        return nextAccountNo;
 
     }
 
@@ -974,7 +974,7 @@ public class Java14 {
      * @throws FileReadException
      * @throws IOException
      */
-    private static void writeHistory(final String accountNumber, final int id, final int balance)
+    private static void writeHistory(final int accountNumber, final int id, final int balance)
             throws FileWriteException, FileReadException, IOException {
 
         String strPass = null;
@@ -987,7 +987,7 @@ public class Java14 {
             bw = new BufferedWriter(fw);
 
             // 日付、番号、取り扱い区分、金額
-            String str = String.format("%s%s%s%s%s%s%s%s%s%s%s%s%s%d%s", SAVE_IDENTIFIER, getToday(), SAVE_IDENTIFIER, SAVA_SEPARATION,
+            String str = String.format("%s%s%s%s%s%d%s%s%s%d%s%s%s%d%s", SAVE_IDENTIFIER, getToday(), SAVE_IDENTIFIER, SAVA_SEPARATION,
                     SAVE_IDENTIFIER, accountNumber, SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, id, SAVE_IDENTIFIER, SAVA_SEPARATION,
                     SAVE_IDENTIFIER, balance, SAVE_IDENTIFIER);
 

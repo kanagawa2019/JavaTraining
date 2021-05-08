@@ -11,7 +11,7 @@ public class Personal {
     /** 氏名 */
     private String name;
     /** 口座番号 */
-    private String accountNumber;
+    private int accountNumber;
     /** 残高 */
     private int balance;
 
@@ -26,11 +26,11 @@ public class Personal {
     /**
      * コンストラクタ
      * 
-     * @param name
-     * @param accountNumber
-     * @param balance
+     * @param name          氏名
+     * @param accountNumber 口座番号
+     * @param balance       残高
      */
-    Personal(final String name, final String accountNumber, final int balance) {
+    Personal(final String name, final int accountNumber, final int balance) {
         this.name = name;
         this.accountNumber = accountNumber;
         this.balance = balance;
@@ -60,7 +60,7 @@ public class Personal {
      * 
      * @return accountNumber
      */
-    public String getAccountNumber() {
+    public int getAccountNumber() {
         return accountNumber;
     }
 
@@ -69,7 +69,7 @@ public class Personal {
      * 
      * @param accountNumber 口座番号をセットする
      */
-    public void setAccountNumber(String accountNumber) {
+    public void setAccountNumber(int accountNumber) {
         this.accountNumber = accountNumber;
     }
 
