@@ -1,7 +1,14 @@
 package agatasan_java;
 
+/**
+ * 口座操作
+ * 
+ * @author 菱田 美紀
+ * @version 1.0 2020/12/29 新規作成
+ *
+ */
 public enum Bank {
-    DEPOSIT(1, "入金"), TRANSFER(2, "振込"), BALANCE(3, "残高表示"), HISTORY(9, "お取引履歴表示");
+    DEPOSIT(1, "入金"), TRANSFER(2, "振込"), BALANCE(3, "残高表示"), HISTORY(4, "お取引履歴表示");
 
     /** id */
     private final int id;
@@ -55,6 +62,24 @@ public enum Bank {
             }
         }
         return null;
+    }
+
+    /**
+     * idを取得
+     * 
+     * @return id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * nameを取得
+     * 
+     * @return name
+     */
+    public String getName() {
+        return name;
     }
 
 }
