@@ -12,6 +12,7 @@ import java.util.Scanner;
  *
  * @author 菱田 美紀
  * @version 1.0 2020/12/29 新規作成
+ * @version 1.1 2021/05/13 No.83,84,85,86,87,88,89,90指摘対応
  */
 public class Java12 {
 
@@ -35,17 +36,21 @@ public class Java12 {
     /** 日付形式 ：yyyy年MM月dd日 */
     private static final String DATE_OF_STANDARD_BIRTH = "yyyy年MM月dd日";
     /** データなしのメッセージ */
-    private static final String NO_DATA = "表示するデータがありません。";
+    private static final String NO_DATA = "処理するデータがありません。";
     /** 範囲内のメッセージ */
     private static final String WITHIN_RANGE = "%d～%dの範囲で入力してください。";
     /** 想定外のメッセージ */
     private static final String UNEXPECTED_ERR = "想定された処理はありません。システム管理者に連絡してください。";
     /** 前に戻るのメッセージ */
-    private static final String BACK = "0.前に戻る";
+    private static final String BACK = "前に戻る";
     /** 選択肢の最小値 */
     private static final int RANGE_MIN = 0;
     /** 選択肢の最大値 */
     private static final int RANGE_MAX = 4;
+    /** 誕生日入力の最年少の値 */
+    private static final int RANGE_YOUNGEST = 0;
+    /** 誕生日入力の最年長の値 */
+    private static final int RANGE_OLDEST = 100;
 
     /**
      * 処理モード
@@ -207,7 +212,7 @@ public class Java12 {
     /**
      * 処理継続確認
      * 
-     * @return isProcessingContinue 処理継続はTrue。処理終了はfalse。
+     * @return 処理継続はTrue。処理終了はfalse。
      */
     private static boolean isContinue() {
         boolean isCheck = false;
@@ -257,9 +262,9 @@ public class Java12 {
     }
 
     /**
-     * ユーザー情報の取得
+     * ユーザ情報の取得
      * 
-     * @return ユーザー情報
+     * @return ユーザ情報
      */
     private static User inputUserInfo() {
 
@@ -298,9 +303,9 @@ public class Java12 {
     }
 
     /**
-     * ユーザー情報表示
+     * ユーザ情報表示
      * 
-     * @param userList ユーザー情報リスト
+     * @param userList ユーザ情報リスト
      */
     private static void getDisplayUserInfo(List<User> userList) {
 
@@ -310,14 +315,18 @@ public class Java12 {
             return;
         }
 
+        StringBuffer sb = new StringBuffer();
         for (User ur : userList) {
-            System.out.println("---------------------------");
-            System.out.println(String.format("氏　　名：%S", ur.getName()));
-            System.out.println(String.format("性　　別：%S", User.Sex.convertSexNameById(ur.getSex().getId())));
-            System.out.println(String.format("生年月日：%S(%d歳)", conversionBirthday(ur.getBirthday()), calcAge(ur.getBirthday())));
-            System.out.println(String.format("得意言語：%S", ur.getFavoriteLanguage()));
-            System.out.println("---------------------------");
+
+            sb.append("---------------------------").append("\n");
+            sb.append("氏　　名：").append(ur.getName()).append("\n");
+            sb.append("性　　別：").append(User.Sex.convertSexNameById(ur.getSex().getId())).append("\n");
+            sb.append(String.format("生年月日：%S(%d歳)", conversionBirthday(ur.getBirthday()), calcAge(ur.getBirthday()))).append("\n");
+            sb.append("得意言語：").append(ur.getFavoriteLanguage()).append("\n");
+            sb.append("---------------------------").append("\n");
+
         }
+        System.out.println(sb.toString());
     }
 
     /**
@@ -372,20 +381,21 @@ public class Java12 {
      */
     private static Date inputBirthday(String msg) {
         String birthdayStr = null;
+        Date date;
         do {
             birthdayStr = inputStr(msg);
-        } while (!isConsistency(birthdayStr));
+            date = StringToDate(birthdayStr);
 
-        Date date = StringToDate(birthdayStr);
+        } while (!isConsistency(birthdayStr) || isMaxAge(calcAge(date)) || isFutureDate(date));
 
         return date;
     }
 
     /**
-     * ユーザー情報の修正
+     * ユーザ情報の修正
      * 
-     * @param userList ユーザー情報リスト
-     * @return ユーザー情報リスト
+     * @param userList ユーザ情報リスト
+     * @return ユーザ情報リスト
      */
     private static List<User> modifyUserInfo(final List<User> userList) {
 
@@ -409,13 +419,14 @@ public class Java12 {
 
             int idx = personOfNumber - 1;
             // 入力された番号に紐づく名前を取得
-            String modifyName = userList.get(idx).getName();
+            User user = userList.get(idx);
+            String modifyName = user.getName();
             do {
 
                 // 修正する属性の番号を取得
                 String toModifyPropertyMsg = displayToModifyProperty(modifyName);
 
-                // 修正するユーザー情報番号を取得
+                // 修正するユーザ情報番号を取得
                 int propertyOfNumber = getModifyUserInfo(toModifyPropertyMsg);
 
                 // 0 の場合、修正人物を選択する処理まで戻る
@@ -427,17 +438,17 @@ public class Java12 {
                 switch (propertyOfNumber) {
                     case User.NUMBER_NAME:
                         String newName = inputName();
-                        userList.get(idx).setName(newName);
+                        user.setName(newName);
                         modifyName = newName;
                         break;
                     case User.NUMBER_SEX:
-                        userList.get(idx).setSex(inputSex());
+                        user.setSex(inputSex());
                         break;
                     case User.NUMBER_BIRTHDAY:
-                        userList.get(idx).setBirthday(inputBirthday());
+                        user.setBirthday(inputBirthday());
                         break;
                     case User.NUMBER_FAVORITELANGUAGE:
-                        userList.get(idx).setFavoriteLanguage(inputLanguage());
+                        user.setFavoriteLanguage(inputLanguage());
                         break;
                     default:
                         System.out.println(UNEXPECTED_ERR);
@@ -452,7 +463,7 @@ public class Java12 {
     /**
      * 修正する人物表示文言作成
      * 
-     * @param userList ユーザー情報リスト
+     * @param userList ユーザ情報リスト
      * @param msg
      * @return 表示文言
      */
@@ -463,11 +474,11 @@ public class Java12 {
         // 操作文言表示
         StringBuffer sb = new StringBuffer();
         sb.append("---------------------------").append("\n");
-        sb.append(BACK).append("\n");
+        int cnt = 0;
+        sb.append(String.format("%2d", cnt)).append(".").append(BACK).append("\n");
 
-        int cnt = 1;
         for (User u : userList) {
-            sb.append(cnt++).append(".").append(u.getName()).append("\n");
+            sb.append(String.format("%2d", ++cnt)).append(".").append(u.getName()).append("\n");
         }
         sb.append("---------------------------").append("\n");
 
@@ -487,7 +498,7 @@ public class Java12 {
         sb.append(String.format("%Sさんを修正します。", modifyName)).append("\n");
         sb.append("どの情報を修正しますか？").append("\n");
         sb.append("---------------------------").append("\n");
-        sb.append(BACK).append("\n");
+        sb.append(String.format("%2d", 0)).append(".").append(BACK).append("\n");
         sb.append(User.getSelectPropertyString());
         sb.append("---------------------------").append("\n");
 
@@ -573,11 +584,11 @@ public class Java12 {
     }
 
     /**
-     * 訂正する対象ユーザーを取得
+     * 訂正する対象ユーザを取得
      * 
      * @param toCorrectPersonMsg コンソールに表示する文言
-     * @param userList           ユーザーリスト
-     * @return 訂正するユーザー番号
+     * @param userList           ユーザリスト
+     * @return 訂正するユーザ番号
      */
     private static int getCorrectPerson(final String toCorrectPersonMsg, final List<User> userList) {
         int personOfNumber = 0;
@@ -624,10 +635,10 @@ public class Java12 {
     }
 
     /**
-     * ユーザー情報の削除
+     * ユーザ情報の削除
      * 
-     * @param userList ユーザーリスト
-     * @return ユーザーリスト
+     * @param userList ユーザリスト
+     * @return ユーザリスト
      */
     private static List<User> deleteUserInfo(final List<User> userList) {
 
@@ -656,6 +667,11 @@ public class Java12 {
             // 削除処理
             deleteUser(userList, deleteName, idx);
 
+            // userListが空の場合
+            if (isEmpty(userList)) {
+                return userList;
+            }
+
         } while (true);
 
     }
@@ -663,7 +679,7 @@ public class Java12 {
     /**
      * userListが空かの判定を行う
      * 
-     * @param userList ユーザーリスト
+     * @param userList ユーザリスト
      * @return 渡されたリストが空の場合はTrue。空でない場合はfalse。
      */
     private static boolean isEmpty(final List<User> userList) {
@@ -675,9 +691,9 @@ public class Java12 {
     }
 
     /**
-     * ユーザーリストから削除する
+     * ユーザリストから削除する
      * 
-     * @param userList   ユーザーリスト
+     * @param userList   ユーザリスト
      * @param deleteName 削除する人の名前
      * @param idx        インデックス
      */
@@ -685,5 +701,36 @@ public class Java12 {
 
         System.out.println(String.format("%Sさんをこの世から削除しました。", deleteName));
         userList.remove(idx);
+    }
+
+    /**
+     * 年齢が制限範囲内かチェックする
+     * 
+     * @param age 年齢
+     * @return 年齢制限外の場合はTrue。年齢制限内の場合はfalse。
+     */
+    private static boolean isMaxAge(final int age) {
+        if (!isWithinRange(age, RANGE_YOUNGEST, RANGE_OLDEST)) {
+            System.out.println(String.format("入力可能な年齢の方は、%d～%d歳までです。", RANGE_YOUNGEST, RANGE_OLDEST));
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 未来日か判定する
+     * 
+     * @param date 入力日付
+     * @return 入力日付が未来日の場合はTrue。未来日でない場合はfalse。
+     */
+    private static boolean isFutureDate(final Date date) {
+        Date today = new Date();
+        // 未来日である
+        if (date.compareTo(today) == 1) {
+            System.out.println("未来日は入力できません。");
+            return true;
+        }
+        return false;
     }
 }

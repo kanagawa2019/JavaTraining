@@ -10,6 +10,7 @@ import java.util.Date;
  * @version 1.1 2020/11/07 No.60,62,63指摘対応
  * @version 1.2 2020/11/14 No.67指摘対応
  * @version 1.3 2020/12/16 No.82指摘対応
+ * @version 1.4 2021/05/13 No.86指摘対応
  */
 public class User {
 
@@ -53,10 +54,10 @@ public class User {
      */
     public static String getSelectPropertyString() {
         final StringBuffer sb = new StringBuffer();
-        sb.append(Integer.valueOf(NUMBER_NAME)).append(".氏名").append("\n");
-        sb.append(Integer.valueOf(NUMBER_SEX)).append(".性別").append("\n");
-        sb.append(Integer.valueOf(NUMBER_BIRTHDAY)).append(".生年月日").append("\n");
-        sb.append(Integer.valueOf(NUMBER_FAVORITELANGUAGE)).append(".得意言語").append("\n");
+        sb.append(String.format("%2d", Integer.valueOf(NUMBER_NAME))).append(".氏名").append("\n");
+        sb.append(String.format("%2d", Integer.valueOf(NUMBER_SEX))).append(".性別").append("\n");
+        sb.append(String.format("%2d", Integer.valueOf(NUMBER_BIRTHDAY))).append(".生年月日").append("\n");
+        sb.append(String.format("%2d", Integer.valueOf(NUMBER_FAVORITELANGUAGE))).append(".得意言語").append("\n");
         return sb.toString();
     }
 
