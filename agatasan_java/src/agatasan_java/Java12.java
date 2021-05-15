@@ -13,6 +13,7 @@ import java.util.Scanner;
  * @author 菱田 美紀
  * @version 1.0 2020/12/29 新規作成
  * @version 1.1 2021/05/13 No.83,84,85,86,87,88,89,90指摘対応
+ * @version 1.2 2021/05/15 No.86,指摘対応
  */
 public class Java12 {
 
@@ -41,6 +42,10 @@ public class Java12 {
     private static final String WITHIN_RANGE = "%d～%dの範囲で入力してください。";
     /** 想定外のメッセージ */
     private static final String UNEXPECTED_ERR = "想定された処理はありません。システム管理者に連絡してください。";
+    /** 表示形式 */
+    public static final String DISPLAY_FORMAT = "%2d";
+    /** 人物リスト表示形式 */
+    public static final String DISPLAY_FORMAT_OF_PERSONAL_LIST = "%2d";
     /** 前に戻るのメッセージ */
     private static final String BACK = "前に戻る";
     /** 選択肢の最小値 */
@@ -386,7 +391,7 @@ public class Java12 {
             birthdayStr = inputStr(msg);
             date = StringToDate(birthdayStr);
 
-        } while (!isConsistency(birthdayStr) || isMaxAge(calcAge(date)) || isFutureDate(date));
+        } while (!isConsistency(birthdayStr) || isFutureDate(date) || isMaxAge(calcAge(date)));
 
         return date;
     }
@@ -420,11 +425,10 @@ public class Java12 {
             int idx = personOfNumber - 1;
             // 入力された番号に紐づく名前を取得
             User user = userList.get(idx);
-            String modifyName = user.getName();
             do {
 
                 // 修正する属性の番号を取得
-                String toModifyPropertyMsg = displayToModifyProperty(modifyName);
+                String toModifyPropertyMsg = displayToModifyProperty(user.getName());
 
                 // 修正するユーザ情報番号を取得
                 int propertyOfNumber = getModifyUserInfo(toModifyPropertyMsg);
@@ -437,9 +441,7 @@ public class Java12 {
                 // 修正処理
                 switch (propertyOfNumber) {
                     case User.NUMBER_NAME:
-                        String newName = inputName();
-                        user.setName(newName);
-                        modifyName = newName;
+                        user.setName(inputName());
                         break;
                     case User.NUMBER_SEX:
                         user.setSex(inputSex());
@@ -475,10 +477,10 @@ public class Java12 {
         StringBuffer sb = new StringBuffer();
         sb.append("---------------------------").append("\n");
         int cnt = 0;
-        sb.append(String.format("%2d", cnt)).append(".").append(BACK).append("\n");
+        sb.append(String.format(DISPLAY_FORMAT_OF_PERSONAL_LIST, cnt)).append(".").append(BACK).append("\n");
 
         for (User u : userList) {
-            sb.append(String.format("%2d", ++cnt)).append(".").append(u.getName()).append("\n");
+            sb.append(String.format(DISPLAY_FORMAT_OF_PERSONAL_LIST, ++cnt)).append(".").append(u.getName()).append("\n");
         }
         sb.append("---------------------------").append("\n");
 
@@ -498,7 +500,7 @@ public class Java12 {
         sb.append(String.format("%Sさんを修正します。", modifyName)).append("\n");
         sb.append("どの情報を修正しますか？").append("\n");
         sb.append("---------------------------").append("\n");
-        sb.append(String.format("%2d", 0)).append(".").append(BACK).append("\n");
+        sb.append(String.format(DISPLAY_FORMAT, 0)).append(".").append(BACK).append("\n");
         sb.append(User.getSelectPropertyString());
         sb.append("---------------------------").append("\n");
 
@@ -660,12 +662,8 @@ public class Java12 {
                 return userList;
             }
 
-            int idx = personOfNumber - 1;
-            // 入力された番号に紐づく名前を取得
-            String deleteName = userList.get(idx).getName();
-
             // 削除処理
-            deleteUser(userList, deleteName, idx);
+            deleteUser(userList, userList.get(personOfNumber - 1).getName(), personOfNumber - 1);
 
             // userListが空の場合
             if (isEmpty(userList)) {
