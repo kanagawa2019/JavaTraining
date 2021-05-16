@@ -59,38 +59,39 @@ public class Multiplication {
      * 
      * @param displaySwitching 切替モードの状態
      */
-    public static void calcMultiplicationTable(final boolean displaySwitching) {
+//    public static void calcMultiplicationTable(final boolean displaySwitching) {
+//
+//        IntStream.rangeClosed(Multiplication.MULTIPLICATION_TABLE_RANGE_START, Multiplication.MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
+//            displaySwitchingMode(displaySwitching, i);
+//        });
+//
+//    }
 
-        IntStream.rangeClosed(Multiplication.MULTIPLICATION_TABLE_RANGE_START, Multiplication.MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
-            displaySwitchingMode(displaySwitching, i);
-        });
-
-    }
-
-    /**
-     * 切替モードONの場合の表示
-     * 
-     * @param displaySwitching 切替モードの状態
-     * @param inputNumber      入力文字
-     */
-    public static void displaySwitchingMode(final boolean displaySwitching, final int inputNumber) {
-
-        StringBuilder sb = new StringBuilder();
-
-        IntStream.rangeClosed(Multiplication.MULTIPLICATION_TABLE_RANGE_START, Multiplication.MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
-
-            int calculationResult = i * inputNumber;
-
-            // 3の倍数は別表示
-            if (isMultipleOfTheeOrValueOfThree(calculationResult)) {
-                sb.append(String.format(DISPLAY_FORMAT, DISPLAY_WHEN_MATCHING_CONDITIONS));
-            } else {
-                sb.append(String.format(DISPLAY_FORMAT, calculationResult));
-            }
-
-        });
-        System.out.println(sb.toString().replaceAll(" *$", ""));
-    }
+//    /**
+//     * 切替モードONの場合の表示
+//     * 
+//     * @param displaySwitching 切替モードの状態
+//     * @param inputNumber      入力文字
+//     */
+//    public static void displaySwitchingMode(final boolean displaySwitching, final int inputNumber) {
+//
+//        StringBuilder sb = new StringBuilder();
+//
+//        IntStream.rangeClosed(Multiplication.MULTIPLICATION_TABLE_RANGE_START, Multiplication.MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
+//
+//            int calculationResult = i * inputNumber;
+//
+//            // 3の倍数は別表示
+//            if (isMultipleOfTheeOrValueOfThree(calculationResult)) {
+//                sb.append(String.format(DISPLAY_FORMAT, DISPLAY_WHEN_MATCHING_CONDITIONS));
+//            } else {
+//                sb.append(String.format(DISPLAY_FORMAT, calculationResult));
+//            }
+//            sb.append(String.format(DISPLAY_FORMAT, calculationResult));
+//
+//        });
+//        System.out.println(sb.toString().replaceAll(" *$", ""));
+//    }
 
     /**
      * 切替モードOFFの場合の表示
@@ -183,6 +184,23 @@ public class Multiplication {
         return num;
     }
 
+    public static void scannerClose() {
+        System.out.println("終了します。");
+        mScanner.close();
+    }
+
+    public static void test() {
+
+        IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
+            displaySwitchingMode(i);
+        });
+
+    }
+
+    public static void test(int ssss) {
+        displaySwitchingMode(ssss);
+    }
+
     // --------------------------------------------------
     // private関数
     // --------------------------------------------------
@@ -193,7 +211,7 @@ public class Multiplication {
      * @param judgmentCharacter 判定文字
      * @return 判定文字が含まれる場合、true。含まれない場合、false
      */
-    private static boolean hasContainedCharacter(final int target, final int judgmentCharacter) {
+    public static boolean hasContainedCharacter(final int target, final int judgmentCharacter) {
         String targetStr = String.valueOf(target);
         return targetStr.contains(String.valueOf(judgmentCharacter));
     }
@@ -222,4 +240,5 @@ public class Multiplication {
         }
         return false;
     }
+
 }

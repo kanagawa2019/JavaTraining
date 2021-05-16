@@ -1,6 +1,6 @@
 package agatasan_java;
 
-import java.util.Scanner;
+import java.util.stream.IntStream;
 
 /**
  * Java１３クラス Java課題１３(オブジェクト指向：継承・多重化）
@@ -14,7 +14,7 @@ public class Java13 extends Multiplication implements Display {
     // メンバ変数
     // --------------------------------------------------
     /** スキャナー（コンソール入力） */
-    private static Scanner mScanner = new Scanner(System.in);
+//    private static Scanner mScanner = new Scanner(System.in);
     /** 切替モード */
     private static boolean displaySwitching = false;
 
@@ -44,19 +44,32 @@ public class Java13 extends Multiplication implements Display {
 
             switch (displayMode) {
                 case MULTIPLICATION_TABLE:
-                    displayMultiplicationTable(displaySwitching);
+//                    displayMultiplicationTable(displaySwitching);
+                    if (displaySwitching) {
+                        test();
+                    } else {
+                        calcMultiplicationTable();
+                    }
                     break;
                 case MULTIPLICATION_LINE:
-                    displayMultiplicationLine(mScanner, displaySwitching);
+//                    displayMultiplicationLine(mScanner, displaySwitching);
+//                    displayMultiplicationLine(displaySwitching);
+                    if (displaySwitching) {
+                        test(calcMultiplicationLine());
+                    } else {
+
+                    }
                     break;
                 case SWITCHING:
                     displaySwitching = displaySwitching ? false : true;
                     System.out.println("モードを切り替えました。");
                     break;
                 case END:
-                    System.out.println("終了します。");
+//                    System.out.println("終了します。");
+                    // TODO 別途オーバーライド先で作成する？
                     // 終了処理
-                    mScanner.close();
+//                    mScanner.close();
+                    scannerClose();
                     return;
                 default:
                     break;
@@ -128,7 +141,8 @@ public class Java13 extends Multiplication implements Display {
      * @param scanner          入力情報
      * @param displaySwitching 切替モードの状態
      */
-    private static void displayMultiplicationLine(Scanner scanner, boolean displaySwitching) {
+//    private static void displayMultiplicationLine(Scanner scanner, boolean displaySwitching) {
+    private static void displayMultiplicationLine(boolean displaySwitching) {
 
         int line = calcMultiplicationLine();
 
@@ -139,7 +153,7 @@ public class Java13 extends Multiplication implements Display {
     /**
      * 処理継続確認
      * 
-     * @return isProcessingContinue 処理継続はTrue。処理終了はfalse。
+     * @return 処理継続はTrue。処理終了はfalse。
      */
     private static boolean isContinue() {
         boolean isCheck = false;
@@ -180,6 +194,57 @@ public class Java13 extends Multiplication implements Display {
 
         } while (displayMode == null);
         return displayMode;
+    }
+
+    /**
+     * 切替モードONの九九表示の処理
+     * 
+     * @param displaySwitching 切替モードの状態
+     */
+    public static void calcMultiplicationTable() {
+
+        IntStream.rangeClosed(Multiplication.MULTIPLICATION_TABLE_RANGE_START, Multiplication.MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
+            displaySwitchingMode(i);
+        });
+
+    }
+
+    /**
+     * 切替モードONの場合の表示
+     * 
+     * @param inputNumber 入力文字
+     */
+    public static void displaySwitchingMode(final int inputNumber) {
+
+        StringBuilder sb = new StringBuilder();
+
+        IntStream.rangeClosed(Multiplication.MULTIPLICATION_TABLE_RANGE_START, Multiplication.MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
+
+            int calculationResult = i * inputNumber;
+
+            // 3の倍数は別表示
+            if (isMultipleOfTheeOrValueOfThree(calculationResult)) {
+                sb.append(String.format(DISPLAY_FORMAT, DISPLAY_WHEN_MATCHING_CONDITIONS));
+            } else {
+                sb.append(String.format(DISPLAY_FORMAT, calculationResult));
+            }
+            sb.append(String.format(DISPLAY_FORMAT, calculationResult));
+
+        });
+        System.out.println(sb.toString().replaceAll(" *$", ""));
+    }
+
+    /**
+     * 3の倍数か3の値があるかを判定
+     * 
+     * @param calculationResult 判定対象
+     * @return 3の倍数または3の値がある場合、True。3の倍数または3の値ではない場合、false。
+     */
+    private static boolean isMultipleOfTheeOrValueOfThree(final int calculationResult) {
+        if (calculationResult % DIVIDE_BY_NUMBER == 0 || hasContainedCharacter(calculationResult, CONTAINS_NUMBER)) {
+            return true;
+        }
+        return false;
     }
 
 }
