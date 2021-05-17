@@ -5,9 +5,16 @@ package agatasan_java;
  *
  * @author 菱田 美紀
  * @version 1.0 2020/12/30 新規作成
+ * @version 1.1 2021/05/16 No.93指摘対応
  */
 public interface Display {
 
-    // 処理モードをコンソールに表示
-    String getDisplayModeString();
+    // 九九全行表示
+    void calcMultiplicationTable();
+
+    // 九九1行表示
+    void calcMultiplicationTable(final int number);
+
+    // 九九１行表示の入力判定処理
+    int calcMultiplicationLine();
 }

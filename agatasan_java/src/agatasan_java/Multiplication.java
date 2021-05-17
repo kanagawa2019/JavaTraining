@@ -8,8 +8,9 @@ import java.util.stream.IntStream;
  *
  * @author 菱田 美紀
  * @version 1.0 2020/12/29 新規作成
+ * @version 1.1 2021/05/16 No.92,93,94指摘対応
  */
-public class Multiplication {
+public class Multiplication implements Display {
 
     // --------------------------------------------------
     // メンバ変数
@@ -20,33 +21,29 @@ public class Multiplication {
     // --------------------------------------------------
     // 定数
     // --------------------------------------------------
-    /** 入力カーソル */
-    public static final String CURSOL = ">";
     /** 九九の始まりの値 */
     public static final int MULTIPLICATION_TABLE_RANGE_START = 1;
     /** 九九の終わりの値 */
     public static final int MULTIPLICATION_TABLE_RANGE_END = 9;
     /** 表示形式 */
     public static final String DISPLAY_FORMAT = "%2s ";
-    /** 九九の計算結果を除算する数値 */
-    public static final int DIVIDE_BY_NUMBER = 3;
-    /** 九九の計算結果に含まれる数値 */
-    public static final int CONTAINS_NUMBER = 3;
-    /** 指定数値で割り切れる、または指定数値を含む場合の表示 */
-    public static final String DISPLAY_WHEN_MATCHING_CONDITIONS = "NA";
     /** 入力許容最小値 */
     public static final int USER_INPUT_MIN_VALUE = 1;
     /** 入力許容最大値 */
     public static final int USER_INPUT_MAX_VALUE = 9;
+    /** 入力カーソル */
+    public static final String CURSOL = ">";
 
     // --------------------------------------------------
     // public関数
     // --------------------------------------------------
+
     /**
      * 切替モードOFFの九九表示の処理
      * 
      */
-    public static void calcMultiplicationTable() {
+    @Override
+    public void calcMultiplicationTable() {
 
         IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
             displaySwitchingMode(i);
@@ -55,43 +52,14 @@ public class Multiplication {
     }
 
     /**
-     * 切替モードONの九九表示の処理
+     * 切替モードOFFの九九1行表示の処理
      * 
-     * @param displaySwitching 切替モードの状態
+     * @param number 入力文字
      */
-//    public static void calcMultiplicationTable(final boolean displaySwitching) {
-//
-//        IntStream.rangeClosed(Multiplication.MULTIPLICATION_TABLE_RANGE_START, Multiplication.MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
-//            displaySwitchingMode(displaySwitching, i);
-//        });
-//
-//    }
-
-//    /**
-//     * 切替モードONの場合の表示
-//     * 
-//     * @param displaySwitching 切替モードの状態
-//     * @param inputNumber      入力文字
-//     */
-//    public static void displaySwitchingMode(final boolean displaySwitching, final int inputNumber) {
-//
-//        StringBuilder sb = new StringBuilder();
-//
-//        IntStream.rangeClosed(Multiplication.MULTIPLICATION_TABLE_RANGE_START, Multiplication.MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
-//
-//            int calculationResult = i * inputNumber;
-//
-//            // 3の倍数は別表示
-//            if (isMultipleOfTheeOrValueOfThree(calculationResult)) {
-//                sb.append(String.format(DISPLAY_FORMAT, DISPLAY_WHEN_MATCHING_CONDITIONS));
-//            } else {
-//                sb.append(String.format(DISPLAY_FORMAT, calculationResult));
-//            }
-//            sb.append(String.format(DISPLAY_FORMAT, calculationResult));
-//
-//        });
-//        System.out.println(sb.toString().replaceAll(" *$", ""));
-//    }
+    @Override
+    public void calcMultiplicationTable(final int number) {
+        displaySwitchingMode(number);
+    }
 
     /**
      * 切替モードOFFの場合の表示
@@ -114,7 +82,7 @@ public class Multiplication {
      * 
      * @return 入力値
      */
-    public static int calcMultiplicationLine() {
+    public int calcMultiplicationLine() {
 
         do {
             // 数値か判定
@@ -130,29 +98,6 @@ public class Multiplication {
             return inputLine;
 
         } while (true);
-    }
-
-    /**
-     * 文字入力
-     * 
-     * @param inputMsg 入力コンソール
-     * @return 入力値
-     */
-    public static String inputStr(final String inputMsg) {
-        String input = null;
-        boolean isCheck = false;
-
-        System.out.println(inputMsg);
-        do {
-            try {
-                System.out.print(CURSOL);
-                input = mScanner.next();
-                isCheck = true;
-            } catch (Exception e) {
-                System.out.println("申し訳ありません。正しく処理が行えませんでした。\n再入力をお願いします。");
-            }
-        } while (!isCheck);
-        return input;
     }
 
     /**
@@ -184,37 +129,9 @@ public class Multiplication {
         return num;
     }
 
-    public static void scannerClose() {
-        System.out.println("終了します。");
-        mScanner.close();
-    }
-
-    public static void test() {
-
-        IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
-            displaySwitchingMode(i);
-        });
-
-    }
-
-    public static void test(int ssss) {
-        displaySwitchingMode(ssss);
-    }
-
     // --------------------------------------------------
     // private関数
     // --------------------------------------------------
-    /**
-     * 検索対象に判定文字が含まれるかチェック
-     * 
-     * @param target            検索対象
-     * @param judgmentCharacter 判定文字
-     * @return 判定文字が含まれる場合、true。含まれない場合、false
-     */
-    public static boolean hasContainedCharacter(final int target, final int judgmentCharacter) {
-        String targetStr = String.valueOf(target);
-        return targetStr.contains(String.valueOf(judgmentCharacter));
-    }
 
     /**
      * 数値範囲チェック
@@ -226,19 +143,6 @@ public class Multiplication {
      */
     private static boolean isWithinRange(final int targetNumber, final int minValue, final int maxValue) {
         return (minValue <= targetNumber && targetNumber <= maxValue);
-    }
-
-    /**
-     * 3の倍数か3の値があるかを判定
-     * 
-     * @param calculationResult 判定対象
-     * @return 3の倍数または3の値がある場合、True。3の倍数または3の値ではない場合、false。
-     */
-    private static boolean isMultipleOfTheeOrValueOfThree(final int calculationResult) {
-        if (calculationResult % DIVIDE_BY_NUMBER == 0 || hasContainedCharacter(calculationResult, CONTAINS_NUMBER)) {
-            return true;
-        }
-        return false;
     }
 
 }
