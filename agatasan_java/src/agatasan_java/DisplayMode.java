@@ -5,6 +5,7 @@ package agatasan_java;
  *
  * @author 菱田 美紀
  * @version 1.0 2020/12/30 新規作成
+ * @version 1.0 2021/05/16 表示形式揃え横展開
  */
 public enum DisplayMode {
 
@@ -14,6 +15,8 @@ public enum DisplayMode {
     private final int id;
     /** 名称 */
     private final String name;
+    /** 表示形式 */
+    public static final String DISPLAY_FORMAT = "%2d";
 
     /**
      * コンストラクタ
@@ -34,10 +37,10 @@ public enum DisplayMode {
         final StringBuffer sb = new StringBuffer();
         for (final DisplayMode t : DisplayMode.values()) {
             if (displaySwitching) {
-                sb.append(t.id).append(".").append(String.format(t.name, "世界のナベアツ⇒通常")).append("\n");
+                sb.append(String.format(DISPLAY_FORMAT, t.id)).append(".").append(String.format(t.name, "世界のナベアツ⇒通常")).append("\n");
                 continue;
             }
-            sb.append(t.id).append(".").append(String.format(t.name, "通常⇒世界のナベアツ")).append("\n");
+            sb.append(String.format(DISPLAY_FORMAT, t.id)).append(".").append(String.format(t.name, "通常⇒世界のナベアツ")).append("\n");
         }
         return sb.toString();
     }
