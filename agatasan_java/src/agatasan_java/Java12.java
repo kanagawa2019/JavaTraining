@@ -13,7 +13,8 @@ import java.util.Scanner;
  * @author 菱田 美紀
  * @version 1.0 2020/12/29 新規作成
  * @version 1.1 2021/05/13 No.83,84,85,86,87,88,89,90指摘対応
- * @version 1.2 2021/05/15 No.86,指摘対応
+ * @version 1.2 2021/05/15 No.86指摘対応
+ * @version 1.3 2021/05/21 No.104指摘対応
  */
 public class Java12 {
 
@@ -663,7 +664,7 @@ public class Java12 {
             }
 
             // 削除処理
-            deleteUser(userList, userList.get(personOfNumber - 1).getName(), personOfNumber - 1);
+            deleteUser(userList, personOfNumber - 1);
 
             // userListが空の場合
             if (isEmpty(userList)) {
@@ -691,13 +692,12 @@ public class Java12 {
     /**
      * ユーザリストから削除する
      * 
-     * @param userList   ユーザリスト
-     * @param deleteName 削除する人の名前
-     * @param idx        インデックス
+     * @param userList ユーザリスト
+     * @param idx      インデックス
      */
-    private static void deleteUser(List<User> userList, final String deleteName, final int idx) {
+    private static void deleteUser(List<User> userList, final int idx) {
 
-        System.out.println(String.format("%Sさんをこの世から削除しました。", deleteName));
+        System.out.println(String.format("%Sさんをこの世から削除しました。", userList.get(idx).getName()));
         userList.remove(idx);
     }
 
