@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
  *
  * @author 菱田 美紀
  * @version 1.0 2021/05/16 新規作成
+ * @version 1.1 2021/05/21 No.105指摘対応
  */
 public class Nabeatsu extends Multiplication {
 
@@ -25,39 +26,44 @@ public class Nabeatsu extends Multiplication {
     // public関数
     // --------------------------------------------------
 
-    /**
-     * 切替モードONの九九表示の処理
-     * 
-     */
-    @Override
-    public void calcMultiplicationTable() {
+//    /**
+//     * 切替モードONの九九表示の処理
+//     * 
+//     */
+//    @Override
+//    public void calcMultiplicationTable() {
+//
+//        IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
+//            displaySwitchingMode(i);
+//        });
+//
+//    }
+//
+//    /**
+//     * 切替モードONの九九1行表示の処理
+//     * 
+//     * @param number 入力文字
+//     */
+//    @Override
+//    public void calcMultiplicationTable(final int number) {
+//        displaySwitchingMode(number);
+//    }
 
-        IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
-            displaySwitchingMode(i);
-        });
-
-    }
-
-    /**
-     * 切替モードONの九九1行表示の処理
-     * 
-     * @param number 入力文字
-     */
-    @Override
-    public void calcMultiplicationTable(final int number) {
-        displaySwitchingMode(number);
-    }
+    // --------------------------------------------------
+    // private関数
+    // --------------------------------------------------
 
     /**
      * 切替モードONの場合の表示
      * 
      * @param inputNumber 入力文字
      */
-    public static void displaySwitchingMode(final int inputNumber) {
+    @Override
+    public void displaySwitchingMode(final int inputNumber) {
 
         StringBuilder sb = new StringBuilder();
 
-        IntStream.rangeClosed(Multiplication.MULTIPLICATION_TABLE_RANGE_START, Multiplication.MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
+        IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
 
             int calculationResult = i * inputNumber;
 
@@ -72,17 +78,13 @@ public class Nabeatsu extends Multiplication {
         System.out.println(sb.toString().replaceAll(" *$", ""));
     }
 
-    // --------------------------------------------------
-    // private関数
-    // --------------------------------------------------
-
     /**
      * 3の倍数か3の値があるかを判定
      * 
      * @param calculationResult 判定対象
      * @return 3の倍数または3の値がある場合、True。3の倍数または3の値ではない場合、false。
      */
-    private static boolean isMultipleOfTheeOrValueOfThree(final int calculationResult) {
+    private boolean isMultipleOfTheeOrValueOfThree(final int calculationResult) {
         if (calculationResult % DIVIDE_BY_NUMBER == 0 || hasContainedCharacter(calculationResult, CONTAINS_NUMBER)) {
             return true;
         }
@@ -96,7 +98,7 @@ public class Nabeatsu extends Multiplication {
      * @param judgmentCharacter 判定文字
      * @return 判定文字が含まれる場合、true。含まれない場合、false
      */
-    private static boolean hasContainedCharacter(final int target, final int judgmentCharacter) {
+    private boolean hasContainedCharacter(final int target, final int judgmentCharacter) {
         String targetStr = String.valueOf(target);
         return targetStr.contains(String.valueOf(judgmentCharacter));
     }

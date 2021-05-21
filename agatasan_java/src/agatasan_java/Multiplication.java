@@ -9,6 +9,7 @@ import java.util.stream.IntStream;
  * @author 菱田 美紀
  * @version 1.0 2020/12/29 新規作成
  * @version 1.1 2021/05/16 No.92,93,94指摘対応
+ * @version 1.2 2021/05/21 No.105指摘対応
  */
 public class Multiplication implements Display {
 
@@ -62,26 +63,11 @@ public class Multiplication implements Display {
     }
 
     /**
-     * 切替モードOFFの場合の表示
-     * 
-     * @param inputNumber 入力文字
-     */
-    public static void displaySwitchingMode(final int inputNumber) {
-
-        StringBuilder sb = new StringBuilder();
-
-        IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
-
-            sb.append(String.format(DISPLAY_FORMAT, i * inputNumber));
-        });
-        System.out.println(sb.toString().replaceAll(" *$", ""));
-    }
-
-    /**
      * 九九１行表示の入力判定処理
      * 
      * @return 入力値
      */
+    @Override
     public int calcMultiplicationLine() {
 
         do {
@@ -100,13 +86,17 @@ public class Multiplication implements Display {
         } while (true);
     }
 
+    // --------------------------------------------------
+    // private関数
+    // --------------------------------------------------
+
     /**
      * 数値入力(int型)
      * 
      * @param inputMsg 入力コンソールに表示する文言
      * @return 入力値
      */
-    public static int inputInt(final String inputMsg) {
+    private int inputInt(final String inputMsg) {
         int num = 0;
         String input = null;
         boolean isCheck = false;
@@ -129,9 +119,21 @@ public class Multiplication implements Display {
         return num;
     }
 
-    // --------------------------------------------------
-    // private関数
-    // --------------------------------------------------
+    /**
+     * 切替モードOFFの場合の表示
+     * 
+     * @param inputNumber 入力文字
+     */
+    public void displaySwitchingMode(final int inputNumber) {
+
+        StringBuilder sb = new StringBuilder();
+
+        IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
+
+            sb.append(String.format(DISPLAY_FORMAT, i * inputNumber));
+        });
+        System.out.println(sb.toString().replaceAll(" *$", ""));
+    }
 
     /**
      * 数値範囲チェック
@@ -141,7 +143,7 @@ public class Multiplication implements Display {
      * @param maxValue     最大値
      * @return 最小値～最大値の範囲内にある場合、true。範囲外の場合、false
      */
-    private static boolean isWithinRange(final int targetNumber, final int minValue, final int maxValue) {
+    private boolean isWithinRange(final int targetNumber, final int minValue, final int maxValue) {
         return (minValue <= targetNumber && targetNumber <= maxValue);
     }
 

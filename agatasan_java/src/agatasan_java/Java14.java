@@ -200,7 +200,6 @@ public class Java14 {
             int idx = personOfNumber - 1;
 
             // 入力された番号に紐づく名前を取得
-            String modifyName = personalList.get(idx).getName();
             Personal personal = personalList.get(idx);
 
             try {
@@ -208,7 +207,7 @@ public class Java14 {
                 do {
 
                     // 修正する属性の番号を取得
-                    String toCorrectPropertyMsg = displayToCorrectProperty(modifyName);
+                    String toCorrectPropertyMsg = displayToCorrectProperty(personal.getName());
 
                     // 修正するユーザー情報番号を取得
                     int propertyOfNumber = getModifyUserInfo(toCorrectPropertyMsg);
@@ -279,7 +278,6 @@ public class Java14 {
             int idx = payeeOfNumber - 1;
 
             // 入力された番号に紐づく名前を取得
-            String payeeName = personalList.get(idx).getName();
             Personal payee = personalList.get(idx);
 
             // 自分に振込は不可
@@ -296,11 +294,11 @@ public class Java14 {
             payee.setBalance(payee.getBalance() + inputDeposit);
 
             // 振込元履歴の更新
-            writeHistory(transfer.getAccountNumber(), Bank.TRANSFER.getId(), inputDeposit);
+            writeHistory(transfer.getAccountNumber(), Bank.TRANSFER.getId(), (-inputDeposit), transfer.getBalance());
             // 振込先履歴の更新
-            writeHistory(payee.getAccountNumber(), Bank.TRANSFER.getId(), inputDeposit);
+            writeHistory(payee.getAccountNumber(), Bank.TRANSFER.getId(), inputDeposit, payee.getBalance());
 
-            System.out.println(String.format("%Sさんに振込完了しました。", payeeName));
+            System.out.println(String.format("%Sさんに振込完了しました。", payee.getName()));
 
             break;
         } while (true);
@@ -346,7 +344,7 @@ public class Java14 {
         Boolean isExistHistory = false;
 
         sb.append("***********************************").append("\n");
-        sb.append("お取引日、区分、金額").append("\n");
+        sb.append("お取引日、区分、取引金額、残高").append("\n");
 
         for (AccountHistory history : historyList) {
             if (accountNumber == history.getAccountNumber()) {
@@ -356,7 +354,8 @@ public class Java14 {
                 }
 
                 sb.append(dateToString(history.getDate())).append("、").append(history.getClassification().getName()).append("、")
-                        .append(String.format("%,d円", history.getTransactionAmount())).append("\n");
+                        .append(String.format("%,d円", history.getTransactionAmount())).append("、").append(String.format("%,d円", history.getBalance()))
+                        .append("\n");
 
             }
 
@@ -414,6 +413,7 @@ public class Java14 {
                 line.setAccountNumber(Integer.parseInt(splitList.get(1)));
                 line.setClassification(Bank.convertBank(splitList.get(2)));
                 line.setTransactionAmount(Integer.parseInt(splitList.get(3)));
+                line.setBalance(Integer.parseInt(splitList.get(4)));
 
                 list.add(line);
                 str = br.readLine();
@@ -691,7 +691,7 @@ public class Java14 {
     /**
      * 処理継続確認
      * 
-     * @return isProcessingContinue 処理継続はTrue。処理終了はfalse。
+     * @return 処理継続はTrue。処理終了はfalse。
      */
     private static boolean isContinue() {
         boolean isCheck = false;
@@ -782,7 +782,7 @@ public class Java14 {
         // 採番した番号を採番用のファイルに書き込み
         createAccountNoFile(nextAccountNo);
 
-        // 番号を文字列に変換して返す
+        // 採番した番号を返す
         return nextAccountNo;
 
     }
@@ -894,21 +894,24 @@ public class Java14 {
      */
     private static int depositMoney(final int depositIdx, List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
 
+        // 入金対象
+        Personal target = personalList.get(depositIdx);
+
         // 入金情報取得
         int inputDeposit = getDeposit();
 
         // 残高の合計
-        int sum = inputDeposit + personalList.get(depositIdx).getBalance();
+        int sum = inputDeposit + target.getBalance();
         displayBalance(sum);
 
         // 残高の設定
-        personalList.get(depositIdx).setBalance(sum);
+        target.setBalance(sum);
 
         // 口座の更新
         createFile(personalList);
 
         // 入金履歴
-        writeHistory(personalList.get(depositIdx).getAccountNumber(), Bank.DEPOSIT.getId(), inputDeposit);
+        writeHistory(target.getAccountNumber(), Bank.DEPOSIT.getId(), inputDeposit, sum);
 
         return sum;
     }
@@ -967,14 +970,15 @@ public class Java14 {
     /**
      * お取引履歴の書き込み
      * 
-     * @param accountNumber 口座番号
-     * @param id            取り扱い区分
-     * @param balance       残高
+     * @param accountNumber     口座番号
+     * @param id                取り扱い区分
+     * @param transactionAmount 取引金額
+     * @param balance           残高
      * @throws FileWriteException
      * @throws FileReadException
      * @throws IOException
      */
-    private static void writeHistory(final int accountNumber, final int id, final int balance)
+    private static void writeHistory(final int accountNumber, final int id, final int transactionAmount, final int balance)
             throws FileWriteException, FileReadException, IOException {
 
         String strPass = null;
@@ -986,10 +990,10 @@ public class Java14 {
             FileWriter fw = new FileWriter(strPass, true);
             bw = new BufferedWriter(fw);
 
-            // 日付、番号、取り扱い区分、金額
-            String str = String.format("%s%s%s%s%s%d%s%s%s%d%s%s%s%d%s", SAVE_IDENTIFIER, getToday(), SAVE_IDENTIFIER, SAVA_SEPARATION,
+            // 日付、番号、取り扱い区分、取引金額、残高
+            String str = String.format("%s%s%s%s%s%d%s%s%s%d%s%s%s%d%s%s%s%d%s", SAVE_IDENTIFIER, getToday(), SAVE_IDENTIFIER, SAVA_SEPARATION,
                     SAVE_IDENTIFIER, accountNumber, SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, id, SAVE_IDENTIFIER, SAVA_SEPARATION,
-                    SAVE_IDENTIFIER, balance, SAVE_IDENTIFIER);
+                    SAVE_IDENTIFIER, transactionAmount, SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, balance, SAVE_IDENTIFIER);
 
             // 書き込み
             bw.write(str);

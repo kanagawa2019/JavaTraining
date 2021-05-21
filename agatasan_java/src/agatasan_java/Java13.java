@@ -7,7 +7,7 @@ import java.util.Scanner;
  *
  * @author 菱田 美紀
  * @version 1.0 2020/12/29 新規作成
- * @version 1.1 2021/05/16 No.92,93,94指摘対応
+ * @version 1.1 2021/05/16 No.106,107指摘対応
  */
 public class Java13 {
 
@@ -42,13 +42,7 @@ public class Java13 {
             // 処理モード入力
             final DisplayMode displayMode = inputDisplayMode();
 
-            Display display;
-
-            if (displaySwitching) {
-                display = new Nabeatsu();
-            } else {
-                display = new Multiplication();
-            }
+            Display display = displaySwitching ? new Nabeatsu() : new Multiplication();
 
             // --------------------------------------------------
             // 処理・出力
@@ -62,7 +56,7 @@ public class Java13 {
                     display.calcMultiplicationTable(display.calcMultiplicationLine());
                     break;
                 case SWITCHING:
-                    displaySwitching = displaySwitching ? false : true;
+                    displaySwitching = !displaySwitching;
                     System.out.println("モードを切り替えました。");
                     break;
                 case END:
