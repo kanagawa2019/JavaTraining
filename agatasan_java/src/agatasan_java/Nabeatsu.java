@@ -16,41 +16,14 @@ public class Nabeatsu extends Multiplication {
     // --------------------------------------------------
 
     /** 九九の計算結果を除算する数値 */
-    public static final int DIVIDE_BY_NUMBER = 3;
+    private static final int DIVIDE_BY_NUMBER = 3;
     /** 九九の計算結果に含まれる数値 */
-    public static final int CONTAINS_NUMBER = 3;
+    private static final int CONTAINS_NUMBER = 3;
     /** 指定数値で割り切れる、または指定数値を含む場合の表示 */
-    public static final String DISPLAY_WHEN_MATCHING_CONDITIONS = "NA";
+    private static final String DISPLAY_WHEN_MATCHING_CONDITIONS = "NA";
 
     // --------------------------------------------------
     // public関数
-    // --------------------------------------------------
-
-//    /**
-//     * 切替モードONの九九表示の処理
-//     * 
-//     */
-//    @Override
-//    public void calcMultiplicationTable() {
-//
-//        IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
-//            displaySwitchingMode(i);
-//        });
-//
-//    }
-//
-//    /**
-//     * 切替モードONの九九1行表示の処理
-//     * 
-//     * @param number 入力文字
-//     */
-//    @Override
-//    public void calcMultiplicationTable(final int number) {
-//        displaySwitchingMode(number);
-//    }
-
-    // --------------------------------------------------
-    // private関数
     // --------------------------------------------------
 
     /**
@@ -77,6 +50,10 @@ public class Nabeatsu extends Multiplication {
         });
         System.out.println(sb.toString().replaceAll(" *$", ""));
     }
+
+    // --------------------------------------------------
+    // private関数
+    // --------------------------------------------------
 
     /**
      * 3の倍数か3の値があるかを判定

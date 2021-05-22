@@ -5,7 +5,8 @@ package agatasan_java;
  *
  * @author 菱田 美紀
  * @version 1.0 2020/12/30 新規作成
- * @version 1.0 2021/05/16 表示形式揃え横展開
+ * @version 1.1 2021/05/16 表示形式揃え横展開
+ * @version 1.2 2021/05/21 No.105指摘対応
  */
 public enum DisplayMode {
 
@@ -16,7 +17,7 @@ public enum DisplayMode {
     /** 名称 */
     private final String name;
     /** 表示形式 */
-    public static final String DISPLAY_FORMAT = "%2d";
+    private static final String DISPLAY_FORMAT = "%2d";
 
     /**
      * コンストラクタ

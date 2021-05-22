@@ -17,23 +17,28 @@ public class Multiplication implements Display {
     // メンバ変数
     // --------------------------------------------------
     /** スキャナー（コンソール入力） */
-    public static Scanner mScanner = new Scanner(System.in);
+    public Scanner mScanner = new Scanner(System.in);
 
     // --------------------------------------------------
     // 定数
     // --------------------------------------------------
     /** 九九の始まりの値 */
-    public static final int MULTIPLICATION_TABLE_RANGE_START = 1;
+    protected static final int MULTIPLICATION_TABLE_RANGE_START = 1;
     /** 九九の終わりの値 */
-    public static final int MULTIPLICATION_TABLE_RANGE_END = 9;
+    protected static final int MULTIPLICATION_TABLE_RANGE_END = 9;
     /** 表示形式 */
-    public static final String DISPLAY_FORMAT = "%2s ";
+    protected static final String DISPLAY_FORMAT = "%2s ";
     /** 入力許容最小値 */
-    public static final int USER_INPUT_MIN_VALUE = 1;
+    private static final int USER_INPUT_MIN_VALUE = 1;
     /** 入力許容最大値 */
-    public static final int USER_INPUT_MAX_VALUE = 9;
+    private static final int USER_INPUT_MAX_VALUE = 9;
     /** 入力カーソル */
-    public static final String CURSOL = ">";
+    private static final String CURSOL = ">";
+
+    /** 処理継続 */
+    private static final String PROCESSING_CONTINUE = "Y";
+    /** 処理終了 */
+    private static final String PROCESSING_END = "N";
 
     // --------------------------------------------------
     // public関数
@@ -86,6 +91,78 @@ public class Multiplication implements Display {
         } while (true);
     }
 
+    /**
+     * 処理継続確認
+     * 
+     * @return 処理継続はTrue。処理終了はfalse。
+     */
+    @Override
+    public boolean isContinue() {
+        boolean isCheck = false;
+
+        String displayMsg = String.format("処理を続けますか？(%s/%s)", PROCESSING_CONTINUE, PROCESSING_END);
+
+        do {
+            String input = inputStr(displayMsg);
+
+            // 入力値の判定
+            switch (input.toUpperCase()) {
+                case PROCESSING_CONTINUE:
+                    return true;
+                case PROCESSING_END:
+                    return false;
+                default:
+                    System.out.println(String.format("(%s/%s)以外が入力されました。\n再入力をお願いします。", PROCESSING_CONTINUE, PROCESSING_END));
+                    break;
+            }
+
+        } while (!isCheck);
+
+        return false;
+    }
+
+    /**
+     * 終了処理
+     */
+    @Override
+    public void scannerClose() {
+        System.out.println("終了します。");
+        mScanner.close();
+    }
+
+    /**
+     * モード入力
+     */
+    @Override
+    public DisplayMode inputDisplayMode(boolean displaySwitching) {
+        DisplayMode displayMode = null;
+        String displayMsg = getDisplayModeString(displaySwitching);
+        do {
+            displayMode = DisplayMode.convertDisplayMode(inputStr(displayMsg));
+            if (displayMode == null) {
+                System.out.println("該当する処理モードが見つかりませんでした。");
+            }
+
+        } while (displayMode == null);
+        return displayMode;
+    }
+
+    /**
+     * 切替モードOFFの場合の表示
+     * 
+     * @param inputNumber 入力文字
+     */
+    public void displaySwitchingMode(final int inputNumber) {
+
+        StringBuilder sb = new StringBuilder();
+
+        IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
+
+            sb.append(String.format(DISPLAY_FORMAT, i * inputNumber));
+        });
+        System.out.println(sb.toString().replaceAll(" *$", ""));
+    }
+
     // --------------------------------------------------
     // private関数
     // --------------------------------------------------
@@ -120,22 +197,6 @@ public class Multiplication implements Display {
     }
 
     /**
-     * 切替モードOFFの場合の表示
-     * 
-     * @param inputNumber 入力文字
-     */
-    public void displaySwitchingMode(final int inputNumber) {
-
-        StringBuilder sb = new StringBuilder();
-
-        IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
-
-            sb.append(String.format(DISPLAY_FORMAT, i * inputNumber));
-        });
-        System.out.println(sb.toString().replaceAll(" *$", ""));
-    }
-
-    /**
      * 数値範囲チェック
      * 
      * @param targetNumber チェック対象数値
@@ -147,4 +208,38 @@ public class Multiplication implements Display {
         return (minValue <= targetNumber && targetNumber <= maxValue);
     }
 
+    /**
+     * モード選択表示文言取得
+     */
+    private String getDisplayModeString(final boolean displaySwitching) {
+        final StringBuffer sb = new StringBuffer();
+        sb.append("***********************************").append("\n");
+        sb.append("処理モードを選択してください").append("\n");
+        sb.append(DisplayMode.getSelectDisplayModeString(displaySwitching));
+        sb.append("***********************************");
+        return sb.toString();
+    }
+
+    /**
+     * 文字入力
+     * 
+     * @param inputMsg 入力コンソール
+     * @return 入力値
+     */
+    private String inputStr(final String inputMsg) {
+        String input = null;
+        boolean isCheck = false;
+
+        System.out.println(inputMsg);
+        do {
+            try {
+                System.out.print(CURSOL);
+                input = mScanner.next();
+                isCheck = true;
+            } catch (Exception e) {
+                System.out.println("申し訳ありません。正しく処理が行えませんでした。\n再入力をお願いします。");
+            }
+        } while (!isCheck);
+        return input;
+    }
 }
