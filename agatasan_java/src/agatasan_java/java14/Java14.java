@@ -142,13 +142,14 @@ public class Java14 {
 
                 // 新規作成の場合
                 if (account == Account.NEW) {
-                    ap.createAccount(personalList);
+                    CreateAccount ca = new CreateAccount();
+                    ca.createAccount(personalList);
                 }
 
                 // 口座操作の処理
                 ap.changeAccountInfo(personalList);
 
-            } while (ap.isContinue());
+            } while (Util.isContinue());
 
             // ユーザー情報をファイルに保存
             fp.createFile(personalList);
@@ -156,7 +157,7 @@ public class Java14 {
         } catch (FileReadException | FileWriteException | IOException e) {
             System.out.println("処理を中断しました。システム管理者へ問い合わせしてください。");
         }
-
+        Util.scannerClose();
     }
 
     // --------------------------------------------------
