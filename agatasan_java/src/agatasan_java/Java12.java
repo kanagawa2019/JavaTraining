@@ -69,6 +69,8 @@ public class Java12 {
         private final int id;
         /** 名称 */
         private final String name;
+        /** 表示形式 */
+        private static final String DISPLAY_FORMAT = "%2d";
 
         /**
          * コンストラクタ
@@ -88,7 +90,7 @@ public class Java12 {
         public static String getSelectModeString() {
             final StringBuffer sb = new StringBuffer();
             for (final Mode t : Mode.values()) {
-                sb.append(t.id).append(".").append(t.name).append("\n");
+                sb.append(String.format(DISPLAY_FORMAT, t.id)).append(".").append(t.name).append("\n");
             }
             return sb.toString();
         }
@@ -627,7 +629,7 @@ public class Java12 {
      * @param max    最大値
      * @return 入力された数値が範囲外の場合はTrue。範囲内の場合はfalse。
      */
-    public static boolean isOutOfRange(final int number, final int min, final int max) {
+    private static boolean isOutOfRange(final int number, final int min, final int max) {
 
         // 範囲外の場合
         if (!isWithinRange(number, min, max)) {
