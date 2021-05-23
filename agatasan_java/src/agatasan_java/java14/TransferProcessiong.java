@@ -14,11 +14,12 @@ import agatasan_java.FileWriteException;
  *
  */
 public class TransferProcessiong {
+
     /**
      * 振込処理
      * 
      * @param transfer     振込元
-     * @param personalList ユーザー情報リスト
+     * @param personalList ユーザ情報リスト
      * @throws FileWriteException
      * @throws FileReadException
      * @throws IOException
@@ -26,10 +27,8 @@ public class TransferProcessiong {
     public void transferMoney(Personal transfer, List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
 
         do {
-            String toModifyPersonMsg = Util.displayToCorrectPerson(personalList, "どのユーザに振込しますか？");
-
             // 振込先の人物の番号を取得
-            int payeeOfNumber = Util.getCorrectPerson(toModifyPersonMsg, personalList);
+            int payeeOfNumber = Util.getTargetNo(personalList, "どのユーザに振込しますか？");
 
             // 0の場合は、最初に戻る
             if (payeeOfNumber == 0) {
@@ -70,16 +69,15 @@ public class TransferProcessiong {
     /**
      * 振込情報取得
      * 
-     * @param transfer 振込元ユーザー情報
-     * @param payee    振込先ユーザー情報
+     * @param transfer 振込元ユーザ情報
+     * @param payee    振込先ユーザ情報
      * @return 振込金額
      */
     private int getTransferInfo(final Personal transfer, final Personal payee) {
         int inputDeposit = 0;
-        DepositProcessiong deposit = new DepositProcessiong();
         do {
             // 入力値を取得
-            inputDeposit = deposit.inputDeposit();
+            inputDeposit = Util.inputMoney("入金");
 
         } while (Util.isOutOfRange(inputDeposit, 1, 10000000) || canPay(transfer, inputDeposit));
 
@@ -89,7 +87,7 @@ public class TransferProcessiong {
     /**
      * 残高内で払えるかのチェック
      * 
-     * @param transfer     振込先のユーザー情報
+     * @param transfer     振込先のユーザ情報
      * @param inputDeposit 振込金額
      * @return true:残高内で払える
      */

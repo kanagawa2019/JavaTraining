@@ -21,17 +21,17 @@ import agatasan_java.FileReadException;
 import agatasan_java.FileWriteException;
 
 public class FileProcessing {
-
+    // --------------------------------------------------
+    // 定数
+    // --------------------------------------------------
     /** 日付形式 ：yyyyMMdd */
     private static final String DATE_OF_BIRTH = "yyyyMMdd";
-
     /** ファイル保存識別子 */
     private static final String SAVE_IDENTIFIER = "'";
     /** ファイル区切り識別子 */
     private static final String SAVA_SEPARATION = ",";
     /** エスケープ識別子 */
     private static final char SAVA_ESCAPE = '\\';
-
     /** ファイル出力パス */
     private static final String ACCOUNT_FILE_OUTPUT_PATH = "ACCOUNT_FILE_OUTPUT_PATH";
     /** プロパティ設定パス */
@@ -141,107 +141,39 @@ public class FileProcessing {
     }
 
     /**
-     * 口座番号用ファイルの書き込み
+     * ファイルに保存
      * 
-     * @param nextAccountNo 採番した口座番号
+     * @param isUser        保存対象がユーザ情報リストならtrue
+     * @param list          ユーザ情報リスト
+     * @param nextAccountNo
      * @throws FileWriteException
      * @throws FileReadException
      * @throws IOException
      */
-    public void createAccountNoFile(int nextAccountNo) throws FileWriteException, FileReadException, IOException {
+    public void createFile(final boolean isUser, final List<Personal> list, final int nextAccountNo)
+            throws FileWriteException, FileReadException, IOException {
 
         String strPass = null;
         BufferedWriter bw = null;
         try {
-            strPass = getPropertiesInfo(NUMBERING_ACCOUNT_FILE_OUTPUT_PATH);
+            strPass = getPropertiesInfo(isUser ? ACCOUNT_FILE_OUTPUT_PATH : NUMBERING_ACCOUNT_FILE_OUTPUT_PATH);
 
             FileWriter fw = new FileWriter(strPass);
             bw = new BufferedWriter(fw);
 
-            String str = String.format("%s%d%s", SAVE_IDENTIFIER, nextAccountNo, SAVE_IDENTIFIER);
-            // 書き込み
-            bw.write(str);
-            // 改行
-            bw.newLine();
-
-        } catch (IOException e) {
-            throw new FileWriteException(e, String.format("ファイルの書き込みに失敗しました。ファイル名:%s", strPass));
-
-        } finally {
-
-            if (bw != null) {
-                // 閉じる処理
-                bw.close();
-            }
-        }
-
-    }
-
-    /**
-     * ファイルの1行分を口座番号とユーザー名と残高に分割する
-     * 
-     * @param line 読み込み行
-     * @return 分割後のリスト。1つ目が口座番号、2つ目がユーザー名、3つ目が残高。
-     */
-    private List<String> fileSplit(final String line) {
-        char c;
-        StringBuilder sb = new StringBuilder();
-        List<String> data = new ArrayList<String>();
-        boolean singleQuoteFlag = false;
-        boolean singleQuoteKeepingFlag = false;
-        char[] separation = SAVA_SEPARATION.toCharArray();
-        char[] identifier = SAVE_IDENTIFIER.toCharArray();
-
-        for (int i = 0; i < line.length(); i++) {
-            c = line.charAt(i);
-            if (c == identifier[0] && singleQuoteFlag && singleQuoteKeepingFlag) {
-                singleQuoteKeepingFlag = !singleQuoteKeepingFlag;
-                sb.append(c);
-            } else if (c == separation[0] && !singleQuoteFlag) {
-                data.add(sb.toString());
-                sb.delete(0, sb.length());
-            } else if (c == separation[0] && singleQuoteFlag) {
-                sb.append(c);
-            } else if (c == identifier[0]) {
-                singleQuoteFlag = !singleQuoteFlag;
-            } else if (c == SAVA_ESCAPE) {
-                singleQuoteKeepingFlag = !singleQuoteKeepingFlag;
+            if (isUser) {
+                // 口座番号、ユーザー名、金額をカンマ区切りで連結
+                for (Personal p : list) {
+                    String str = String.format("%s%s%s%s%s%s%s%s%s%d%s", SAVE_IDENTIFIER, p.getAccountNumber(), SAVE_IDENTIFIER, SAVA_SEPARATION,
+                            SAVE_IDENTIFIER, conversionEscape(p.getName()), SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, p.getBalance(),
+                            SAVE_IDENTIFIER);
+                    // 書き込み
+                    bw.write(str);
+                    // 改行
+                    bw.newLine();
+                }
             } else {
-                sb.append(c);
-            }
-
-            // 金額を設定
-            if (i == line.length() - 1) {
-                data.add(sb.toString());
-            }
-        }
-        return data;
-
-    }
-
-    /**
-     * ユーザー情報をファイルに保存
-     * 
-     * @param list ユーザー情報
-     * @throws FileWriteException
-     * @throws FileReadException
-     * @throws IOException
-     */
-    public void createFile(final List<Personal> list) throws FileWriteException, FileReadException, IOException {
-
-        String strPass = null;
-        BufferedWriter bw = null;
-        try {
-            strPass = getPropertiesInfo(ACCOUNT_FILE_OUTPUT_PATH);
-
-            FileWriter fw = new FileWriter(strPass);
-            bw = new BufferedWriter(fw);
-
-            // 口座番号、ユーザー名、金額をカンマ区切りで連結
-            for (Personal p : list) {
-                String str = String.format("%s%s%s%s%s%s%s%s%s%d%s", SAVE_IDENTIFIER, p.getAccountNumber(), SAVE_IDENTIFIER, SAVA_SEPARATION,
-                        SAVE_IDENTIFIER, conversionEscape(p.getName()), SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, p.getBalance(),
-                        SAVE_IDENTIFIER);
+                String str = String.format("%s%d%s", SAVE_IDENTIFIER, nextAccountNo, SAVE_IDENTIFIER);
                 // 書き込み
                 bw.write(str);
                 // 改行
@@ -289,7 +221,7 @@ public class FileProcessing {
             String str = br.readLine();
             if (str != null) {
                 // 読み取り
-                retValue = accountFileSplit(str);
+                retValue = fileSplit(str).get(0);
             }
 
         } catch (IOException e) {
@@ -303,6 +235,61 @@ public class FileProcessing {
             }
         }
         return retValue;
+    }
+
+    /**
+     * 取引履歴を取得
+     * 
+     * @return 前回入力したユーザー情報
+     * @throws FileReadException
+     * @throws IOException
+     */
+    public List<AccountHistory> getAccountHistory() throws FileReadException, IOException {
+
+        List<AccountHistory> list = new ArrayList<>();
+
+        String strPass = null;
+        BufferedReader br = null;
+        try {
+            strPass = getPropertiesInfo(ACCOUNT_HISTORY_FILE_OUTPUT_PATH);
+
+            File file = new File(strPass);
+
+            // ファイルが存在しない場合(=処理1回目の場合)
+            if (!file.exists()) {
+                return list;
+            }
+
+            FileReader fileReader = new FileReader(file);
+            br = new BufferedReader(fileReader);
+            String str = br.readLine();
+            while (str != null) {
+
+                List<String> splitList = fileSplit(str);
+
+                AccountHistory line = new AccountHistory();
+
+                line.setDate(StringToDate(splitList.get(0)));
+                line.setAccountNumber(Integer.parseInt(splitList.get(1)));
+                line.setClassification(Bank.convertBank(splitList.get(2)));
+                line.setTransactionAmount(Integer.parseInt(splitList.get(3)));
+                line.setBalance(Integer.parseInt(splitList.get(4)));
+
+                list.add(line);
+                str = br.readLine();
+            }
+
+        } catch (IOException e) {
+            throw new FileReadException(e, "前回の履歴を保存したファイルを読み込めませんでした。");
+
+        } finally {
+
+            if (br != null) {
+                // 閉じる処理
+                br.close();
+            }
+        }
+        return list;
     }
 
     /**
@@ -372,98 +359,6 @@ public class FileProcessing {
     }
 
     /**
-     * 発行済みの最新口座番号の取得
-     * 
-     * @param line 読み込み行
-     * @return 発行済みの最新口座番号。
-     */
-    private String accountFileSplit(final String line) {
-        char c;
-        StringBuilder sb = new StringBuilder();
-        boolean singleQuoteFlag = false;
-        boolean singleQuoteKeepingFlag = false;
-        char[] separation = SAVA_SEPARATION.toCharArray();
-        char[] identifier = SAVE_IDENTIFIER.toCharArray();
-
-        for (int i = 0; i < line.length(); i++) {
-            c = line.charAt(i);
-            if (c == identifier[0] && singleQuoteFlag && singleQuoteKeepingFlag) {
-                singleQuoteKeepingFlag = !singleQuoteKeepingFlag;
-                sb.append(c);
-            } else if (c == separation[0] && !singleQuoteFlag) {
-                sb.delete(0, sb.length());
-            } else if (c == separation[0] && singleQuoteFlag) {
-                sb.append(c);
-            } else if (c == identifier[0]) {
-                singleQuoteFlag = !singleQuoteFlag;
-            } else if (c == SAVA_ESCAPE) {
-                singleQuoteKeepingFlag = !singleQuoteKeepingFlag;
-            } else {
-                sb.append(c);
-            }
-
-        }
-
-        return sb.toString();
-
-    }
-
-    /**
-     * 取引履歴を取得
-     * 
-     * @return 前回入力したユーザー情報
-     * @throws FileReadException
-     * @throws IOException
-     */
-    public List<AccountHistory> getAccountHistory() throws FileReadException, IOException {
-
-        List<AccountHistory> list = new ArrayList<>();
-
-        String strPass = null;
-        BufferedReader br = null;
-        try {
-            strPass = getPropertiesInfo(ACCOUNT_HISTORY_FILE_OUTPUT_PATH);
-
-            File file = new File(strPass);
-
-            // ファイルが存在しない場合(=処理1回目の場合)
-            if (!file.exists()) {
-                return list;
-            }
-
-            FileReader fileReader = new FileReader(file);
-            br = new BufferedReader(fileReader);
-            String str = br.readLine();
-            while (str != null) {
-
-                List<String> splitList = fileSplit(str);
-
-                AccountHistory line = new AccountHistory();
-
-                line.setDate(StringToDate(splitList.get(0)));
-                line.setAccountNumber(Integer.parseInt(splitList.get(1)));
-                line.setClassification(Bank.convertBank(splitList.get(2)));
-                line.setTransactionAmount(Integer.parseInt(splitList.get(3)));
-                line.setBalance(Integer.parseInt(splitList.get(4)));
-
-                list.add(line);
-                str = br.readLine();
-            }
-
-        } catch (IOException e) {
-            throw new FileReadException(e, "前回の履歴を保存したファイルを読み込めませんでした。");
-
-        } finally {
-
-            if (br != null) {
-                // 閉じる処理
-                br.close();
-            }
-        }
-        return list;
-    }
-
-    /**
      * 文字列の日付をDate型の日付に変換する
      * 
      * @param date 文字列の日付
@@ -483,4 +378,47 @@ public class FileProcessing {
         }
         return formatDate;
     }
+
+    /**
+     * ファイルの1行分を口座番号とユーザー名と残高に分割する
+     * 
+     * @param line 読み込み行
+     * @return 分割後のリスト
+     */
+    private List<String> fileSplit(final String line) {
+        char c;
+        StringBuilder sb = new StringBuilder();
+        List<String> data = new ArrayList<String>();
+        boolean singleQuoteFlag = false;
+        boolean singleQuoteKeepingFlag = false;
+        char[] separation = SAVA_SEPARATION.toCharArray();
+        char[] identifier = SAVE_IDENTIFIER.toCharArray();
+
+        for (int i = 0; i < line.length(); i++) {
+            c = line.charAt(i);
+            if (c == identifier[0] && singleQuoteFlag && singleQuoteKeepingFlag) {
+                singleQuoteKeepingFlag = !singleQuoteKeepingFlag;
+                sb.append(c);
+            } else if (c == separation[0] && !singleQuoteFlag) {
+                data.add(sb.toString());
+                sb.delete(0, sb.length());
+            } else if (c == separation[0] && singleQuoteFlag) {
+                sb.append(c);
+            } else if (c == identifier[0]) {
+                singleQuoteFlag = !singleQuoteFlag;
+            } else if (c == SAVA_ESCAPE) {
+                singleQuoteKeepingFlag = !singleQuoteKeepingFlag;
+            } else {
+                sb.append(c);
+            }
+
+            // 最後の項目を設定
+            if (i == line.length() - 1) {
+                data.add(sb.toString());
+            }
+        }
+        return data;
+
+    }
+
 }

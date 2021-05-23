@@ -11,10 +11,15 @@ import java.util.Scanner;
  *
  */
 public class Util {
-
+    // --------------------------------------------------
+    // メンバ変数
+    // --------------------------------------------------
     /** スキャナー（コンソール入力） */
     public static Scanner mScanner = new Scanner(System.in);
 
+    // --------------------------------------------------
+    // 定数
+    // --------------------------------------------------
     /** 入力カーソル */
     private static final String CURSOL = ">";
     /** 処理継続 */
@@ -35,6 +40,9 @@ public class Util {
     /** 選択肢の最小値 */
     public static final int RANGE_MIN = 0;
 
+    // --------------------------------------------------
+    // public関数
+    // --------------------------------------------------
     /**
      * 文字入力
      * 
@@ -157,7 +165,7 @@ public class Util {
     /**
      * 修正する人物表示文言作成
      * 
-     * @param userList ユーザー情報リスト
+     * @param userList ユーザ情報リスト
      * @param msg
      * @return 表示文言
      */
@@ -180,11 +188,11 @@ public class Util {
     }
 
     /**
-     * 訂正する対象ユーザーを取得
+     * 訂正する対象ユーザを取得
      * 
      * @param toCorrectPersonMsg コンソールに表示する文言
-     * @param userList           ユーザー情報リスト
-     * @return 訂正するユーザー番号
+     * @param userList           ユーザ情報リスト
+     * @return 訂正するユーザ番号
      */
     public static int getCorrectPerson(final String toCorrectPersonMsg, final List<Personal> userList) {
         int personOfNumber = 0;
@@ -195,12 +203,28 @@ public class Util {
         } while (Util.isOutOfRange(personOfNumber, RANGE_MIN, userList.size()));
         return personOfNumber;
     }
-//    /**
-//     * 入力された金額を取得
-//     * 
-//     * @return 金額
-//     */
-//    public static int inputDeposit(String process) {
-//        return Util.inputInt(String.format("%S金額を入力してください", process));
-//    }
+
+    /**
+     * 入力された金額を取得
+     * 
+     * @return 金額
+     */
+    public static int inputMoney(final String process) {
+        return Util.inputInt(String.format("%s金額を入力してください", process));
+    }
+
+    /**
+     * リストから修正対象番号を取得
+     * 
+     * @param personalList ユーザ情報リスト
+     * @param msg          コンソールに表示する文言
+     * @return 修正番号
+     */
+    public static int getTargetNo(final List<Personal> personalList, String msg) {
+
+        String toModifyPersonMsg = displayToCorrectPerson(personalList, msg);
+
+        // 修正番号を取得
+        return getCorrectPerson(toModifyPersonMsg, personalList);
+    }
 }

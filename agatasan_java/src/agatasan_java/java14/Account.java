@@ -9,7 +9,7 @@ package agatasan_java.java14;
  */
 public enum Account {
 
-    NEW(1, "ŒûÀ‚ğV‹Kì¬"), CHANGE(2, "‚·‚Å‚É‚ ‚éŒûÀ‚ğæ‚èˆµ‚¤");
+    NEW(1, "ŒûÀ‚ğV‹Kì¬"), CHANGE(2, "‚·‚Å‚É‚ ‚éŒûÀ‚ğæ‚èˆµ‚¤"), RELEASE(3, "ŒûÀ‚ğ‰ğ–ñ");
 
     /** id */
     private final int id;

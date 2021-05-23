@@ -14,18 +14,20 @@ import agatasan_java.FileWriteException;
  *
  */
 public class DepositProcessiong {
-
+    // --------------------------------------------------
+    // public関数
+    // --------------------------------------------------
     /**
      * 入金処理
      * 
      * @param depositIdx   選択されたインデックス
-     * @param personalList ユーザー情報リスト
+     * @param personalList ユーザ情報リスト
      * @return 入金後の残高
      * @throws FileWriteException
      * @throws FileReadException
      * @throws IOException
      */
-    public int depositMoney(final int depositIdx, List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
+    public void depositMoney(final int depositIdx, List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
 
         // 入金対象
         Personal target = personalList.get(depositIdx);
@@ -42,14 +44,16 @@ public class DepositProcessiong {
 
         // 口座の更新
         FileProcessing fp = new FileProcessing();
-        fp.createFile(personalList);
+        fp.createFile(true, personalList, 0);
 
         // 入金履歴
         fp.writeHistory(target.getAccountNumber(), Bank.DEPOSIT.getId(), inputDeposit, sum);
 
-        return sum;
     }
 
+    // --------------------------------------------------
+    // private関数
+    // --------------------------------------------------
     /**
      * 入金情報の取得
      * 
@@ -59,20 +63,11 @@ public class DepositProcessiong {
         int inputDeposit = 0;
         do {
             // 入力値を取得
-            inputDeposit = inputDeposit();
+            inputDeposit = Util.inputMoney("入金");
 
         } while (Util.isOutOfRange(inputDeposit, 1, 10000000));
 
         return inputDeposit;
-    }
-
-    /**
-     * 入力された金額を取得
-     * 
-     * @return 金額
-     */
-    public int inputDeposit() {
-        return Util.inputInt("入金金額を入力してください");
     }
 
 }

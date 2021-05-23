@@ -5,10 +5,11 @@ package agatasan_java.java14;
  * 
  * @author 菱田 美紀
  * @version 1.0 2020/12/29 新規作成
+ * @version 1.1 2021/05/23 No.95～102指摘対応
  *
  */
 public enum Bank {
-    DEPOSIT(1, "入金"), TRANSFER(2, "振込"), BALANCE(3, "残高表示"), HISTORY(4, "お取引履歴表示");
+    DEPOSIT(1, "入金"), TRANSFER(2, "振込"), WITHDRAW(3, "出金"), BALANCE(4, "残高表示"), HISTORY(5, "お取引履歴表示");
 
     /** id */
     private final int id;
