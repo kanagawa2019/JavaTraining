@@ -3,18 +3,19 @@ package agatasan_java.java14;
 import java.io.IOException;
 import java.util.List;
 
-import agatasan_java.FileReadException;
-import agatasan_java.FileWriteException;
-
 /**
  * Uˆ—
  * 
  * @author •H“c ”ü‹I
  * @version 1.0 2021/05/23 V‹Kì¬
+ * @version 1.1 2021/05/26 No.109`113w“E‘Î‰
  *
  */
 public class TransferProcessiong {
 
+    // --------------------------------------------------
+    // publicŠÖ”
+    // --------------------------------------------------
     /**
      * Uˆ—
      * 
@@ -46,7 +47,7 @@ public class TransferProcessiong {
                 continue;
             }
             // Uî•ñæ“¾
-            int inputDeposit = getTransferInfo(transfer, payee);
+            long inputDeposit = getTransferInfo(transfer, payee);
 
             // UŒ³‚Ìc‚‚ğİ’è
             transfer.setBalance(transfer.getBalance() - inputDeposit);
@@ -66,6 +67,9 @@ public class TransferProcessiong {
 
     }
 
+    // --------------------------------------------------
+    // privateŠÖ”
+    // --------------------------------------------------
     /**
      * Uî•ñæ“¾
      * 
@@ -73,31 +77,15 @@ public class TransferProcessiong {
      * @param payee    Uæƒ†[ƒUî•ñ
      * @return U‹àŠz
      */
-    private int getTransferInfo(final Personal transfer, final Personal payee) {
-        int inputDeposit = 0;
+    private long getTransferInfo(final Personal transfer, final Personal payee) {
+        long inputDeposit = 0;
         do {
             // “ü—Í’l‚ğæ“¾
             inputDeposit = Util.inputMoney("“ü‹à");
 
-        } while (Util.isOutOfRange(inputDeposit, 1, 10000000) || canPay(transfer, inputDeposit));
+        } while (Util.isOutOfRange(inputDeposit, 1, 10000000) || Util.canPay(transfer, inputDeposit));
 
         return inputDeposit;
     }
 
-    /**
-     * c‚“à‚Å•¥‚¦‚é‚©‚Ìƒ`ƒFƒbƒN
-     * 
-     * @param transfer     Uæ‚Ìƒ†[ƒUî•ñ
-     * @param inputDeposit U‹àŠz
-     * @return true:c‚“à‚Å•¥‚¦‚é
-     */
-    private boolean canPay(final Personal transfer, final int inputDeposit) {
-
-        // ©•ª‚ÌŒûÀ‚©‚ç•¥‚¦‚È‚¢ê‡
-        if (transfer.getBalance() - inputDeposit < 0) {
-            System.out.println(String.format("‚²©•ª‚Ìc‚%,d‰~“à‚ÅU‚è‚ñ‚Å‚­‚¾‚³‚¢B", transfer.getBalance()));
-            return true;
-        }
-        return false;
-    }
 }

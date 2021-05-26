@@ -17,9 +17,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
-import agatasan_java.FileReadException;
-import agatasan_java.FileWriteException;
-
+/**
+ * ŒûÀˆ—
+ * 
+ * @author •H“c ”ü‹I
+ * @version 1.0 2021/05/23 V‹Kì¬
+ * @version 1.1 2021/05/26 No.109`113w“E‘Î‰
+ *
+ */
 public class FileProcessing {
     // --------------------------------------------------
     // ’è”
@@ -70,12 +75,11 @@ public class FileProcessing {
             while (str != null) {
 
                 List<String> splitList = fileSplit(str);
-
                 Personal line = new Personal();
 
                 line.setAccountNumber(Integer.parseInt(splitList.get(0)));
                 line.setName(splitList.get(1));
-                line.setBalance(Integer.parseInt(splitList.get(2)));
+                line.setBalance(Long.parseLong(splitList.get(2)));
 
                 list.add(line);
                 str = br.readLine();
@@ -105,7 +109,7 @@ public class FileProcessing {
      * @throws FileReadException
      * @throws IOException
      */
-    public void writeHistory(final int accountNumber, final int id, final int transactionAmount, final int balance)
+    public void writeHistory(final int accountNumber, final int id, final long transactionAmount, final long balance)
             throws FileWriteException, FileReadException, IOException {
 
         String strPass = null;
@@ -273,7 +277,7 @@ public class FileProcessing {
                 line.setAccountNumber(Integer.parseInt(splitList.get(1)));
                 line.setClassification(Bank.convertBank(splitList.get(2)));
                 line.setTransactionAmount(Integer.parseInt(splitList.get(3)));
-                line.setBalance(Integer.parseInt(splitList.get(4)));
+                line.setBalance(Long.parseLong(splitList.get(4)));
 
                 list.add(line);
                 str = br.readLine();

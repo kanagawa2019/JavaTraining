@@ -3,15 +3,13 @@ package agatasan_java.java14;
 import java.io.IOException;
 import java.util.List;
 
-import agatasan_java.FileReadException;
-import agatasan_java.FileWriteException;
-
 /**
  * Java14ƒNƒ‰ƒX Java‰Û‘è‚P‚S(‘‡‰‰Kj
  *
  * @author •H“c ”ü‹I
  * @version 1.0 2020/12/29 V‹Kì¬
  * @version 1.1 2021/05/23 No.95`102w“E‘Î‰
+ * @version 1.2 2021/05/26 No.109`113w“E‘Î‰
  */
 public class Java14 {
 

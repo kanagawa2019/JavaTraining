@@ -7,19 +7,20 @@ import java.util.Date;
  * 
  * @author 菱田 美紀
  * @version 1.0 2021/01/03 新規作成
+ * @version 1.1 2021/05/26 No.109～113指摘対応
  */
 public class AccountHistory {
 
     /** 口座番号 */
     private int accountNumber;
     /** 残高 */
-    private int balance;
+    private long balance;
     /** 日付 */
     private Date date;
     /** 区分 */
     private Bank classification;
     /** 取引金額 */
-    private int transactionAmount;
+    private long transactionAmount;
 
     /**
      * コンストラクタ
@@ -52,7 +53,7 @@ public class AccountHistory {
      * 
      * @return balance
      */
-    public int getBalance() {
+    public long getBalance() {
         return balance;
     }
 
@@ -61,7 +62,7 @@ public class AccountHistory {
      * 
      * @param balance 残高をセットする
      */
-    public void setBalance(int balance) {
+    public void setBalance(long balance) {
         this.balance = balance;
     }
 
@@ -106,7 +107,7 @@ public class AccountHistory {
      * 
      * @return transactionAmount
      */
-    public int getTransactionAmount() {
+    public long getTransactionAmount() {
         return transactionAmount;
     }
 
@@ -115,7 +116,7 @@ public class AccountHistory {
      * 
      * @param transactionAmount 取引金額をセットする
      */
-    public void setTransactionAmount(int transactionAmount) {
+    public void setTransactionAmount(long transactionAmount) {
         this.transactionAmount = transactionAmount;
     }
 

@@ -3,14 +3,12 @@ package agatasan_java.java14;
 import java.io.IOException;
 import java.util.List;
 
-import agatasan_java.FileReadException;
-import agatasan_java.FileWriteException;
-
 /**
  * 出金処理
  * 
  * @author 菱田 美紀
  * @version 1.0 2021/05/23 新規作成
+ * @version 1.1 2021/05/26 No.109～113指摘対応
  *
  */
 public class WithdrawProcessiong {
@@ -34,10 +32,10 @@ public class WithdrawProcessiong {
         Personal target = personalList.get(depositIdx);
 
         // 出金情報取得
-        int inputWithdraw = Util.inputMoney("出金");
+        long inputWithdraw = getWithdraw(target);
 
         // 残高の合計
-        int sum = target.getBalance() - inputWithdraw;
+        long sum = target.getBalance() - inputWithdraw;
         new BalanceProcessiong().displayBalance(sum);
 
         // 残高の設定
@@ -50,5 +48,25 @@ public class WithdrawProcessiong {
         // 出金履歴
         fp.writeHistory(target.getAccountNumber(), Bank.WITHDRAW.getId(), inputWithdraw, sum);
 
+    }
+
+    // --------------------------------------------------
+    // private関数
+    // --------------------------------------------------
+    /**
+     * 入力金額情報の取得
+     * 
+     * @param target ユーザ情報
+     * @return 入力金額
+     */
+    private long getWithdraw(Personal personal) {
+        long inputDeposit = 0;
+        do {
+            // 入力値を取得
+            inputDeposit = Util.inputMoney("出金");
+
+        } while (Util.isOutOfRange(inputDeposit, 1, 10000000) || Util.canPay(personal, inputDeposit));
+
+        return inputDeposit;
     }
 }

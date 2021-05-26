@@ -8,6 +8,7 @@ import java.util.Scanner;
  * 
  * @author 菱田 美紀
  * @version 1.0 2021/05/23 新規作成
+ * @version 1.1 2021/05/26 No.109～113指摘対応
  *
  */
 public class Util {
@@ -39,6 +40,8 @@ public class Util {
     public static final String BACK = "前に戻る";
     /** 選択肢の最小値 */
     public static final int RANGE_MIN = 0;
+    /** 口座保有限度額 */
+    public static final long MAX_BALANCE = 9000000000000000000l;
 
     // --------------------------------------------------
     // public関数
@@ -74,6 +77,35 @@ public class Util {
      */
     public static int inputInt(final String inputMsg) {
         int num = 0;
+        String input = null;
+        boolean isCheck = false;
+
+        if (inputMsg != null) {
+            System.out.println(inputMsg);
+        }
+
+        do {
+            try {
+                System.out.print(CURSOL);
+                input = mScanner.next();
+                num = Integer.parseInt(input);
+                isCheck = true;
+            } catch (Exception e) {
+                System.out.println("申し訳ありません。正しく処理が行えませんでした。\n再入力をお願いします。");
+            }
+
+        } while (!isCheck);
+        return num;
+    }
+
+    /**
+     * 数値入力(long型)
+     * 
+     * @param inputMsg 入力コンソールに表示する文言
+     * @return 入力値
+     */
+    public static long inputLong(final String inputMsg) {
+        long num = 0;
         String input = null;
         boolean isCheck = false;
 
@@ -140,7 +172,7 @@ public class Util {
      * @param maxValue     最大値
      * @return true:最小値～最大値の範囲内にある
      */
-    public static boolean isWithinRange(final int targetNumber, final int minValue, final int maxValue) {
+    public static boolean isWithinRange(final long targetNumber, final int minValue, final int maxValue) {
         return (minValue <= targetNumber && targetNumber <= maxValue);
     }
 
@@ -152,7 +184,7 @@ public class Util {
      * @param max    最大値
      * @return 入力された数値が範囲外の場合はTrue。範囲内の場合はfalse。
      */
-    public static boolean isOutOfRange(final int number, final int min, final int max) {
+    public static boolean isOutOfRange(final long number, final int min, final int max) {
 
         // 範囲外の場合
         if (!Util.isWithinRange(number, min, max)) {
@@ -209,8 +241,8 @@ public class Util {
      * 
      * @return 金額
      */
-    public static int inputMoney(final String process) {
-        return Util.inputInt(String.format("%s金額を入力してください", process));
+    public static long inputMoney(final String process) {
+        return Util.inputLong(String.format("%s金額を入力してください", process));
     }
 
     /**
@@ -226,5 +258,22 @@ public class Util {
 
         // 修正番号を取得
         return getCorrectPerson(toModifyPersonMsg, personalList);
+    }
+
+    /**
+     * 残高内で払えるかのチェック
+     * 
+     * @param personal     ユーザ情報
+     * @param inputDeposit 振込金額
+     * @return true:残高内で払える
+     */
+    public static boolean canPay(final Personal personal, final long inputDeposit) {
+
+        // 自分の口座から払えない場合
+        if (personal.getBalance() - inputDeposit < 0) {
+            System.out.println(String.format("ご自分の残高%,d円内でお取り扱いできます。", personal.getBalance()));
+            return true;
+        }
+        return false;
     }
 }

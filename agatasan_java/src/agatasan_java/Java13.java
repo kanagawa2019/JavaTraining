@@ -9,12 +9,6 @@ package agatasan_java;
  */
 public class Java13 {
 
-    // --------------------------------------------------
-    // メンバ変数
-    // --------------------------------------------------
-    /** 切替モード */
-    private static boolean displaySwitching = false;
-
     /**
      * 入力された処理モードの処理を表示します。
      * 
@@ -22,6 +16,10 @@ public class Java13 {
     public static void main(String[] args) {
 
         Display display = new Multiplication();
+        Display multiplication = new Multiplication();
+        Display nabeatsu = new Nabeatsu();
+        // 切替モード
+        boolean displaySwitching = false;
 
         do {
             // --------------------------------------------------
@@ -30,7 +28,7 @@ public class Java13 {
             // 処理モード入力
             final DisplayMode displayMode = display.inputDisplayMode(displaySwitching);
 
-            display = displaySwitching ? new Nabeatsu() : new Multiplication();
+            display = displaySwitching ? nabeatsu : multiplication;
 
             // --------------------------------------------------
             // 処理・出力

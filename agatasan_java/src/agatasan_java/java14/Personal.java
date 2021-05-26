@@ -5,6 +5,7 @@ package agatasan_java.java14;
  * 
  * @author 菱田 美紀
  * @version 1.0 2021/01/02 新規作成
+ * @version 1.1 2021/05/26 No.109～113指摘対応
  */
 public class Personal {
 
@@ -13,7 +14,7 @@ public class Personal {
     /** 口座番号 */
     private int accountNumber;
     /** 残高 */
-    private int balance;
+    private long balance;
 
     /**
      * コンストラクタ
@@ -78,7 +79,7 @@ public class Personal {
      * 
      * @return balance
      */
-    public int getBalance() {
+    public long getBalance() {
         return balance;
     }
 
@@ -87,7 +88,7 @@ public class Personal {
      * 
      * @param balance 残高をセットする
      */
-    public void setBalance(int balance) {
+    public void setBalance(long balance) {
         this.balance = balance;
     }
 

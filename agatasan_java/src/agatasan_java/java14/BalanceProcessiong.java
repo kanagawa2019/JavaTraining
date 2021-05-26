@@ -5,14 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import agatasan_java.FileReadException;
-
 /**
  * c‚•\¦ŠÖŒWˆ—
  * 
  * @author •H“c ”ü‹I
  * @version 1.0 2021/05/23 V‹Kì¬
- *
+ * @version 1.1 2021/05/26 No.109`113w“E‘Î‰
+ * 
  */
 public class BalanceProcessiong {
     // --------------------------------------------------
@@ -46,7 +45,7 @@ public class BalanceProcessiong {
      * 
      * @param balance c‚
      */
-    public void displayBalance(final int balance) {
+    public void displayBalance(final long balance) {
         System.out.println(String.format("c‚‚ÍA%,d‰~‚Å‚·", balance));
     }
 

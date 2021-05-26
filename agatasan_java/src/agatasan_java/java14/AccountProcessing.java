@@ -3,14 +3,12 @@ package agatasan_java.java14;
 import java.io.IOException;
 import java.util.List;
 
-import agatasan_java.FileReadException;
-import agatasan_java.FileWriteException;
-
 /**
  * 口座処理
  * 
  * @author 菱田 美紀
  * @version 1.0 2021/05/23 新規作成
+ * @version 1.1 2021/05/26 No.109～113指摘対応
  *
  */
 public class AccountProcessing {
@@ -19,7 +17,7 @@ public class AccountProcessing {
     // 定数
     // --------------------------------------------------
     /** 想定外のメッセージ */
-    private static final String UNEXPECTED_ERR = "想定された処理はありません。システム管理者に連絡してください。";
+    private final String UNEXPECTED_ERR = "想定された処理はありません。システム管理者に連絡してください。";
 
     // --------------------------------------------------
     // public関数
