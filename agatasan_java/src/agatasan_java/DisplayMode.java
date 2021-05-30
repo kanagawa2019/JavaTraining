@@ -7,10 +7,12 @@ package agatasan_java;
  * @version 1.0 2020/12/30 新規作成
  * @version 1.1 2021/05/16 表示形式揃え横展開
  * @version 1.2 2021/05/21 No.105指摘対応
+ * @version 1.3 2021/05/29 No.108指摘対応
  */
 public enum DisplayMode {
 
-    MULTIPLICATION_TABLE(1, "九九表示"), MULTIPLICATION_LINE(2, "指定の段のみ表示"), SWITCHING(3, "モード切替(%S)"), END(9, "終了");
+                         MULTIPLICATION_TABLE(1, "九九表示"), MULTIPLICATION_LINE(2, "指定の段のみ表示"),
+                         SWITCHING(3, "モード切替(%S)"), END(9, "終了");
 
     /** id */
     private final int id;
@@ -25,7 +27,7 @@ public enum DisplayMode {
      * @param id
      */
     private DisplayMode(final int id, final String name) {
-        this.id = id;
+        this.id   = id;
         this.name = name;
     }
 
@@ -38,10 +40,13 @@ public enum DisplayMode {
         final StringBuffer sb = new StringBuffer();
         for (final DisplayMode t : DisplayMode.values()) {
             if (displaySwitching) {
-                sb.append(String.format(DISPLAY_FORMAT, t.id)).append(".").append(String.format(t.name, "世界のナベアツ⇒通常")).append("\n");
-                continue;
+                sb.append(String.format(DISPLAY_FORMAT, t.id)).append(".").append(String.format(
+                    t.name, "世界のナベアツ⇒通常")).append("\n");
+            } else {
+                sb.append(String.format(DISPLAY_FORMAT, t.id)).append(".").append(String.format(t.name,
+                    "通常⇒世界のナベアツ")).append("\n");
             }
-            sb.append(String.format(DISPLAY_FORMAT, t.id)).append(".").append(String.format(t.name, "通常⇒世界のナベアツ")).append("\n");
+
         }
         return sb.toString();
     }
@@ -60,7 +65,8 @@ public enum DisplayMode {
         int displayMode = 0;
         try {
             displayMode = Integer.parseInt(inputDiaplayMode);
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e) {
             return null;
         }
 

@@ -20,7 +20,7 @@ public class BalanceProcessiong {
     /** 履歴表示接続文字 */
     private static final String DISPLAY_CONNECT = "|";
     /** ヘッダー部の表示形式：お取引日 */
-    private static final String HEADER_FORMAT_FOR_DATE = "%-10S";
+    private static final String HEADER_FORMAT_FOR_DATE = "%-11S";
     /** ヘッダー部の表示形式：区分 */
     private static final String HEADER_FORMAT_FOR_CLASSIFICATION = "%-3S";
     /** ヘッダー部の表示形式：取引金額 */
@@ -56,7 +56,7 @@ public class BalanceProcessiong {
      * @throws FileReadException
      * @throws IOException
      */
-    public void displayHistory(final int accountNumber) throws FileReadException, IOException {
+    public static void displayHistory(final int accountNumber) throws FileReadException, IOException {
 
         // 履歴データ取得
         FileProcessing fp = new FileProcessing();
@@ -76,7 +76,7 @@ public class BalanceProcessiong {
      * @param accountNumber 表示対象口座番号
      * @param historyList   取引履歴リスト
      */
-    private void matchAccountNo(final int accountNumber, final List<AccountHistory> historyList) {
+    private static void matchAccountNo(final int accountNumber, final List<AccountHistory> historyList) {
 
         StringBuffer sb = new StringBuffer();
         // 履歴あり
@@ -84,8 +84,8 @@ public class BalanceProcessiong {
 
         sb.append("***********************************************").append("\n");
         sb.append(String.format(HEADER_FORMAT_FOR_DATE, "お取引日")).append(DISPLAY_CONNECT).append(String.format(HEADER_FORMAT_FOR_CLASSIFICATION, "区分"))
-                .append(DISPLAY_CONNECT).append(String.format(HEADER_FORMAT_FOR_TRANSACTIONAMOUNT, "取引金額")).append(DISPLAY_CONNECT).append("残高")
-                .append("\n");
+            .append(DISPLAY_CONNECT).append(String.format(HEADER_FORMAT_FOR_TRANSACTIONAMOUNT, "取引金額")).append(DISPLAY_CONNECT).append("残高")
+            .append("\n");
 
         for (AccountHistory history : historyList) {
             if (accountNumber == history.getAccountNumber()) {
@@ -95,9 +95,9 @@ public class BalanceProcessiong {
                 }
 
                 sb.append(String.format(DATA_FORMAT_FOR_DATE, dateToString(history.getDate()))).append(DISPLAY_CONNECT)
-                        .append(String.format(DATA_FORMAT_FOR_CLASSIFICATION, history.getClassification().getName())).append(DISPLAY_CONNECT)
-                        .append(String.format(DATA_FORMAT_FOR_TRANSACTIONAMOUNT, history.getTransactionAmount())).append(DISPLAY_CONNECT)
-                        .append(String.format(DATA_FORMAT_FOR_BALANCE, history.getBalance())).append("\n");
+                    .append(String.format(DATA_FORMAT_FOR_CLASSIFICATION, history.getClassification().getName())).append(DISPLAY_CONNECT)
+                    .append(String.format(DATA_FORMAT_FOR_TRANSACTIONAMOUNT, history.getTransactionAmount())).append(DISPLAY_CONNECT)
+                    .append(String.format(DATA_FORMAT_FOR_BALANCE, history.getBalance())).append("\n");
 
             }
 
@@ -114,7 +114,7 @@ public class BalanceProcessiong {
      * @param date 日付
      * @return 文字列型日付
      */
-    private String dateToString(final Date date) {
+    private static String dateToString(final Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_OF_STANDARD_BIRTH);
         return dateFormat.format(date);
     }

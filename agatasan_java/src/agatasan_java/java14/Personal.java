@@ -19,22 +19,14 @@ public class Personal {
     /**
      * コンストラクタ
      * 
-     */
-    Personal() {
-
-    }
-
-    /**
-     * コンストラクタ
-     * 
      * @param name          氏名
      * @param accountNumber 口座番号
      * @param balance       残高
      */
-    Personal(final String name, final int accountNumber, final int balance) {
-        this.name = name;
+    Personal(final String name, final int accountNumber, final long balance) {
+        this.name          = name;
         this.accountNumber = accountNumber;
-        this.balance = balance;
+        this.balance       = balance;
 
     }
 

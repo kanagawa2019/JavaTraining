@@ -16,8 +16,10 @@ public class DepositProcessiong {
     // --------------------------------------------------
     // 定数
     // --------------------------------------------------
-    /** 入力上限金額 */
-    private final int limitinputMoney = 10000000;
+    /** 入金下限金額 */
+    private static final int MINIMUM_AMOUNT = 1;
+    /** 入金上限金額 */
+    private static final int MAXIMUM_AMOUNT = 10000000;
 
     // --------------------------------------------------
     // public関数
@@ -31,10 +33,8 @@ public class DepositProcessiong {
      * @throws FileWriteException
      * @throws FileReadException
      * @throws IOException
-     * @throws FileReadException
-     * @throws FileWriteException
      */
-    public void depositMoney(final int depositIdx, List<Personal> personalList) throws IOException, FileWriteException, FileReadException {
+    public static void depositMoney(final int depositIdx, List<Personal> personalList) throws IOException, FileWriteException, FileReadException {
 
         // 入金対象
         Personal target = personalList.get(depositIdx);
@@ -46,7 +46,8 @@ public class DepositProcessiong {
         }
 
         // 入金情報取得
-        long inputDeposit = getDeposit(target);
+//        long inputDeposit = getDeposit(target);
+        long inputDeposit = Util.getInputMoneyInfo(AccountHandlingMenu.DEPOSIT, "入金", target, null);
 
         // 残高の合計
         long sum = inputDeposit + target.getBalance();
@@ -60,7 +61,7 @@ public class DepositProcessiong {
         fp.createFile(true, personalList, 0);
 
         // 入金履歴
-        fp.writeHistory(target.getAccountNumber(), Bank.DEPOSIT.getId(), inputDeposit, sum);
+        fp.writeHistory(target.getAccountNumber(), AccountHandlingMenu.DEPOSIT.getId(), inputDeposit, sum);
 
     }
 
@@ -73,37 +74,15 @@ public class DepositProcessiong {
      * @param target ユーザ情報
      * @return 入力金額
      */
-    private long getDeposit(Personal target) {
-        long inputDeposit = 0;
-        do {
-            // 入力値を取得
-            inputDeposit = Util.inputMoney("入金");
-
-        } while (Util.isOutOfRange(inputDeposit, 1, limitinputMoney) || isMaxBalance(inputDeposit, target.getBalance()));
-
-        return inputDeposit;
-    }
-
-    /**
-     * 入金可能かの確認
-     * 
-     * @param inputDeposit 入金金額
-     * @param balance      残高
-     * @return
-     */
-    private boolean isMaxBalance(final long inputDeposit, final long balance) {
-
-        if (Util.MAX_BALANCE < inputDeposit + balance) {
-//            long aa = (inputDeposit + balance) - Util.MAX_BALANCE;
-//            if (aa > limitinputMoney) {
+//    private static long getDeposit(Personal target) {
+//        long inputDeposit = 0;
+//        do {
+//            // 入力値を取得
+//            inputDeposit = Util.inputMoney("入金");
 //
-//            }
-
-            System.out.println(String.format("入金は%,d円までしか受付られません。", Util.MAX_BALANCE - balance));
-
-            return true;
-        }
-        return false;
-    }
+//        } while (Util.isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT) || Util.isMaxBalance(inputDeposit, target.getBalance()));
+//
+//        return inputDeposit;
+//    }
 
 }

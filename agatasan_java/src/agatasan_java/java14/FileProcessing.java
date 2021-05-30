@@ -73,15 +73,8 @@ public class FileProcessing {
             br = new BufferedReader(fileReader);
             String str = br.readLine();
             while (str != null) {
-
                 List<String> splitList = fileSplit(str);
-                Personal line = new Personal();
-
-                line.setAccountNumber(Integer.parseInt(splitList.get(0)));
-                line.setName(splitList.get(1));
-                line.setBalance(Long.parseLong(splitList.get(2)));
-
-                list.add(line);
+                list.add(new Personal(splitList.get(1), Integer.parseInt(splitList.get(0)), Long.parseLong(splitList.get(2))));
                 str = br.readLine();
             }
 
@@ -110,7 +103,7 @@ public class FileProcessing {
      * @throws IOException
      */
     public void writeHistory(final int accountNumber, final int id, final long transactionAmount, final long balance)
-            throws FileWriteException, FileReadException, IOException {
+        throws FileWriteException, FileReadException, IOException {
 
         String strPass = null;
         BufferedWriter bw = null;
@@ -123,8 +116,8 @@ public class FileProcessing {
 
             // 日付、番号、取り扱い区分、取引金額、残高
             String str = String.format("%s%s%s%s%s%d%s%s%s%d%s%s%s%d%s%s%s%d%s", SAVE_IDENTIFIER, getToday(), SAVE_IDENTIFIER, SAVA_SEPARATION,
-                    SAVE_IDENTIFIER, accountNumber, SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, id, SAVE_IDENTIFIER, SAVA_SEPARATION,
-                    SAVE_IDENTIFIER, transactionAmount, SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, balance, SAVE_IDENTIFIER);
+                SAVE_IDENTIFIER, accountNumber, SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, id, SAVE_IDENTIFIER, SAVA_SEPARATION,
+                SAVE_IDENTIFIER, transactionAmount, SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, balance, SAVE_IDENTIFIER);
 
             // 書き込み
             bw.write(str);
@@ -155,7 +148,7 @@ public class FileProcessing {
      * @throws IOException
      */
     public void createFile(final boolean isUser, final List<Personal> list, final int nextAccountNo)
-            throws FileWriteException, FileReadException, IOException {
+        throws FileWriteException, FileReadException, IOException {
 
         String strPass = null;
         BufferedWriter bw = null;
@@ -169,8 +162,8 @@ public class FileProcessing {
                 // 口座番号、ユーザー名、金額をカンマ区切りで連結
                 for (Personal p : list) {
                     String str = String.format("%s%s%s%s%s%s%s%s%s%d%s", SAVE_IDENTIFIER, p.getAccountNumber(), SAVE_IDENTIFIER, SAVA_SEPARATION,
-                            SAVE_IDENTIFIER, conversionEscape(p.getName()), SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, p.getBalance(),
-                            SAVE_IDENTIFIER);
+                        SAVE_IDENTIFIER, conversionEscape(p.getName()), SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, p.getBalance(),
+                        SAVE_IDENTIFIER);
                     // 書き込み
                     bw.write(str);
                     // 改行
@@ -275,7 +268,7 @@ public class FileProcessing {
 
                 line.setDate(StringToDate(splitList.get(0)));
                 line.setAccountNumber(Integer.parseInt(splitList.get(1)));
-                line.setClassification(Bank.convertBank(splitList.get(2)));
+                line.setClassification(AccountHandlingMenu.convertBank(splitList.get(2)));
                 line.setTransactionAmount(Integer.parseInt(splitList.get(3)));
                 line.setBalance(Long.parseLong(splitList.get(4)));
 

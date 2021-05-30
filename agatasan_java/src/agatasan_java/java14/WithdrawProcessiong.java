@@ -9,10 +9,17 @@ import java.util.List;
  * @author 菱田 美紀
  * @version 1.0 2021/05/23 新規作成
  * @version 1.1 2021/05/26 No.109～113指摘対応
+ * @version 1.2 2021/05/29 No.117指摘対応
  *
  */
 public class WithdrawProcessiong {
-
+    // --------------------------------------------------
+    // 定数
+    // --------------------------------------------------
+    /** 入金下限金額 */
+    private static final int MINIMUM_AMOUNT = 1;
+    /** 入金上限金額 */
+    private static final int MAXIMUM_AMOUNT = 10000000;
     // --------------------------------------------------
     // public関数
     // --------------------------------------------------
@@ -26,13 +33,14 @@ public class WithdrawProcessiong {
      * @throws FileReadException
      * @throws IOException
      */
-    public void withdrawMoney(final int depositIdx, List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
+    public static void withdrawMoney(final int depositIdx, List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
 
         // 出金対象
         Personal target = personalList.get(depositIdx);
 
         // 出金情報取得
-        long inputWithdraw = getWithdraw(target);
+//        long inputWithdraw = getWithdraw(target);
+        long inputWithdraw = Util.getInputMoneyInfo(AccountHandlingMenu.WITHDRAW, "出金", target, null);
 
         // 残高の合計
         long sum = target.getBalance() - inputWithdraw;
@@ -46,7 +54,7 @@ public class WithdrawProcessiong {
         fp.createFile(true, personalList, 0);
 
         // 出金履歴
-        fp.writeHistory(target.getAccountNumber(), Bank.WITHDRAW.getId(), inputWithdraw, sum);
+        fp.writeHistory(target.getAccountNumber(), AccountHandlingMenu.WITHDRAW.getId(), inputWithdraw, sum);
 
     }
 
@@ -59,14 +67,14 @@ public class WithdrawProcessiong {
      * @param target ユーザ情報
      * @return 入力金額
      */
-    private long getWithdraw(Personal personal) {
-        long inputDeposit = 0;
-        do {
-            // 入力値を取得
-            inputDeposit = Util.inputMoney("出金");
-
-        } while (Util.isOutOfRange(inputDeposit, 1, 10000000) || Util.canPay(personal, inputDeposit));
-
-        return inputDeposit;
-    }
+//    private static long getWithdraw(Personal personal) {
+//        long inputDeposit = 0;
+//        do {
+//            // 入力値を取得
+//            inputDeposit = Util.inputMoney("出金");
+//
+//        } while (Util.isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT) || Util.canPay(personal, inputDeposit));
+//
+//        return inputDeposit;
+//    }
 }

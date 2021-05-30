@@ -10,6 +10,7 @@ import java.util.stream.IntStream;
  * @version 1.0 2020/12/29 新規作成
  * @version 1.1 2021/05/16 No.92,93,94指摘対応
  * @version 1.2 2021/05/21 No.105指摘対応
+ * @version 1.3 2021/05/29 No.111指摘対応横展開
  */
 public class Multiplication implements Display {
 
@@ -51,9 +52,10 @@ public class Multiplication implements Display {
     @Override
     public void calcMultiplicationTable() {
 
-        IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
-            displaySwitchingMode(i);
-        });
+        IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END)
+            .forEach(i -> {
+                displaySwitchingMode(i);
+            });
 
     }
 
@@ -79,14 +81,14 @@ public class Multiplication implements Display {
             // 数値か判定
             int inputLine = inputInt("表示する段を入力してください");
 
-            // 入力許容範囲外はエラー
-            if (!isWithinRange(inputLine, USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE)) {
-                System.out.println(String.format("エラー！！%d～%d以外の数値が入力されました。", USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE));
-                System.out.println(String.format("%d～%dの数値を入力してください。", USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE));
-                continue;
-            }
+            if (isWithinRange(inputLine, USER_INPUT_MIN_VALUE, USER_INPUT_MAX_VALUE))
+                return inputLine;
 
-            return inputLine;
+            // 入力許容範囲外はエラー
+            System.out.println(String.format("エラー！！%d～%d以外の数値が入力されました。", USER_INPUT_MIN_VALUE,
+                USER_INPUT_MAX_VALUE));
+            System.out.println(String.format("%d～%dの数値を入力してください。", USER_INPUT_MIN_VALUE,
+                USER_INPUT_MAX_VALUE));
 
         } while (true);
     }
@@ -112,7 +114,8 @@ public class Multiplication implements Display {
                 case PROCESSING_END:
                     return false;
                 default:
-                    System.out.println(String.format("(%s/%s)以外が入力されました。\n再入力をお願いします。", PROCESSING_CONTINUE, PROCESSING_END));
+                    System.out.println(String.format("(%s/%s)以外が入力されました。\n再入力をお願いします。",
+                        PROCESSING_CONTINUE, PROCESSING_END));
                     break;
             }
 
@@ -156,10 +159,11 @@ public class Multiplication implements Display {
 
         StringBuilder sb = new StringBuilder();
 
-        IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END).forEach(i -> {
+        IntStream.rangeClosed(MULTIPLICATION_TABLE_RANGE_START, MULTIPLICATION_TABLE_RANGE_END)
+            .forEach(i -> {
 
-            sb.append(String.format(DISPLAY_FORMAT, i * inputNumber));
-        });
+                sb.append(String.format(DISPLAY_FORMAT, i * inputNumber));
+            });
         System.out.println(sb.toString().replaceAll(" *$", ""));
     }
 
@@ -185,10 +189,11 @@ public class Multiplication implements Display {
         do {
             try {
                 System.out.print(CURSOL);
-                input = mScanner.next();
-                num = Integer.parseInt(input);
+                input   = mScanner.next();
+                num     = Integer.parseInt(input);
                 isCheck = true;
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 System.out.println("申し訳ありません。正しく処理が行えませんでした。\n再入力をお願いします。");
             }
 
@@ -234,9 +239,10 @@ public class Multiplication implements Display {
         do {
             try {
                 System.out.print(CURSOL);
-                input = mScanner.next();
+                input   = mScanner.next();
                 isCheck = true;
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 System.out.println("申し訳ありません。正しく処理が行えませんでした。\n再入力をお願いします。");
             }
         } while (!isCheck);

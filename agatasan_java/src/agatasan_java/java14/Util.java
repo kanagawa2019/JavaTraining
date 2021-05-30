@@ -29,19 +29,26 @@ public class Util {
     private static final String PROCESSING_END = "N";
     /** 範囲内のメッセージ */
     private static final String WITHIN_RANGE = "%d～%dの範囲で入力してください。";
-
+    /** 想定外のメッセージ */
+    public static final String UNEXPECTED_ERR = "想定された処理はありません。システム管理者に連絡してください。";
+    /** 前に戻るのメッセージ */
+    public static final String BACK = "前に戻る";
     /** 人物リスト表示形式 */
     public static final String DISPLAY_FORMAT_OF_PERSONAL_LIST = "%2d";
+    /** 人物リスト開始番号 */
+    public static final int START_NUMBER_OF_PERSONAL_LIST = 0;
     /** 属性リスト表示形式 */
     public static final String DISPLAY_FORMAT_OF_PERSONAL_ATTRIBUTE_LIST = "%2d";
     /** 属性リスト開始番号 */
     public static final int START_NUMBER_OF_PERSONAL_ATTRIBUTE_LIST = 0;
-    /** 前に戻るのメッセージ */
-    public static final String BACK = "前に戻る";
     /** 選択肢の最小値 */
     public static final int RANGE_MIN = 0;
     /** 口座保有限度額 */
     public static final long MAX_BALANCE = 9000000000000000000l;
+    /** 入金下限金額 */
+    private static final int MINIMUM_AMOUNT = 1;
+    /** 入金上限金額 */
+    private static final int MAXIMUM_AMOUNT = 10000000;
 
     // --------------------------------------------------
     // public関数
@@ -208,7 +215,7 @@ public class Util {
         // 操作文言表示
         StringBuffer sb = new StringBuffer();
         sb.append("---------------------------").append("\n");
-        int cnt = 0;
+        int cnt = START_NUMBER_OF_PERSONAL_LIST;
         sb.append(String.format(DISPLAY_FORMAT_OF_PERSONAL_LIST, cnt)).append(".").append(BACK).append("\n");
 
         for (Personal u : userList) {
@@ -253,11 +260,8 @@ public class Util {
      * @return 修正番号
      */
     public static int getTargetNo(final List<Personal> personalList, String msg) {
-
-        String toModifyPersonMsg = displayToCorrectPerson(personalList, msg);
-
         // 修正番号を取得
-        return getCorrectPerson(toModifyPersonMsg, personalList);
+        return getCorrectPerson(displayToCorrectPerson(personalList, msg), personalList);
     }
 
     /**
@@ -276,4 +280,66 @@ public class Util {
         }
         return false;
     }
+
+    /**
+     * 入金可能かの確認
+     * 
+     * @param inputDeposit 入金金額
+     * @param balance      残高
+     * @return
+     */
+    public static boolean isMaxBalance(final long inputDeposit, final long balance) {
+
+        if (Util.MAX_BALANCE < inputDeposit + balance) {
+            System.out.println(String.format("入金は%,d円までしか受付られません。", Util.MAX_BALANCE - balance));
+            return true;
+        }
+        return false;
+    }
+
+    public static long getInputMoneyInfo(final AccountHandlingMenu menu, final String msg, final Personal transfer, final Personal payee) {
+        long inputDeposit = 0;
+        do {
+            // 入力値を取得
+            inputDeposit = Util.inputMoney(msg);
+
+        } while (isMatchCondition(menu, inputDeposit, transfer, payee));
+
+        return inputDeposit;
+    }
+
+    private static boolean isMatchCondition(final AccountHandlingMenu menu, final long inputDeposit, final Personal transfer, final Personal payee) {
+
+        if (menu == AccountHandlingMenu.DEPOSIT) {
+            if (isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT)) {
+                return true;
+            } else if (Util.isMaxBalance(inputDeposit, payee.getBalance())) {
+                return true;
+            }
+            return false;
+        }
+
+        if (menu == AccountHandlingMenu.TRANSFER) {
+            if (isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT)) {
+                return true;
+            } else if (Util.canPay(transfer, inputDeposit)) {
+                return true;
+            } else if (Util.isMaxBalance(inputDeposit, payee.getBalance())) {
+                return true;
+            }
+            return false;
+
+        }
+
+        if (menu == AccountHandlingMenu.WITHDRAW) {
+            if (isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT)) {
+                return true;
+            } else if (Util.canPay(transfer, inputDeposit)) {
+                return true;
+            }
+            return false;
+        }
+        return true;
+    }
+
 }

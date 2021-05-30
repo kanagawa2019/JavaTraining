@@ -9,9 +9,17 @@ import java.util.List;
  * @author •H“c ”ü‹I
  * @version 1.0 2021/05/23 V‹Kì¬
  * @version 1.1 2021/05/26 No.109`113w“E‘Î‰
- *
+ * @version 1.2 2021/05/29 No.111,117w“E‘Î‰
+ * 
  */
 public class TransferProcessiong {
+    // --------------------------------------------------
+    // ’è”
+    // --------------------------------------------------
+    /** “ü‹à‰ºŒÀ‹àŠz */
+    private static final int MINIMUM_AMOUNT = 1;
+    /** “ü‹àãŒÀ‹àŠz */
+    private static final int MAXIMUM_AMOUNT = 10000000;
 
     // --------------------------------------------------
     // publicŠÖ”
@@ -25,45 +33,30 @@ public class TransferProcessiong {
      * @throws FileReadException
      * @throws IOException
      */
-    public void transferMoney(Personal transfer, List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
+    public static void transferMoney(Personal transfer, List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
+
+        Personal payee;
 
         do {
             // Uæ‚Ìl•¨‚Ì”Ô†‚ğæ“¾
             int payeeOfNumber = Util.getTargetNo(personalList, "‚Ç‚Ìƒ†[ƒU‚ÉU‚µ‚Ü‚·‚©H");
 
             // 0‚Ìê‡‚ÍAÅ‰‚É–ß‚é
-            if (payeeOfNumber == 0) {
+            if (payeeOfNumber == Util.START_NUMBER_OF_PERSONAL_LIST) {
                 return;
             }
 
-            int idx = payeeOfNumber - 1;
-
             // “ü—Í‚³‚ê‚½”Ô†‚É•R‚Ã‚­–¼‘O‚ğæ“¾
-            Personal payee = personalList.get(idx);
+            payee = personalList.get(payeeOfNumber - 1);
 
-            // ©•ª‚ÉU‚Í•s‰Â
-            if (transfer.getName().equals(payee.getName())) {
-                System.out.println("‚²©•ª‚É‚ÍU‚ß‚Ü‚¹‚ñB");
-                continue;
+            // ©•ª‚ÉU‚µ‚È‚¢ê‡
+            if (!transfer.getName().equals(payee.getName())) {
+                break;
             }
-            // Uî•ñæ“¾
-            long inputDeposit = getTransferInfo(transfer, payee);
-
-            // UŒ³‚Ìc‚‚ğİ’è
-            transfer.setBalance(transfer.getBalance() - inputDeposit);
-            // Uæ‚Ìc‚‚ğİ’è
-            payee.setBalance(payee.getBalance() + inputDeposit);
-
-            // UŒ³—š—ğ‚ÌXV
-            FileProcessing fp = new FileProcessing();
-            fp.writeHistory(transfer.getAccountNumber(), Bank.TRANSFER.getId(), (-inputDeposit), transfer.getBalance());
-            // Uæ—š—ğ‚ÌXV
-            fp.writeHistory(payee.getAccountNumber(), Bank.TRANSFER.getId(), inputDeposit, payee.getBalance());
-
-            System.out.println(String.format("%S‚³‚ñ‚ÉUŠ®—¹‚µ‚Ü‚µ‚½B", payee.getName()));
-
-            break;
+            System.out.println("‚²©•ª‚É‚ÍU‚ß‚Ü‚¹‚ñB");
         } while (true);
+
+        remitMoney(transfer, payee);
 
     }
 
@@ -77,15 +70,42 @@ public class TransferProcessiong {
      * @param payee    Uæƒ†[ƒUî•ñ
      * @return U‹àŠz
      */
-    private long getTransferInfo(final Personal transfer, final Personal payee) {
-        long inputDeposit = 0;
-        do {
-            // “ü—Í’l‚ğæ“¾
-            inputDeposit = Util.inputMoney("“ü‹à");
+//    private static long getTransferInfo(final Personal transfer, final Personal payee) {
+//        long inputDeposit = 0;
+//        do {
+//            // “ü—Í’l‚ğæ“¾
+//            inputDeposit = Util.inputMoney("“ü‹à");
+//
+//        } while (Util.isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT) || Util.canPay(transfer, inputDeposit) || Util.isMaxBalance(
+//            inputDeposit, payee.getBalance()));
+//
+//        return inputDeposit;
+//    }
 
-        } while (Util.isOutOfRange(inputDeposit, 1, 10000000) || Util.canPay(transfer, inputDeposit));
+    /**
+     * ‘Šèæ‚ÉU‚Şˆ—
+     * 
+     * @param transfer UŒ³
+     * @param payee    Uæ
+     * @throws FileWriteException
+     * @throws FileReadException
+     * @throws IOException
+     */
+    private static void remitMoney(Personal transfer, Personal payee) throws FileWriteException, FileReadException, IOException {
+        // Uî•ñæ“¾
+        long inputDeposit = Util.getInputMoneyInfo(AccountHandlingMenu.TRANSFER, "“ü‹à", transfer, payee);
 
-        return inputDeposit;
+        // UŒ³‚Ìc‚‚ğİ’è
+        transfer.setBalance(transfer.getBalance() - inputDeposit);
+        // Uæ‚Ìc‚‚ğİ’è
+        payee.setBalance(payee.getBalance() + inputDeposit);
+
+        // UŒ³—š—ğ‚ÌXV
+        FileProcessing fp = new FileProcessing();
+        fp.writeHistory(transfer.getAccountNumber(), AccountHandlingMenu.TRANSFER.getId(), (-inputDeposit), transfer.getBalance());
+        // Uæ—š—ğ‚ÌXV
+        fp.writeHistory(payee.getAccountNumber(), AccountHandlingMenu.TRANSFER.getId(), inputDeposit, payee.getBalance());
+
+        System.out.println(String.format("%S‚³‚ñ‚ÉUŠ®—¹‚µ‚Ü‚µ‚½B", payee.getName()));
     }
-
 }

@@ -18,7 +18,7 @@ public class AccountHistory {
     /** 日付 */
     private Date date;
     /** 区分 */
-    private Bank classification;
+    private AccountHandlingMenu classification;
     /** 取引金額 */
     private long transactionAmount;
 
@@ -89,7 +89,7 @@ public class AccountHistory {
      * 
      * @return classification
      */
-    public Bank getClassification() {
+    public AccountHandlingMenu getClassification() {
         return classification;
     }
 
@@ -98,7 +98,7 @@ public class AccountHistory {
      * 
      * @param classification 区分をセットする
      */
-    public void setClassification(Bank classification) {
+    public void setClassification(AccountHandlingMenu classification) {
         this.classification = classification;
     }
 

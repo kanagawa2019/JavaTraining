@@ -9,15 +9,10 @@ import java.util.List;
  * @author 菱田 美紀
  * @version 1.0 2021/05/23 新規作成
  * @version 1.1 2021/05/26 No.109～113指摘対応
+ * @version 1.2 2021/05/29 No.118指摘対応
  *
  */
 public class AccountProcessing {
-
-    // --------------------------------------------------
-    // 定数
-    // --------------------------------------------------
-    /** 想定外のメッセージ */
-    private final String UNEXPECTED_ERR = "想定された処理はありません。システム管理者に連絡してください。";
 
     // --------------------------------------------------
     // public関数
@@ -26,11 +21,11 @@ public class AccountProcessing {
     /**
      * 口座の処理入力
      */
-    public Account inputAccount() {
-        Account account = null;
-        String displayMsg = getDisplayString(Account.getSelectAccountString());
+    public DepositBusiness inputAccount() {
+        DepositBusiness account = null;
+        String displayMsg = getDisplayString(DepositBusiness.getSelectAccountString());
         do {
-            account = Account.convertAccount(Util.inputStr(displayMsg));
+            account = DepositBusiness.convertAccount(Util.inputStr(displayMsg));
             if (account == null) {
                 System.out.println("該当する処理が見つかりませんでした。");
             }
@@ -52,7 +47,7 @@ public class AccountProcessing {
             int personOfNumber = Util.getTargetNo(personalList, "どのユーザの処理をしますか？");
 
             // 0の場合は、最初に戻る
-            if (personOfNumber == 0) {
+            if (personOfNumber == Util.START_NUMBER_OF_PERSONAL_LIST) {
                 return;
             }
 
@@ -69,23 +64,19 @@ public class AccountProcessing {
             try {
 
                 do {
-
-                    // 修正する属性の番号を取得
-                    String toCorrectPropertyMsg = displayToCorrectProperty(personal.getName());
-
                     // 修正するユーザ情報番号を取得
-                    int propertyOfNumber = getModifyUserInfo(toCorrectPropertyMsg);
+                    int propertyOfNumber = getModifyUserInfo(displayToCorrectProperty(personal.getName()));
 
                     // 0 の場合、修正人物を選択する処理まで戻る
-                    if (propertyOfNumber == 0) {
-                        break;
+                    if (propertyOfNumber == Util.START_NUMBER_OF_PERSONAL_ATTRIBUTE_LIST) {
+                        return;
                     }
 
                     // --------------------------------------------------
                     // 処理・出力
                     // --------------------------------------------------
 
-                    switch (Bank.convertBank(String.valueOf(propertyOfNumber))) {
+                    switch (AccountHandlingMenu.convertBank(String.valueOf(propertyOfNumber))) {
                         case DEPOSIT:
                             // 入金処理
                             deposit.depositMoney(idx, personalList);
@@ -107,7 +98,7 @@ public class AccountProcessing {
                             balance.displayHistory(personal.getAccountNumber());
                             break;
                         default:
-                            System.out.println(UNEXPECTED_ERR);
+                            System.out.println(Util.UNEXPECTED_ERR);
                             break;
                     }
 
@@ -162,7 +153,7 @@ public class AccountProcessing {
         int personOfNumber = Util.getTargetNo(personalList, "どのユーザの処理をしますか？");
 
         // 0の場合は、最初に戻る
-        if (personOfNumber == 0) {
+        if (personOfNumber == Util.START_NUMBER_OF_PERSONAL_LIST) {
             return;
         }
 
@@ -174,7 +165,7 @@ public class AccountProcessing {
 
         // 履歴更新
         FileProcessing fp = new FileProcessing();
-        fp.writeHistory(releaseTarget.getAccountNumber(), Bank.WITHDRAW.getId(), releaseTarget.getBalance(), 0);
+        fp.writeHistory(releaseTarget.getAccountNumber(), AccountHandlingMenu.WITHDRAW.getId(), releaseTarget.getBalance(), 0);
 
         // リストから口座削除
         personalList.remove(idx);
@@ -216,7 +207,7 @@ public class AccountProcessing {
             // 入力値を取得
             propertyOfNumber = Util.inputInt(toModifyPropertyMsg);
 
-        } while (Util.isOutOfRange(propertyOfNumber, Util.RANGE_MIN, Bank.values().length));
+        } while (Util.isOutOfRange(propertyOfNumber, Util.RANGE_MIN, AccountHandlingMenu.values().length));
         return propertyOfNumber;
     }
 
@@ -234,8 +225,8 @@ public class AccountProcessing {
         sb.append("どの情報を修正しますか？").append("\n");
         sb.append("---------------------------").append("\n");
         sb.append(String.format(Util.DISPLAY_FORMAT_OF_PERSONAL_LIST, Util.START_NUMBER_OF_PERSONAL_ATTRIBUTE_LIST)).append(".").append(Util.BACK)
-                .append("\n");
-        sb.append(Bank.getSelectBankString());
+            .append("\n");
+        sb.append(AccountHandlingMenu.getSelectBankString());
         sb.append("---------------------------").append("\n");
 
         return sb.toString();
