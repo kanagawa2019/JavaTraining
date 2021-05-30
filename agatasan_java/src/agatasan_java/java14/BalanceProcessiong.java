@@ -11,6 +11,7 @@ import java.util.List;
  * @author 菱田 美紀
  * @version 1.0 2021/05/23 新規作成
  * @version 1.1 2021/05/26 No.109～113指摘対応
+ * @version 1.2 2021/05/30 No.110～122指摘対応
  * 
  */
 public class BalanceProcessiong {
@@ -39,14 +40,6 @@ public class BalanceProcessiong {
     // --------------------------------------------------
     // public関数
     // --------------------------------------------------
-    /**
-     * 残高表示
-     * 
-     * @param balance 残高
-     */
-    public static void displayBalance(final long balance) {
-        System.out.println(String.format("残高は、%,d円です", balance));
-    }
 
     /**
      * お取引履歴表示

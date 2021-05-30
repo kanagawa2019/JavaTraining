@@ -9,6 +9,7 @@ import java.util.Scanner;
  * @author 菱田 美紀
  * @version 1.0 2021/05/23 新規作成
  * @version 1.1 2021/05/26 No.109～113指摘対応
+ * @version 1.2 2021/05/30 No.110～122指摘対応
  *
  */
 public class Util {
@@ -43,14 +44,6 @@ public class Util {
     public static final int START_NUMBER_OF_PERSONAL_ATTRIBUTE_LIST = 0;
     /** 選択肢の最小値 */
     public static final int RANGE_MIN = 0;
-    /** 口座保有限度額（下限） */
-    public static final long MIN_BALANCE = 0l;
-    /** 口座保有限度額（上限） */
-    public static final long MAX_BALANCE = 9000000000000000000l;
-    /** 入金下限金額 */
-    private static final int MINIMUM_AMOUNT = 1;
-    /** 入金上限金額 */
-    private static final int MAXIMUM_AMOUNT = 10000000;
 
     // --------------------------------------------------
     // public関数
@@ -264,99 +257,6 @@ public class Util {
     public static int getTargetNo(final List<Personal> personalList, String msg) {
         // 修正番号を取得
         return getCorrectPerson(displayToCorrectPerson(personalList, msg), personalList);
-    }
-
-    /**
-     * 残高内で払えるかのチェック
-     * 
-     * @param personal     ユーザ情報
-     * @param inputDeposit 振込金額
-     * @return true:残高内で払える
-     */
-    public static boolean canPay(final Personal personal, final long inputDeposit) {
-
-        // 自分の口座から払えない場合
-        if (personal.getBalance() - inputDeposit < 0) {
-            System.out.println(String.format("ご自分の残高%,d円内でお取り扱いできます。", personal.getBalance()));
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * 入金可能かの確認
-     * 
-     * @param inputDeposit 入金金額
-     * @param balance      残高
-     * @return
-     */
-    public static boolean isMaxBalance(final long inputDeposit, final long balance) {
-
-        if (Util.MAX_BALANCE < inputDeposit + balance) {
-            System.out.println(String.format("入金は%,d円までしか受付られません。", Util.MAX_BALANCE - balance));
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * 入力金額を取得
-     * 
-     * @param menu     口座取り扱いメニュー
-     * @param msg      表示メッセージ
-     * @param transfer 振込元
-     * @param payee    振込先
-     * @return 取扱金額
-     */
-    public static long getInputMoneyInfo(final AccountHandlingMenu menu, final String msg, final Personal transfer, final Personal payee) {
-        long inputDeposit = 0;
-        do {
-            // 入力値を取得
-            inputDeposit = Util.inputMoney(msg);
-
-        } while (isMatchCondition(menu, inputDeposit, transfer, payee));
-
-        return inputDeposit;
-    }
-
-    /**
-     * 入力金額が適正かチェック
-     * 
-     * @param menu         口座取り扱いメニュー
-     * @param inputDeposit 入力金額
-     * @param transfer     振込元
-     * @param payee        振込先
-     * @return 不適正の場合はtrue、適性の場合はfalseを返す
-     */
-    private static boolean isMatchCondition(final AccountHandlingMenu menu, final long inputDeposit, final Personal transfer, final Personal payee) {
-
-        if (menu == AccountHandlingMenu.DEPOSIT) {
-            if (isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT)) {
-                return true;
-            } else if (Util.isMaxBalance(inputDeposit, transfer.getBalance())) {
-                return true;
-            }
-        }
-
-        if (menu == AccountHandlingMenu.TRANSFER) {
-            if (isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT)) {
-                return true;
-            } else if (Util.canPay(transfer, inputDeposit)) {
-                return true;
-            } else if (Util.isMaxBalance(inputDeposit, payee.getBalance())) {
-                return true;
-            }
-
-        }
-
-        if (menu == AccountHandlingMenu.WITHDRAW) {
-            if (isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT)) {
-                return true;
-            } else if (Util.canPay(transfer, inputDeposit)) {
-                return true;
-            }
-        }
-        return false;
     }
 
 }

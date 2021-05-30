@@ -9,10 +9,10 @@ import java.util.List;
  * @author •H“c ”ü‹I
  * @version 1.0 2021/05/23 V‹Kì¬
  * @version 1.1 2021/05/26 No.109`113w“E‘Î‰
- * @version 1.2 2021/05/29 No.118w“E‘Î‰
+ * @version 1.2 2021/05/30 No.110`122w“E‘Î‰
  *
  */
-public class AccountProcessing {
+public class AccountProcessing extends AccountService {
 
     // --------------------------------------------------
     // publicŠÖ”
@@ -74,7 +74,7 @@ public class AccountProcessing {
                     switch (AccountHandlingMenu.convertBank(String.valueOf(propertyOfNumber))) {
                         case DEPOSIT:
                             // “ü‹àˆ—
-                            DepositProcessiong.depositMoney(idx, personalList);
+                            depositMoney(idx, personalList);
                             break;
                         case TRANSFER:
                             // Uˆ—
@@ -86,7 +86,7 @@ public class AccountProcessing {
                             break;
                         case BALANCE:
                             // c‚•\¦ˆ—
-                            BalanceProcessiong.displayBalance(personal.getBalance());
+                            displayBalance(personal.getBalance());
                             break;
                         case HISTORY:
                             // ‚¨æˆø—š—ğ•\¦
@@ -127,8 +127,7 @@ public class AccountProcessing {
         Personal personal = new Personal(inputName, accountNumber, 0);
         personalList.add(personal);
         // ŒûÀ‚ğXV
-        DepositProcessiong deposit = new DepositProcessiong();
-        deposit.depositMoney(personalList.size() - 1, personalList);
+        depositMoney(personalList.size() - 1, personalList);
 
         System.out.println("ŒûÀ‚ğV‹K“o˜^‚µ‚Ü‚µ‚½B");
 

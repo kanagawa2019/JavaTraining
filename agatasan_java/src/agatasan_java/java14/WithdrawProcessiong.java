@@ -9,10 +9,10 @@ import java.util.List;
  * @author •H“c ”ü‹I
  * @version 1.0 2021/05/23 V‹Kì¬
  * @version 1.1 2021/05/26 No.109`113w“E‘Î‰
- * @version 1.2 2021/05/29 No.117w“E‘Î‰
+ * @version 1.2 2021/05/30 No.110`122w“E‘Î‰
  *
  */
-public class WithdrawProcessiong {
+public class WithdrawProcessiong extends AccountService {
     // --------------------------------------------------
     // publicŠÖ”
     // --------------------------------------------------
@@ -31,17 +31,17 @@ public class WithdrawProcessiong {
         Personal target = personalList.get(depositIdx);
 
         // ŒÀ“xŠzãŒÀ‚Ìê‡‚ÍA’†~
-        if (target.getBalance() == Util.MIN_BALANCE) {
+        if (target.getBalance() == MIN_BALANCE) {
             System.out.println("—a‹àŠz‚ª0‰~‚Ì‚½‚ßAo‹à‚ğ’†~’v‚µ‚Ü‚·B");
             return;
         }
 
         // o‹àî•ñæ“¾
-        long inputWithdraw = Util.getInputMoneyInfo(AccountHandlingMenu.WITHDRAW, "o‹à", target, null);
+        long inputWithdraw = getInputMoneyInfo(AccountHandlingMenu.WITHDRAW, "o‹à", target, null);
 
         // c‚‚Ì‡Œv
         long sum = target.getBalance() - inputWithdraw;
-        new BalanceProcessiong().displayBalance(sum);
+        displayBalance(sum);
 
         // c‚‚Ìİ’è
         target.setBalance(sum);

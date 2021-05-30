@@ -9,10 +9,10 @@ import java.util.List;
  * @author •H“c ”ü‹I
  * @version 1.0 2021/05/23 V‹Kì¬
  * @version 1.1 2021/05/26 No.109`113w“E‘Î‰
- * @version 1.2 2021/05/29 No.111,117w“E‘Î‰
+ * @version 1.2 2021/05/30 No.110`122w“E‘Î‰
  * 
  */
-public class TransferProcessiong {
+public class TransferProcessiong extends AccountService {
 
     // --------------------------------------------------
     // publicŠÖ”
@@ -56,24 +56,6 @@ public class TransferProcessiong {
     // --------------------------------------------------
     // privateŠÖ”
     // --------------------------------------------------
-    /**
-     * Uî•ñæ“¾
-     * 
-     * @param transfer UŒ³ƒ†[ƒUî•ñ
-     * @param payee    Uæƒ†[ƒUî•ñ
-     * @return U‹àŠz
-     */
-//    private static long getTransferInfo(final Personal transfer, final Personal payee) {
-//        long inputDeposit = 0;
-//        do {
-//            // “ü—Í’l‚ğæ“¾
-//            inputDeposit = Util.inputMoney("“ü‹à");
-//
-//        } while (Util.isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT) || Util.canPay(transfer, inputDeposit) || Util.isMaxBalance(
-//            inputDeposit, payee.getBalance()));
-//
-//        return inputDeposit;
-//    }
 
     /**
      * ‘Šèæ‚ÉU‚Şˆ—
@@ -87,13 +69,13 @@ public class TransferProcessiong {
     private static void remitMoney(Personal transfer, Personal payee) throws FileWriteException, FileReadException, IOException {
 
         // Uæ‚ÌŒÀ“xŠzãŒÀ‚Ìê‡‚ÍAU’†~
-        if (payee.getBalance() == Util.MAX_BALANCE) {
+        if (payee.getBalance() == MAX_BALANCE) {
             System.out.println("Uæ‚Ì—a‹àãŒÀŠz‚ª’B‚µ‚Ä‚¢‚é‚½‚ßA‚¨U‚ğ’†~’v‚µ‚Ü‚·B");
             return;
         }
 
         // Uî•ñæ“¾
-        long inputDeposit = Util.getInputMoneyInfo(AccountHandlingMenu.TRANSFER, "“ü‹à", transfer, payee);
+        long inputDeposit = getInputMoneyInfo(AccountHandlingMenu.TRANSFER, "“ü‹à", transfer, payee);
 
         // UŒ³‚Ìc‚‚ğİ’è
         transfer.setBalance(transfer.getBalance() - inputDeposit);

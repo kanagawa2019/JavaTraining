@@ -6,11 +6,12 @@ package agatasan_java.java14;
  * @author •H“c ”ü‹I
  * @version 1.0 2020/12/29 V‹Kì¬
  * @version 1.1 2021/05/23 No.95`102w“E‘Î‰
+ * @version 1.2 2021/05/30 No.110`122w“E‘Î‰
  *
  */
 public enum AccountHandlingMenu {
 
-                  DEPOSIT(1, "“ü‹à"), TRANSFER(2, "U"), WITHDRAW(3, "o‹à"), BALANCE(4, "c‚•\¦"), HISTORY(5, "‚¨æˆø—š—ğ•\¦");
+    DEPOSIT(1, "“ü‹à"), TRANSFER(2, "U"), WITHDRAW(3, "o‹à"), BALANCE(4, "c‚•\¦"), HISTORY(5, "‚¨æˆø—š—ğ•\¦");
 
     /** id */
     private final int id;
@@ -25,7 +26,7 @@ public enum AccountHandlingMenu {
      * @param id
      */
     private AccountHandlingMenu(final int id, final String name) {
-        this.id   = id;
+        this.id = id;
         this.name = name;
     }
 
@@ -36,7 +37,9 @@ public enum AccountHandlingMenu {
      */
     public static String getSelectBankString() {
         final StringBuffer sb = new StringBuffer();
-        for (final AccountHandlingMenu t : AccountHandlingMenu.values()) { sb.append(String.format(DISPLAY_FORMAT, t.id)).append(".").append(t.name).append("\n"); }
+        for (final AccountHandlingMenu t : AccountHandlingMenu.values()) {
+            sb.append(String.format(DISPLAY_FORMAT, t.id)).append(".").append(t.name).append("\n");
+        }
         return sb.toString();
     }
 
