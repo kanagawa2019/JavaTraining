@@ -14,14 +14,6 @@ import java.util.List;
 public class DepositProcessiong {
 
     // --------------------------------------------------
-    // 定数
-    // --------------------------------------------------
-    /** 入金下限金額 */
-    private static final int MINIMUM_AMOUNT = 1;
-    /** 入金上限金額 */
-    private static final int MAXIMUM_AMOUNT = 10000000;
-
-    // --------------------------------------------------
     // public関数
     // --------------------------------------------------
     /**
@@ -46,12 +38,11 @@ public class DepositProcessiong {
         }
 
         // 入金情報取得
-//        long inputDeposit = getDeposit(target);
         long inputDeposit = Util.getInputMoneyInfo(AccountHandlingMenu.DEPOSIT, "入金", target, null);
 
         // 残高の合計
         long sum = inputDeposit + target.getBalance();
-        new BalanceProcessiong().displayBalance(sum);
+        BalanceProcessiong.displayBalance(sum);
 
         // 残高の設定
         target.setBalance(sum);
@@ -64,25 +55,5 @@ public class DepositProcessiong {
         fp.writeHistory(target.getAccountNumber(), AccountHandlingMenu.DEPOSIT.getId(), inputDeposit, sum);
 
     }
-
-    // --------------------------------------------------
-    // private関数
-    // --------------------------------------------------
-    /**
-     * 入力金額情報の取得
-     * 
-     * @param target ユーザ情報
-     * @return 入力金額
-     */
-//    private static long getDeposit(Personal target) {
-//        long inputDeposit = 0;
-//        do {
-//            // 入力値を取得
-//            inputDeposit = Util.inputMoney("入金");
-//
-//        } while (Util.isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT) || Util.isMaxBalance(inputDeposit, target.getBalance()));
-//
-//        return inputDeposit;
-//    }
 
 }

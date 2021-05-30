@@ -14,13 +14,6 @@ import java.util.List;
  */
 public class WithdrawProcessiong {
     // --------------------------------------------------
-    // ’è”
-    // --------------------------------------------------
-    /** “ü‹à‰ºŒÀ‹àŠz */
-    private static final int MINIMUM_AMOUNT = 1;
-    /** “ü‹àãŒÀ‹àŠz */
-    private static final int MAXIMUM_AMOUNT = 10000000;
-    // --------------------------------------------------
     // publicŠÖ”
     // --------------------------------------------------
 
@@ -34,12 +27,16 @@ public class WithdrawProcessiong {
      * @throws IOException
      */
     public static void withdrawMoney(final int depositIdx, List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
-
         // o‹à‘ÎÛ
         Personal target = personalList.get(depositIdx);
 
+        // ŒÀ“xŠzãŒÀ‚Ìê‡‚ÍA’†~
+        if (target.getBalance() == Util.MIN_BALANCE) {
+            System.out.println("—a‹àŠz‚ª0‰~‚Ì‚½‚ßAo‹à‚ğ’†~’v‚µ‚Ü‚·B");
+            return;
+        }
+
         // o‹àî•ñæ“¾
-//        long inputWithdraw = getWithdraw(target);
         long inputWithdraw = Util.getInputMoneyInfo(AccountHandlingMenu.WITHDRAW, "o‹à", target, null);
 
         // c‚‚Ì‡Œv
@@ -58,23 +55,4 @@ public class WithdrawProcessiong {
 
     }
 
-    // --------------------------------------------------
-    // privateŠÖ”
-    // --------------------------------------------------
-    /**
-     * “ü—Í‹àŠzî•ñ‚Ìæ“¾
-     * 
-     * @param target ƒ†[ƒUî•ñ
-     * @return “ü—Í‹àŠz
-     */
-//    private static long getWithdraw(Personal personal) {
-//        long inputDeposit = 0;
-//        do {
-//            // “ü—Í’l‚ğæ“¾
-//            inputDeposit = Util.inputMoney("o‹à");
-//
-//        } while (Util.isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT) || Util.canPay(personal, inputDeposit));
-//
-//        return inputDeposit;
-//    }
 }

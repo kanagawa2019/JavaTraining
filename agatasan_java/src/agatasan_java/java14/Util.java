@@ -43,7 +43,9 @@ public class Util {
     public static final int START_NUMBER_OF_PERSONAL_ATTRIBUTE_LIST = 0;
     /** 選択肢の最小値 */
     public static final int RANGE_MIN = 0;
-    /** 口座保有限度額 */
+    /** 口座保有限度額（下限） */
+    public static final long MIN_BALANCE = 0l;
+    /** 口座保有限度額（上限） */
     public static final long MAX_BALANCE = 9000000000000000000l;
     /** 入金下限金額 */
     private static final int MINIMUM_AMOUNT = 1;
@@ -297,6 +299,15 @@ public class Util {
         return false;
     }
 
+    /**
+     * 入力金額を取得
+     * 
+     * @param menu     口座取り扱いメニュー
+     * @param msg      表示メッセージ
+     * @param transfer 振込元
+     * @param payee    振込先
+     * @return 取扱金額
+     */
     public static long getInputMoneyInfo(final AccountHandlingMenu menu, final String msg, final Personal transfer, final Personal payee) {
         long inputDeposit = 0;
         do {
@@ -308,15 +319,23 @@ public class Util {
         return inputDeposit;
     }
 
+    /**
+     * 入力金額が適正かチェック
+     * 
+     * @param menu         口座取り扱いメニュー
+     * @param inputDeposit 入力金額
+     * @param transfer     振込元
+     * @param payee        振込先
+     * @return 不適正の場合はtrue、適性の場合はfalseを返す
+     */
     private static boolean isMatchCondition(final AccountHandlingMenu menu, final long inputDeposit, final Personal transfer, final Personal payee) {
 
         if (menu == AccountHandlingMenu.DEPOSIT) {
             if (isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT)) {
                 return true;
-            } else if (Util.isMaxBalance(inputDeposit, payee.getBalance())) {
+            } else if (Util.isMaxBalance(inputDeposit, transfer.getBalance())) {
                 return true;
             }
-            return false;
         }
 
         if (menu == AccountHandlingMenu.TRANSFER) {
@@ -327,7 +346,6 @@ public class Util {
             } else if (Util.isMaxBalance(inputDeposit, payee.getBalance())) {
                 return true;
             }
-            return false;
 
         }
 
@@ -337,9 +355,8 @@ public class Util {
             } else if (Util.canPay(transfer, inputDeposit)) {
                 return true;
             }
-            return false;
         }
-        return true;
+        return false;
     }
 
 }

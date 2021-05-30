@@ -20,7 +20,7 @@ public class BalanceProcessiong {
     /** 履歴表示接続文字 */
     private static final String DISPLAY_CONNECT = "|";
     /** ヘッダー部の表示形式：お取引日 */
-    private static final String HEADER_FORMAT_FOR_DATE = "%-11S";
+    private static final String HEADER_FORMAT_FOR_DATE = "%-10S";
     /** ヘッダー部の表示形式：区分 */
     private static final String HEADER_FORMAT_FOR_CLASSIFICATION = "%-3S";
     /** ヘッダー部の表示形式：取引金額 */
@@ -33,7 +33,6 @@ public class BalanceProcessiong {
     private static final String DATA_FORMAT_FOR_TRANSACTIONAMOUNT = "%,10d円";
     /** データ部の表示形式：残高 */
     private static final String DATA_FORMAT_FOR_BALANCE = "%,10d円";
-
     /** 日付形式 ：yyyy年MM月dd日 */
     private static final String DATE_OF_STANDARD_BIRTH = "yyyy年MM月dd日";
 
@@ -45,7 +44,7 @@ public class BalanceProcessiong {
      * 
      * @param balance 残高
      */
-    public void displayBalance(final long balance) {
+    public static void displayBalance(final long balance) {
         System.out.println(String.format("残高は、%,d円です", balance));
     }
 
@@ -84,8 +83,8 @@ public class BalanceProcessiong {
 
         sb.append("***********************************************").append("\n");
         sb.append(String.format(HEADER_FORMAT_FOR_DATE, "お取引日")).append(DISPLAY_CONNECT).append(String.format(HEADER_FORMAT_FOR_CLASSIFICATION, "区分"))
-            .append(DISPLAY_CONNECT).append(String.format(HEADER_FORMAT_FOR_TRANSACTIONAMOUNT, "取引金額")).append(DISPLAY_CONNECT).append("残高")
-            .append("\n");
+                .append(DISPLAY_CONNECT).append(String.format(HEADER_FORMAT_FOR_TRANSACTIONAMOUNT, "取引金額")).append(DISPLAY_CONNECT).append("残高")
+                .append("\n");
 
         for (AccountHistory history : historyList) {
             if (accountNumber == history.getAccountNumber()) {
@@ -95,9 +94,9 @@ public class BalanceProcessiong {
                 }
 
                 sb.append(String.format(DATA_FORMAT_FOR_DATE, dateToString(history.getDate()))).append(DISPLAY_CONNECT)
-                    .append(String.format(DATA_FORMAT_FOR_CLASSIFICATION, history.getClassification().getName())).append(DISPLAY_CONNECT)
-                    .append(String.format(DATA_FORMAT_FOR_TRANSACTIONAMOUNT, history.getTransactionAmount())).append(DISPLAY_CONNECT)
-                    .append(String.format(DATA_FORMAT_FOR_BALANCE, history.getBalance())).append("\n");
+                        .append(String.format(DATA_FORMAT_FOR_CLASSIFICATION, history.getClassification().getName())).append(DISPLAY_CONNECT)
+                        .append(String.format(DATA_FORMAT_FOR_TRANSACTIONAMOUNT, history.getTransactionAmount())).append(DISPLAY_CONNECT)
+                        .append(String.format(DATA_FORMAT_FOR_BALANCE, history.getBalance())).append("\n");
 
             }
 

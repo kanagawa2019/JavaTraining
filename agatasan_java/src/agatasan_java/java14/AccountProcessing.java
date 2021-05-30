@@ -48,18 +48,13 @@ public class AccountProcessing {
 
             // 0の場合は、最初に戻る
             if (personOfNumber == Util.START_NUMBER_OF_PERSONAL_LIST) {
-                return;
+                break;
             }
 
             int idx = personOfNumber - 1;
 
             // 入力された番号に紐づく名前を取得
             Personal personal = personalList.get(idx);
-
-            DepositProcessiong deposit = new DepositProcessiong();
-            TransferProcessiong transfer = new TransferProcessiong();
-            BalanceProcessiong balance = new BalanceProcessiong();
-            WithdrawProcessiong withdraw = new WithdrawProcessiong();
 
             try {
 
@@ -69,7 +64,7 @@ public class AccountProcessing {
 
                     // 0 の場合、修正人物を選択する処理まで戻る
                     if (propertyOfNumber == Util.START_NUMBER_OF_PERSONAL_ATTRIBUTE_LIST) {
-                        return;
+                        break;
                     }
 
                     // --------------------------------------------------
@@ -79,23 +74,23 @@ public class AccountProcessing {
                     switch (AccountHandlingMenu.convertBank(String.valueOf(propertyOfNumber))) {
                         case DEPOSIT:
                             // 入金処理
-                            deposit.depositMoney(idx, personalList);
+                            DepositProcessiong.depositMoney(idx, personalList);
                             break;
                         case TRANSFER:
                             // 振込処理
-                            transfer.transferMoney(personal, personalList);
+                            TransferProcessiong.transferMoney(personal, personalList);
                             break;
                         case WITHDRAW:
                             // 出金処理
-                            withdraw.withdrawMoney(idx, personalList);
+                            WithdrawProcessiong.withdrawMoney(idx, personalList);
                             break;
                         case BALANCE:
                             // 残高表示処理
-                            balance.displayBalance(personal.getBalance());
+                            BalanceProcessiong.displayBalance(personal.getBalance());
                             break;
                         case HISTORY:
                             // お取引履歴表示
-                            balance.displayHistory(personal.getAccountNumber());
+                            BalanceProcessiong.displayHistory(personal.getAccountNumber());
                             break;
                         default:
                             System.out.println(Util.UNEXPECTED_ERR);
@@ -225,7 +220,7 @@ public class AccountProcessing {
         sb.append("どの情報を修正しますか？").append("\n");
         sb.append("---------------------------").append("\n");
         sb.append(String.format(Util.DISPLAY_FORMAT_OF_PERSONAL_LIST, Util.START_NUMBER_OF_PERSONAL_ATTRIBUTE_LIST)).append(".").append(Util.BACK)
-            .append("\n");
+                .append("\n");
         sb.append(AccountHandlingMenu.getSelectBankString());
         sb.append("---------------------------").append("\n");
 

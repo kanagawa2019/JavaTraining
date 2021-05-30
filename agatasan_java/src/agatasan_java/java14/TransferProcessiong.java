@@ -13,13 +13,6 @@ import java.util.List;
  * 
  */
 public class TransferProcessiong {
-    // --------------------------------------------------
-    // ’è”
-    // --------------------------------------------------
-    /** “ü‹à‰ºŒÀ‹àŠz */
-    private static final int MINIMUM_AMOUNT = 1;
-    /** “ü‹àãŒÀ‹àŠz */
-    private static final int MAXIMUM_AMOUNT = 10000000;
 
     // --------------------------------------------------
     // publicŠÖ”
@@ -92,6 +85,13 @@ public class TransferProcessiong {
      * @throws IOException
      */
     private static void remitMoney(Personal transfer, Personal payee) throws FileWriteException, FileReadException, IOException {
+
+        // Uæ‚ÌŒÀ“xŠzãŒÀ‚Ìê‡‚ÍAU’†~
+        if (payee.getBalance() == Util.MAX_BALANCE) {
+            System.out.println("Uæ‚Ì—a‹àãŒÀŠz‚ª’B‚µ‚Ä‚¢‚é‚½‚ßA‚¨U‚ğ’†~’v‚µ‚Ü‚·B");
+            return;
+        }
+
         // Uî•ñæ“¾
         long inputDeposit = Util.getInputMoneyInfo(AccountHandlingMenu.TRANSFER, "“ü‹à", transfer, payee);
 
