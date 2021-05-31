@@ -5,11 +5,12 @@ package agatasan_java.java14;
  * 
  * @author 菱田 美紀
  * @version 1.0 2021/05/23 新規作成
+ * @version 1.1 2021/05/31 No.123～131指摘対応
  *
  */
 public enum DepositBusiness {
 
-                             NEW (1, "口座を新規作成"), CHANGE (2, "すでにある口座を取り扱う"), RELEASE (3, "口座を解約");
+    NEW(1, "口座を新規作成"), CHANGE(2, "すでにある口座を取り扱う"), RELEASE(3, "口座を解約");
 
     /** id */
     private final int id;
@@ -21,10 +22,11 @@ public enum DepositBusiness {
     /**
      * コンストラクタ
      * 
-     * @param id
+     * @param id   id
+     * @param name 名称
      */
     private DepositBusiness(final int id, final String name) {
-        this.id   = id;
+        this.id = id;
         this.name = name;
     }
 

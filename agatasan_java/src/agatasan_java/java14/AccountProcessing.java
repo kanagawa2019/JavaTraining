@@ -10,6 +10,7 @@ import java.util.List;
  * @version 1.0 2021/05/23 新規作成
  * @version 1.1 2021/05/26 No.109～113指摘対応
  * @version 1.2 2021/05/30 No.110～122指摘対応
+ * @version 1.3 2021/05/31 No.123～131指摘対応
  *
  */
 public class AccountProcessing extends AccountService {
@@ -21,7 +22,7 @@ public class AccountProcessing extends AccountService {
     /**
      * 口座の処理入力
      */
-    public DepositBusiness inputAccount() {
+    public static DepositBusiness inputAccount() {
         DepositBusiness account = null;
         String displayMsg = getDisplayString(DepositBusiness.getSelectAccountString());
         do {
@@ -39,7 +40,7 @@ public class AccountProcessing extends AccountService {
      * 
      * @param personalList ユーザ情報リスト
      */
-    public void changeAccountInfo(List<Personal> personalList) {
+    public static void changeAccountInfo(List<Personal> personalList) {
 
         do {
 
@@ -115,17 +116,10 @@ public class AccountProcessing extends AccountService {
      * @throws FileReadException
      * @throws IOException
      */
-    public void createAccount(List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
-
-        // 氏名を取得
-        String inputName = inputName();
-
-        // 口座番号は新規採番
-        int accountNumber = createNewAccountNo();
+    public static void createAccount(List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
 
         // 値を設定
-        Personal personal = new Personal(inputName, accountNumber, 0);
-        personalList.add(personal);
+        personalList.add(new Personal(inputName(), createNewAccountNo(), 0));
         // 口座を更新
         depositMoney(personalList.size() - 1, personalList);
 
@@ -141,7 +135,7 @@ public class AccountProcessing extends AccountService {
      * @throws FileReadException
      * @throws FileWriteException
      */
-    public void releaseAccount(List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
+    public static void releaseAccount(List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
 
         // 修正する人物の番号を取得
         int personOfNumber = Util.getTargetNo(personalList, "どのユーザの処理をしますか？");
@@ -180,7 +174,7 @@ public class AccountProcessing extends AccountService {
      * @param msg 表示したい文言
      * @return 処理選択文言
      */
-    private String getDisplayString(String msg) {
+    private static String getDisplayString(String msg) {
         final StringBuffer sb = new StringBuffer();
         sb.append("***********************************").append("\n");
         sb.append("処理を選択してください").append("\n");
@@ -195,7 +189,7 @@ public class AccountProcessing extends AccountService {
      * @param toModifyPropertyMsg コンソールに表示する文言
      * @return 修正番号
      */
-    private int getModifyUserInfo(final String toModifyPropertyMsg) {
+    private static int getModifyUserInfo(final String toModifyPropertyMsg) {
         int propertyOfNumber = 0;
         do {
             // 入力値を取得
@@ -211,7 +205,7 @@ public class AccountProcessing extends AccountService {
      * @param modifyName 修正する人物名称
      * @return 表示文言
      */
-    private String displayToCorrectProperty(final String correctName) {
+    private static String displayToCorrectProperty(final String correctName) {
 
         StringBuffer sb = new StringBuffer();
 
@@ -235,7 +229,7 @@ public class AccountProcessing extends AccountService {
      * @throws FileReadException
      * @throws IOException
      */
-    private int createNewAccountNo() throws FileWriteException, FileReadException, IOException {
+    private static int createNewAccountNo() throws FileWriteException, FileReadException, IOException {
 
         FileProcessing fp = new FileProcessing();
         // 採番用のファイルを読み込み
@@ -256,7 +250,7 @@ public class AccountProcessing extends AccountService {
      * @param accountNo 口座番号
      * @return 加算した口座番号
      */
-    private int sumUpAccountNo(String accountNo) {
+    private static int sumUpAccountNo(String accountNo) {
         // 文字から数値に変換
         int retVlalue = Integer.parseInt(accountNo);
         // 加算
@@ -269,7 +263,7 @@ public class AccountProcessing extends AccountService {
      * 
      * @return 氏名
      */
-    private String inputName() {
+    private static String inputName() {
         return Util.inputStr("氏名を入力してください");
     }
 }

@@ -8,21 +8,22 @@ import java.util.List;
  * 
  * @author 菱田 美紀
  * @version 1.0 2021/05/30 新規作成
+ * @version 1.1 2021/05/31 No.123～131指摘対応
  *
  */
 public class AccountService {
 
     /** 口座保有限度額（下限） */
-    protected static final long MIN_BALANCE = 0l;
+    protected static final long MIN_BALANCE = 0;
     /** 口座保有限度額（上限） */
     protected static final long MAX_BALANCE = 9000000000000000000l;
     /** 入金下限金額 */
-    private static final int MINIMUM_AMOUNT = 1;
+    private static final long MINIMUM_AMOUNT = 1;
     /** 入金上限金額 */
-    private static final int MAXIMUM_AMOUNT = 10000000;
+    private static final long MAXIMUM_AMOUNT = 10000000;
 
     // --------------------------------------------------
-    // public関数
+    // protected関数
     // --------------------------------------------------
     /**
      * 残高表示
@@ -48,7 +49,26 @@ public class AccountService {
             // 入力値を取得
             inputDeposit = Util.inputMoney(msg);
 
-        } while (isMatchCondition(menu, inputDeposit, transfer, payee));
+        } while (!isMatchCondition(menu, inputDeposit, transfer, payee));
+
+        return inputDeposit;
+    }
+
+    /**
+     * 入力金額を取得
+     * 
+     * @param menu     口座取り扱いメニュー
+     * @param msg      表示メッセージ
+     * @param transfer 振込元
+     * @return 取扱金額
+     */
+    protected static long getInputMoneyInfo(final AccountHandlingMenu menu, final String msg, final Personal transfer) {
+        long inputDeposit = 0;
+        do {
+            // 入力値を取得
+            inputDeposit = Util.inputMoney(msg);
+
+        } while (!isMatchCondition(menu, inputDeposit, transfer));
 
         return inputDeposit;
     }
@@ -75,7 +95,7 @@ public class AccountService {
         }
 
         // 入金情報取得
-        long inputDeposit = getInputMoneyInfo(AccountHandlingMenu.DEPOSIT, "入金", target, null);
+        long inputDeposit = getInputMoneyInfo(AccountHandlingMenu.DEPOSIT, "入金", target);
 
         // 残高の合計
         long sum = inputDeposit + target.getBalance();
@@ -103,37 +123,52 @@ public class AccountService {
      * @param inputDeposit 入力金額
      * @param transfer     振込元
      * @param payee        振込先
-     * @return 不適正の場合はtrue、適性の場合はfalseを返す
+     * @return 適性の場合はtrue、不適正の場合はfalseを返す
      */
     private static boolean isMatchCondition(final AccountHandlingMenu menu, final long inputDeposit, final Personal transfer, final Personal payee) {
 
-        if (menu == AccountHandlingMenu.DEPOSIT) {
-            if (Util.isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT)) {
-                return true;
-            } else if (isMaxBalance(inputDeposit, transfer.getBalance())) {
-                return true;
-            }
+        if (Util.isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT)) {
+            return false;
         }
 
-        if (menu == AccountHandlingMenu.TRANSFER) {
-            if (Util.isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT)) {
-                return true;
-            } else if (canPay(transfer, inputDeposit)) {
-                return true;
-            } else if (isMaxBalance(inputDeposit, payee.getBalance())) {
-                return true;
-            }
+        if (canPay(transfer, inputDeposit)) {
+            return false;
+        }
 
+        if (isMaxBalance(inputDeposit, payee.getBalance())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 入力金額が適正かチェック
+     * 
+     * @param menu         口座取り扱いメニュー
+     * @param inputDeposit 入力金額
+     * @param transfer     振込元
+     * @return 適性の場合はtrue、不適正の場合はfalseを返す
+     */
+    private static boolean isMatchCondition(final AccountHandlingMenu menu, final long inputDeposit, final Personal transfer) {
+
+        // 範囲チェックは共通で行う
+        if (Util.isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT)) {
+            return false;
+        }
+
+        if (menu == AccountHandlingMenu.DEPOSIT) {
+            if (isMaxBalance(inputDeposit, transfer.getBalance())) {
+                return false;
+            }
         }
 
         if (menu == AccountHandlingMenu.WITHDRAW) {
-            if (Util.isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT)) {
-                return true;
-            } else if (canPay(transfer, inputDeposit)) {
-                return true;
+            if (canPay(transfer, inputDeposit)) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     /**
@@ -141,7 +176,7 @@ public class AccountService {
      * 
      * @param personal     ユーザ情報
      * @param inputDeposit 振込金額
-     * @return true:残高内で払える
+     * @return 残高内で払えるならTrue、払えないならfalseを返す
      */
     private static boolean canPay(final Personal personal, final long inputDeposit) {
 
@@ -158,7 +193,7 @@ public class AccountService {
      * 
      * @param inputDeposit 入金金額
      * @param balance      残高
-     * @return
+     * @return 入金不可能ならTrue、可能ならfalseを返す
      */
     private static boolean isMaxBalance(final long inputDeposit, final long balance) {
 

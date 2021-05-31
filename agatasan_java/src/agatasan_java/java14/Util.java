@@ -10,6 +10,7 @@ import java.util.Scanner;
  * @version 1.0 2021/05/23 新規作成
  * @version 1.1 2021/05/26 No.109～113指摘対応
  * @version 1.2 2021/05/30 No.110～122指摘対応
+ * @version 1.3 2021/05/31 No.123～131指摘対応
  *
  */
 public class Util {
@@ -174,7 +175,7 @@ public class Util {
      * @param maxValue     最大値
      * @return true:最小値～最大値の範囲内にある
      */
-    public static boolean isWithinRange(final long targetNumber, final int minValue, final int maxValue) {
+    public static boolean isWithinRange(final long targetNumber, final long minValue, final long maxValue) {
         return (minValue <= targetNumber && targetNumber <= maxValue);
     }
 
@@ -186,7 +187,7 @@ public class Util {
      * @param max    最大値
      * @return 入力された数値が範囲外の場合はTrue。範囲内の場合はfalse。
      */
-    public static boolean isOutOfRange(final long number, final int min, final int max) {
+    public static boolean isOutOfRange(final long number, final long min, final long max) {
 
         // 範囲外の場合
         if (!Util.isWithinRange(number, min, max)) {

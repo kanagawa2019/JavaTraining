@@ -18,11 +18,12 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * 口座処理
+ * ファイル処理
  * 
  * @author 菱田 美紀
  * @version 1.0 2021/05/23 新規作成
  * @version 1.1 2021/05/26 No.109～113指摘対応
+ * @version 1.2 2021/05/31 No.123～131指摘対応
  *
  */
 public class FileProcessing {
@@ -46,6 +47,9 @@ public class FileProcessing {
     /** 採番用口座ファイル出力パス */
     private static final String NUMBERING_ACCOUNT_FILE_OUTPUT_PATH = "NUMBERING_ACCOUNT_FILE_OUTPUT_PATH";
 
+    // --------------------------------------------------
+    // public関数
+    // --------------------------------------------------
     /**
      * 前回のユーザー情報を取得
      * 
@@ -69,8 +73,7 @@ public class FileProcessing {
                 return list;
             }
 
-            FileReader fileReader = new FileReader(file);
-            br = new BufferedReader(fileReader);
+            br = new BufferedReader(new FileReader(file));
             String str = br.readLine();
             while (str != null) {
                 List<String> splitList = fileSplit(str);
@@ -103,7 +106,7 @@ public class FileProcessing {
      * @throws IOException
      */
     public void writeHistory(final int accountNumber, final int id, final long transactionAmount, final long balance)
-        throws FileWriteException, FileReadException, IOException {
+            throws FileWriteException, FileReadException, IOException {
 
         String strPass = null;
         BufferedWriter bw = null;
@@ -111,13 +114,12 @@ public class FileProcessing {
             strPass = getPropertiesInfo(ACCOUNT_HISTORY_FILE_OUTPUT_PATH);
 
             // 追加書き込み
-            FileWriter fw = new FileWriter(strPass, true);
-            bw = new BufferedWriter(fw);
+            bw = new BufferedWriter(new FileWriter(strPass, true));
 
             // 日付、番号、取り扱い区分、取引金額、残高
             String str = String.format("%s%s%s%s%s%d%s%s%s%d%s%s%s%d%s%s%s%d%s", SAVE_IDENTIFIER, getToday(), SAVE_IDENTIFIER, SAVA_SEPARATION,
-                SAVE_IDENTIFIER, accountNumber, SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, id, SAVE_IDENTIFIER, SAVA_SEPARATION,
-                SAVE_IDENTIFIER, transactionAmount, SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, balance, SAVE_IDENTIFIER);
+                    SAVE_IDENTIFIER, accountNumber, SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, id, SAVE_IDENTIFIER, SAVA_SEPARATION,
+                    SAVE_IDENTIFIER, transactionAmount, SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, balance, SAVE_IDENTIFIER);
 
             // 書き込み
             bw.write(str);
@@ -148,22 +150,21 @@ public class FileProcessing {
      * @throws IOException
      */
     public void createFile(final boolean isUser, final List<Personal> list, final int nextAccountNo)
-        throws FileWriteException, FileReadException, IOException {
+            throws FileWriteException, FileReadException, IOException {
 
         String strPass = null;
         BufferedWriter bw = null;
         try {
             strPass = getPropertiesInfo(isUser ? ACCOUNT_FILE_OUTPUT_PATH : NUMBERING_ACCOUNT_FILE_OUTPUT_PATH);
 
-            FileWriter fw = new FileWriter(strPass);
-            bw = new BufferedWriter(fw);
+            bw = new BufferedWriter(new FileWriter(strPass));
 
             if (isUser) {
                 // 口座番号、ユーザー名、金額をカンマ区切りで連結
                 for (Personal p : list) {
                     String str = String.format("%s%s%s%s%s%s%s%s%s%d%s", SAVE_IDENTIFIER, p.getAccountNumber(), SAVE_IDENTIFIER, SAVA_SEPARATION,
-                        SAVE_IDENTIFIER, conversionEscape(p.getName()), SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, p.getBalance(),
-                        SAVE_IDENTIFIER);
+                            SAVE_IDENTIFIER, conversionEscape(p.getName()), SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, p.getBalance(),
+                            SAVE_IDENTIFIER);
                     // 書き込み
                     bw.write(str);
                     // 改行
@@ -257,22 +258,13 @@ public class FileProcessing {
                 return list;
             }
 
-            FileReader fileReader = new FileReader(file);
-            br = new BufferedReader(fileReader);
+            br = new BufferedReader(new FileReader(file));
             String str = br.readLine();
             while (str != null) {
 
                 List<String> splitList = fileSplit(str);
-
-                AccountHistory line = new AccountHistory();
-
-                line.setDate(StringToDate(splitList.get(0)));
-                line.setAccountNumber(Integer.parseInt(splitList.get(1)));
-                line.setClassification(AccountHandlingMenu.convertBank(splitList.get(2)));
-                line.setTransactionAmount(Integer.parseInt(splitList.get(3)));
-                line.setBalance(Long.parseLong(splitList.get(4)));
-
-                list.add(line);
+                list.add(new AccountHistory(Integer.parseInt(splitList.get(1)), Long.parseLong(splitList.get(4)), StringToDate(splitList.get(0)),
+                        AccountHandlingMenu.convertBank(splitList.get(2)), Long.parseLong(splitList.get(3))));
                 str = br.readLine();
             }
 
@@ -289,6 +281,9 @@ public class FileProcessing {
         return list;
     }
 
+    // --------------------------------------------------
+    // private関数
+    // --------------------------------------------------
     /**
      * プロパティファイルの値を取得
      * 

@@ -11,6 +11,7 @@ import java.util.List;
  * @version 1.1 2021/05/23 No.95`102w“E‘Î‰
  * @version 1.2 2021/05/26 No.109`113w“E‘Î‰
  * @version 1.3 2021/05/30 No.110`122w“E‘Î‰
+ * @version 1.4 2021/05/31 No.123`131w“E‘Î‰
  */
 public class Java14 {
 
@@ -24,27 +25,26 @@ public class Java14 {
             FileProcessing fp = new FileProcessing();
             List<Personal> personalList = fp.getUserInfo();
 
-            AccountProcessing ap = new AccountProcessing();
             do {
                 // --------------------------------------------------
                 // “ü—Í
                 // --------------------------------------------------
 
                 // ŒûÀ‚Ìˆ—ƒ‚[ƒh“ü—Í
-                final DepositBusiness account = ap.inputAccount();
+                final DepositBusiness account = AccountProcessing.inputAccount();
 
                 switch (account) {
                     case NEW:
                         // V‹Kì¬‚Ìê‡
-                        ap.createAccount(personalList);
+                        AccountProcessing.createAccount(personalList);
                         break;
                     case CHANGE:
                         // ŒûÀ‘€ì‚Ìˆ—
-                        ap.changeAccountInfo(personalList);
+                        AccountProcessing.changeAccountInfo(personalList);
                         break;
                     case RELEASE:
                         // ŒûÀ‰ğ–ñ‚Ìê‡
-                        ap.releaseAccount(personalList);
+                        AccountProcessing.releaseAccount(personalList);
                         break;
                     default:
                         System.out.println(Util.UNEXPECTED_ERR);

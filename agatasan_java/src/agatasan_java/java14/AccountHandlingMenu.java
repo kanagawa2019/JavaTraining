@@ -7,6 +7,7 @@ package agatasan_java.java14;
  * @version 1.0 2020/12/29 V‹Kì¬
  * @version 1.1 2021/05/23 No.95`102w“E‘Î‰
  * @version 1.2 2021/05/30 No.110`122w“E‘Î‰
+ * @version 1.3 2021/05/31 No.123`131w“E‘Î‰
  *
  */
 public enum AccountHandlingMenu {
@@ -23,7 +24,8 @@ public enum AccountHandlingMenu {
     /**
      * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
      * 
-     * @param id
+     * @param id   id
+     * @param name –¼Ì
      */
     private AccountHandlingMenu(final int id, final String name) {
         this.id = id;

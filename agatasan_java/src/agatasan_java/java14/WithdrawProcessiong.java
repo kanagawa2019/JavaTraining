@@ -10,6 +10,7 @@ import java.util.List;
  * @version 1.0 2021/05/23 V‹Kì¬
  * @version 1.1 2021/05/26 No.109`113w“E‘Î‰
  * @version 1.2 2021/05/30 No.110`122w“E‘Î‰
+ * @version 1.3 2021/05/31 No.123`131w“E‘Î‰
  *
  */
 public class WithdrawProcessiong extends AccountService {
@@ -37,7 +38,7 @@ public class WithdrawProcessiong extends AccountService {
         }
 
         // o‹àî•ñæ“¾
-        long inputWithdraw = getInputMoneyInfo(AccountHandlingMenu.WITHDRAW, "o‹à", target, null);
+        long inputWithdraw = getInputMoneyInfo(AccountHandlingMenu.WITHDRAW, "o‹à", target);
 
         // c‚‚Ì‡Œv
         long sum = target.getBalance() - inputWithdraw;

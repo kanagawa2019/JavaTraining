@@ -8,6 +8,7 @@ import java.util.Date;
  * @author •H“c ”ü‹I
  * @version 1.0 2021/01/03 V‹Kì¬
  * @version 1.1 2021/05/26 No.109`113w“E‘Î‰
+ * @version 1.2 2021/05/31 No.123`131w“E‘Î‰
  */
 public class AccountHistory {
 
@@ -25,9 +26,18 @@ public class AccountHistory {
     /**
      * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
      * 
+     * @param accountNumber     ŒûÀ”Ô†
+     * @param balance           c‚
+     * @param date              “ú•t
+     * @param classification    ‹æ•ª
+     * @param transactionAmount æˆø‹àŠz
      */
-    AccountHistory() {
-
+    AccountHistory(int accountNumber, final long balance, final Date date, final AccountHandlingMenu classification, final long transactionAmount) {
+        this.accountNumber = accountNumber;
+        this.balance = balance;
+        this.date = date;
+        this.classification = classification;
+        this.transactionAmount = transactionAmount;
     }
 
     /**
