@@ -11,6 +11,7 @@ import java.util.List;
  * @version 1.1 2021/05/26 No.109`113w“E‘Î‰
  * @version 1.2 2021/05/30 No.110`122w“E‘Î‰
  * @version 1.3 2021/05/31 No.123`131w“E‘Î‰
+ * @version 1.4 2021/06/01 No.126,128,130,131w“E‘Î‰
  * 
  */
 public class TransferProcessiong extends AccountService {
@@ -84,10 +85,9 @@ public class TransferProcessiong extends AccountService {
         payee.setBalance(payee.getBalance() + inputDeposit);
 
         // UŒ³—š—ğ‚ÌXV
-        FileProcessing fp = new FileProcessing();
-        fp.writeHistory(transfer.getAccountNumber(), AccountHandlingMenu.TRANSFER.getId(), (-inputDeposit), transfer.getBalance());
+        FileProcessing.writeHistory(transfer.getAccountNumber(), AccountHandlingMenu.TRANSFER.getId(), (-inputDeposit), transfer.getBalance());
         // Uæ—š—ğ‚ÌXV
-        fp.writeHistory(payee.getAccountNumber(), AccountHandlingMenu.TRANSFER.getId(), inputDeposit, payee.getBalance());
+        FileProcessing.writeHistory(payee.getAccountNumber(), AccountHandlingMenu.TRANSFER.getId(), inputDeposit, payee.getBalance());
 
         System.out.println(String.format("%S‚³‚ñ‚ÉUŠ®—¹‚µ‚Ü‚µ‚½B", payee.getName()));
     }

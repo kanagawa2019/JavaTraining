@@ -11,6 +11,7 @@ import java.util.List;
  * @version 1.1 2021/05/26 No.109～113指摘対応
  * @version 1.2 2021/05/30 No.110～122指摘対応
  * @version 1.3 2021/05/31 No.123～131指摘対応
+ * @version 1.4 2021/06/01 No.126,128,130,131指摘対応
  *
  */
 public class AccountProcessing extends AccountService {
@@ -119,7 +120,12 @@ public class AccountProcessing extends AccountService {
     public static void createAccount(List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
 
         // 値を設定
-        personalList.add(new Personal(inputName(), createNewAccountNo(), 0));
+        personalList.add(new Personal(
+                inputName(),
+                createNewAccountNo(),
+                0)
+                );
+
         // 口座を更新
         depositMoney(personalList.size() - 1, personalList);
 
@@ -152,14 +158,13 @@ public class AccountProcessing extends AccountService {
         System.out.println(String.format("%,d円出金しました。", releaseTarget.getBalance()));
 
         // 履歴更新
-        FileProcessing fp = new FileProcessing();
-        fp.writeHistory(releaseTarget.getAccountNumber(), AccountHandlingMenu.WITHDRAW.getId(), releaseTarget.getBalance(), 0);
+        FileProcessing.writeHistory(releaseTarget.getAccountNumber(), AccountHandlingMenu.WITHDRAW.getId(), releaseTarget.getBalance(), 0);
 
         // リストから口座削除
         personalList.remove(idx);
 
         // 全件口座再作成
-        fp.createFile(true, personalList, 0);
+        FileProcessing.createFile(true, personalList, 0);
 
         System.out.println(releaseTarget.getName() + "さんの口座を削除しました。");
 
@@ -231,13 +236,12 @@ public class AccountProcessing extends AccountService {
      */
     private static int createNewAccountNo() throws FileWriteException, FileReadException, IOException {
 
-        FileProcessing fp = new FileProcessing();
         // 採番用のファイルを読み込み
         // +1する
-        int nextAccountNo = sumUpAccountNo(fp.getAccountNo());
+        int nextAccountNo = sumUpAccountNo(FileProcessing.getAccountNo());
 
         // 採番した番号を採番用のファイルに書き込み
-        fp.createFile(false, null, nextAccountNo);
+        FileProcessing.createFile(false, null, nextAccountNo);
 
         // 採番した番号を返す
         return nextAccountNo;

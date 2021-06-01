@@ -12,6 +12,7 @@ import java.util.List;
  * @version 1.2 2021/05/26 No.109～113指摘対応
  * @version 1.3 2021/05/30 No.110～122指摘対応
  * @version 1.4 2021/05/31 No.123～131指摘対応
+ * @version 1.5 2021/06/01 No.126,128,130,131指摘対応
  */
 public class Java14 {
 
@@ -22,8 +23,7 @@ public class Java14 {
     public static void main(String[] args) {
 
         try {
-            FileProcessing fp = new FileProcessing();
-            List<Personal> personalList = fp.getUserInfo();
+            List<Personal> personalList = FileProcessing.getUserInfo();
 
             do {
                 // --------------------------------------------------
@@ -54,7 +54,7 @@ public class Java14 {
             } while (Util.isContinue());
 
             // ユーザ情報をファイルに保存
-            fp.createFile(true, personalList, 0);
+            FileProcessing.createFile(true, personalList, 0);
 
         } catch (FileReadException | FileWriteException | IOException e) {
             System.out.println("処理を中断しました。システム管理者へ問い合わせしてください。");

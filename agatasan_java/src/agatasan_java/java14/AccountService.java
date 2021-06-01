@@ -9,6 +9,7 @@ import java.util.List;
  * @author 菱田 美紀
  * @version 1.0 2021/05/30 新規作成
  * @version 1.1 2021/05/31 No.123～131指摘対応
+ * @version 1.2 2021/06/01 No.126,128,130,131指摘対応
  *
  */
 public class AccountService {
@@ -63,14 +64,7 @@ public class AccountService {
      * @return 取扱金額
      */
     protected static long getInputMoneyInfo(final AccountHandlingMenu menu, final String msg, final Personal transfer) {
-        long inputDeposit = 0;
-        do {
-            // 入力値を取得
-            inputDeposit = Util.inputMoney(msg);
-
-        } while (!isMatchCondition(menu, inputDeposit, transfer));
-
-        return inputDeposit;
+        return getInputMoneyInfo(menu, msg, transfer, null);
     }
 
     /**
@@ -126,47 +120,39 @@ public class AccountService {
      */
     private static boolean isMatchCondition(final AccountHandlingMenu menu, final long inputDeposit, final Personal transfer, final Personal payee) {
 
-        if (Util.isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT)) {
-            return false;
-        }
-
-        if (canPay(transfer, inputDeposit)) {
-            return false;
-        }
-
-        if (isMaxBalance(inputDeposit, payee.getBalance())) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * 入力金額が適正かチェック
-     * 
-     * @param menu         口座取り扱いメニュー
-     * @param inputDeposit 入力金額
-     * @param transfer     振込元
-     * @return 適性の場合はtrue、不適正の場合はfalseを返す
-     */
-    private static boolean isMatchCondition(final AccountHandlingMenu menu, final long inputDeposit, final Personal transfer) {
-
         // 範囲チェックは共通で行う
         if (Util.isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT)) {
             return false;
         }
 
-        if (menu == AccountHandlingMenu.DEPOSIT) {
-            if (isMaxBalance(inputDeposit, transfer.getBalance())) {
-                return false;
-            }
+        switch (menu) {
+            case DEPOSIT:
+                if (isMaxBalance(inputDeposit, transfer.getBalance())) {
+                    return false;
+                }
+                break;
+            case TRANSFER:
+                if (canPay(transfer, inputDeposit)) {
+                    return false;
+                }
+
+                if (isMaxBalance(inputDeposit, payee.getBalance())) {
+                    return false;
+                }
+                break;
+            case WITHDRAW:
+                if (canPay(transfer, inputDeposit)) {
+                    return false;
+                }
+                break;
+            case BALANCE:
+                break;
+            case HISTORY:
+                break;
+            default:
+                break;
         }
 
-        if (menu == AccountHandlingMenu.WITHDRAW) {
-            if (canPay(transfer, inputDeposit)) {
-                return false;
-            }
-        }
         return true;
     }
 

@@ -24,6 +24,7 @@ import java.util.Properties;
  * @version 1.0 2021/05/23 新規作成
  * @version 1.1 2021/05/26 No.109～113指摘対応
  * @version 1.2 2021/05/31 No.123～131指摘対応
+ * @version 1.3 2021/06/01 No.126,128,130,131指摘対応
  *
  */
 public class FileProcessing {
@@ -57,7 +58,7 @@ public class FileProcessing {
      * @throws FileReadException
      * @throws IOException
      */
-    public List<Personal> getUserInfo() throws FileReadException, IOException {
+    public static List<Personal> getUserInfo() throws FileReadException, IOException {
 
         List<Personal> list = new ArrayList<>();
 
@@ -77,7 +78,12 @@ public class FileProcessing {
             String str = br.readLine();
             while (str != null) {
                 List<String> splitList = fileSplit(str);
-                list.add(new Personal(splitList.get(1), Integer.parseInt(splitList.get(0)), Long.parseLong(splitList.get(2))));
+                list.add(new Personal(
+                        splitList.get(1),
+                        Integer.parseInt(splitList.get(0)),
+                        Long.parseLong(splitList.get(2)))
+                        );
+
                 str = br.readLine();
             }
 
@@ -105,7 +111,7 @@ public class FileProcessing {
      * @throws FileReadException
      * @throws IOException
      */
-    public void writeHistory(final int accountNumber, final int id, final long transactionAmount, final long balance)
+    public static void writeHistory(final int accountNumber, final int id, final long transactionAmount, final long balance)
             throws FileWriteException, FileReadException, IOException {
 
         String strPass = null;
@@ -117,9 +123,22 @@ public class FileProcessing {
             bw = new BufferedWriter(new FileWriter(strPass, true));
 
             // 日付、番号、取り扱い区分、取引金額、残高
-            String str = String.format("%s%s%s%s%s%d%s%s%s%d%s%s%s%d%s%s%s%d%s", SAVE_IDENTIFIER, getToday(), SAVE_IDENTIFIER, SAVA_SEPARATION,
-                    SAVE_IDENTIFIER, accountNumber, SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, id, SAVE_IDENTIFIER, SAVA_SEPARATION,
-                    SAVE_IDENTIFIER, transactionAmount, SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, balance, SAVE_IDENTIFIER);
+            String str = String.format("%s%s%s%s%s%d%s%s%s%d%s%s%s%d%s%s%s%d%s", SAVE_IDENTIFIER, getToday(),
+                    SAVE_IDENTIFIER, SAVA_SEPARATION,
+                    SAVE_IDENTIFIER, accountNumber,
+                    SAVE_IDENTIFIER, SAVA_SEPARATION,
+                    SAVE_IDENTIFIER,
+                    id,
+                    SAVE_IDENTIFIER,
+                    SAVA_SEPARATION,
+                    SAVE_IDENTIFIER,
+                    transactionAmount,
+                    SAVE_IDENTIFIER,
+                    SAVA_SEPARATION,
+                    SAVE_IDENTIFIER,
+                    balance,
+                    SAVE_IDENTIFIER
+                    );
 
             // 書き込み
             bw.write(str);
@@ -149,7 +168,7 @@ public class FileProcessing {
      * @throws FileReadException
      * @throws IOException
      */
-    public void createFile(final boolean isUser, final List<Personal> list, final int nextAccountNo)
+    public static void createFile(final boolean isUser, final List<Personal> list, final int nextAccountNo)
             throws FileWriteException, FileReadException, IOException {
 
         String strPass = null;
@@ -162,9 +181,19 @@ public class FileProcessing {
             if (isUser) {
                 // 口座番号、ユーザー名、金額をカンマ区切りで連結
                 for (Personal p : list) {
-                    String str = String.format("%s%s%s%s%s%s%s%s%s%d%s", SAVE_IDENTIFIER, p.getAccountNumber(), SAVE_IDENTIFIER, SAVA_SEPARATION,
-                            SAVE_IDENTIFIER, conversionEscape(p.getName()), SAVE_IDENTIFIER, SAVA_SEPARATION, SAVE_IDENTIFIER, p.getBalance(),
-                            SAVE_IDENTIFIER);
+                    String str = String.format("%s%s%s%s%s%s%s%s%s%d%s",
+                            SAVE_IDENTIFIER,
+                            p.getAccountNumber(),
+                            SAVE_IDENTIFIER,
+                            SAVA_SEPARATION,
+                            SAVE_IDENTIFIER,
+                            conversionEscape(p.getName()),
+                            SAVE_IDENTIFIER,
+                            SAVA_SEPARATION,
+                            SAVE_IDENTIFIER,
+                            p.getBalance(),
+                            SAVE_IDENTIFIER
+                            );
                     // 書き込み
                     bw.write(str);
                     // 改行
@@ -198,7 +227,7 @@ public class FileProcessing {
      * @throws FileReadException
      * @throws IOException
      */
-    public String getAccountNo() throws FileReadException, IOException {
+    public static String getAccountNo() throws FileReadException, IOException {
 
         String retValue = null;
 
@@ -242,7 +271,7 @@ public class FileProcessing {
      * @throws FileReadException
      * @throws IOException
      */
-    public List<AccountHistory> getAccountHistory() throws FileReadException, IOException {
+    public static List<AccountHistory> getAccountHistory() throws FileReadException, IOException {
 
         List<AccountHistory> list = new ArrayList<>();
 
@@ -263,8 +292,14 @@ public class FileProcessing {
             while (str != null) {
 
                 List<String> splitList = fileSplit(str);
-                list.add(new AccountHistory(Integer.parseInt(splitList.get(1)), Long.parseLong(splitList.get(4)), StringToDate(splitList.get(0)),
-                        AccountHandlingMenu.convertBank(splitList.get(2)), Long.parseLong(splitList.get(3))));
+                list.add(new AccountHistory(
+                        Integer.parseInt(splitList.get(1)),
+                        Long.parseLong(splitList.get(4)),
+                        StringToDate(splitList.get(0)),
+                        AccountHandlingMenu.convertBank(splitList.get(2)),
+                        Long.parseLong(splitList.get(3)))
+                        );
+
                 str = br.readLine();
             }
 
@@ -293,7 +328,7 @@ public class FileProcessing {
      * @throws FileReadException
      * @throws IOException
      */
-    private String getPropertiesInfo(final String path) throws FileNotFoundException, FileReadException, IOException {
+    private static String getPropertiesInfo(final String path) throws FileNotFoundException, FileReadException, IOException {
         Properties properties = new Properties();
 
         String strPass = null;
@@ -322,7 +357,7 @@ public class FileProcessing {
      * 
      * @return 文字列型日付
      */
-    private String getToday() {
+    private static String getToday() {
         Calendar cl = Calendar.getInstance();
 
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_OF_BIRTH);
@@ -335,7 +370,7 @@ public class FileProcessing {
      * @param input 入力値
      * @return エスケープ処理
      */
-    private String conversionEscape(final String input) {
+    private static String conversionEscape(final String input) {
         char c;
         StringBuilder sb = new StringBuilder();
         char[] identifier = SAVE_IDENTIFIER.toCharArray();
@@ -356,7 +391,7 @@ public class FileProcessing {
      * @param date 文字列の日付
      * @return Date型の日付
      */
-    private Date StringToDate(final String date) {
+    private static Date StringToDate(final String date) {
         if (date == null) {
             return null;
         }
@@ -377,7 +412,7 @@ public class FileProcessing {
      * @param line 読み込み行
      * @return 分割後のリスト
      */
-    private List<String> fileSplit(final String line) {
+    private static List<String> fileSplit(final String line) {
         char c;
         StringBuilder sb = new StringBuilder();
         List<String> data = new ArrayList<String>();
