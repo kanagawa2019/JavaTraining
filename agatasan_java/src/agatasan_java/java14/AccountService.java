@@ -14,13 +14,13 @@ import java.util.List;
 public class AccountService {
 
     /** 口座保有限度額（下限） */
-    protected static final long MIN_BALANCE = 0;
+    protected static final long MIN_BALANCE = 0L;
     /** 口座保有限度額（上限） */
-    protected static final long MAX_BALANCE = 9000000000000000000l;
+    protected static final long MAX_BALANCE = 9000000000000000000L;
     /** 入金下限金額 */
-    private static final long MINIMUM_AMOUNT = 1;
+    private static final long MINIMUM_AMOUNT = 1L;
     /** 入金上限金額 */
-    private static final long MAXIMUM_AMOUNT = 10000000;
+    private static final long MAXIMUM_AMOUNT = 10000000L;
 
     // --------------------------------------------------
     // protected関数
@@ -105,11 +105,10 @@ public class AccountService {
         target.setBalance(sum);
 
         // 口座の更新
-        FileProcessing fp = new FileProcessing();
-        fp.createFile(true, personalList, 0);
+        FileProcessing.createFile(true, personalList, 0);
 
         // 入金履歴
-        fp.writeHistory(target.getAccountNumber(), AccountHandlingMenu.DEPOSIT.getId(), inputDeposit, sum);
+        FileProcessing.writeHistory(target.getAccountNumber(), AccountHandlingMenu.DEPOSIT.getId(), inputDeposit, sum);
 
     }
 
