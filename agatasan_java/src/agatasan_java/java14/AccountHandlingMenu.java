@@ -8,11 +8,16 @@ package agatasan_java.java14;
  * @version 1.1 2021/05/23 No.95～102指摘対応
  * @version 1.2 2021/05/30 No.110～122指摘対応
  * @version 1.3 2021/05/31 No.123～131指摘対応
+ * @version 1.4 2021/06/02 No.132～136指摘対応
  *
  */
 public enum AccountHandlingMenu {
 
-    DEPOSIT(1, "入金"), TRANSFER(2, "振込"), WITHDRAW(3, "出金"), BALANCE(4, "残高表示"), HISTORY(5, "お取引履歴表示");
+    DEPOSIT(1, "入金"),
+    TRANSFER(2, "振込"),
+    WITHDRAW(3, "出金"),
+    BALANCE(4, "残高表示"),
+    HISTORY(5, "お取引履歴表示");
 
     /** id */
     private final int id;

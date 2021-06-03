@@ -26,15 +26,15 @@ public class BalanceProcessiong {
     /** ヘッダー部の表示形式：区分 */
     private static final String HEADER_FORMAT_FOR_CLASSIFICATION = "%-3S";
     /** ヘッダー部の表示形式：取引金額 */
-    private static final String HEADER_FORMAT_FOR_TRANSACTIONAMOUNT = "%-8S";
+    private static final String HEADER_FORMAT_FOR_TRANSACTIONAMOUNT = "%-10S";
     /** データ部の表示形式：お取引日 */
     private static final String DATA_FORMAT_FOR_DATE = "%10S";
     /** データ部の表示形式：区分 */
     private static final String DATA_FORMAT_FOR_CLASSIFICATION = "%-3S";
     /** データ部の表示形式：取引金額 */
-    private static final String DATA_FORMAT_FOR_TRANSACTIONAMOUNT = "%,10d円";
+    private static final String DATA_FORMAT_FOR_TRANSACTIONAMOUNT = "%,12d円";
     /** データ部の表示形式：残高 */
-    private static final String DATA_FORMAT_FOR_BALANCE = "%,10d円";
+    private static final String DATA_FORMAT_FOR_BALANCE = "%,26d円";
     /** 日付形式 ：yyyy年MM月dd日 */
     private static final String DATE_OF_STANDARD_BIRTH = "yyyy年MM月dd日";
 
@@ -74,10 +74,11 @@ public class BalanceProcessiong {
         // 履歴あり
         Boolean isExistHistory = false;
 
-        sb.append("***********************************************").append("\n");
-        sb.append(String.format(HEADER_FORMAT_FOR_DATE, "お取引日")).append(DISPLAY_CONNECT).append(String.format(HEADER_FORMAT_FOR_CLASSIFICATION, "区分"))
-                .append(DISPLAY_CONNECT).append(String.format(HEADER_FORMAT_FOR_TRANSACTIONAMOUNT, "取引金額")).append(DISPLAY_CONNECT).append("残高")
-                .append("\n");
+        sb.append("****************************************************************").append("\n");
+        sb.append(String.format(HEADER_FORMAT_FOR_DATE, "お取引日")).append(DISPLAY_CONNECT)
+                .append(String.format(HEADER_FORMAT_FOR_CLASSIFICATION, "区分")).append(DISPLAY_CONNECT)
+                .append(String.format(HEADER_FORMAT_FOR_TRANSACTIONAMOUNT, "取引金額")).append(DISPLAY_CONNECT)
+                .append("残高").append("\n");
 
         for (AccountHistory history : historyList) {
             if (accountNumber == history.getAccountNumber()) {
@@ -95,7 +96,7 @@ public class BalanceProcessiong {
 
         }
 
-        sb.append("***********************************************");
+        sb.append("****************************************************************");
 
         System.out.println(isExistHistory == true ? sb.toString() : "お取引履歴はありません。");
     }

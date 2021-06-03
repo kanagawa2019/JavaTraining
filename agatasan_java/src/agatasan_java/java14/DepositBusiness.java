@@ -6,11 +6,14 @@ package agatasan_java.java14;
  * @author •H“c ”ü‹I
  * @version 1.0 2021/05/23 V‹Kì¬
  * @version 1.1 2021/05/31 No.123`131w“E‘Î‰
+ * @version 1.2 2021/06/02 No.132`136w“E‘Î‰
  *
  */
 public enum DepositBusiness {
 
-    NEW(1, "ŒûÀ‚ğV‹Kì¬"), CHANGE(2, "‚·‚Å‚É‚ ‚éŒûÀ‚ğæ‚èˆµ‚¤"), RELEASE(3, "ŒûÀ‚ğ‰ğ–ñ");
+    NEW(1, "ŒûÀ‚ğV‹Kì¬"),
+    CHANGE(2, "‚·‚Å‚É‚ ‚éŒûÀ‚ğæ‚èˆµ‚¤"),
+    RELEASE(3, "ŒûÀ‚ğ‰ğ–ñ");
 
     /** id */
     private final int id;

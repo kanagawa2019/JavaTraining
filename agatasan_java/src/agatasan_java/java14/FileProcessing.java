@@ -25,6 +25,7 @@ import java.util.Properties;
  * @version 1.1 2021/05/26 No.109～113指摘対応
  * @version 1.2 2021/05/31 No.123～131指摘対応
  * @version 1.3 2021/06/01 No.126,128,130,131指摘対応
+ * @version 1.4 2021/06/02 No.132～136指摘対応
  *
  */
 public class FileProcessing {
@@ -123,21 +124,13 @@ public class FileProcessing {
             bw = new BufferedWriter(new FileWriter(strPass, true));
 
             // 日付、番号、取り扱い区分、取引金額、残高
-            String str = String.format("%s%s%s%s%s%d%s%s%s%d%s%s%s%d%s%s%s%d%s", SAVE_IDENTIFIER, getToday(),
-                    SAVE_IDENTIFIER, SAVA_SEPARATION,
-                    SAVE_IDENTIFIER, accountNumber,
-                    SAVE_IDENTIFIER, SAVA_SEPARATION,
-                    SAVE_IDENTIFIER,
-                    id,
-                    SAVE_IDENTIFIER,
-                    SAVA_SEPARATION,
-                    SAVE_IDENTIFIER,
-                    transactionAmount,
-                    SAVE_IDENTIFIER,
-                    SAVA_SEPARATION,
-                    SAVE_IDENTIFIER,
-                    balance,
-                    SAVE_IDENTIFIER
+            String str = String.format(
+                    "%s%s%s%s%s%d%s%s%s%d%s%s%s%d%s%s%s%d%s",
+                    SAVE_IDENTIFIER, getToday(), SAVE_IDENTIFIER, SAVA_SEPARATION,
+                    SAVE_IDENTIFIER, accountNumber, SAVE_IDENTIFIER, SAVA_SEPARATION,
+                    SAVE_IDENTIFIER, id, SAVE_IDENTIFIER, SAVA_SEPARATION,
+                    SAVE_IDENTIFIER, transactionAmount, SAVE_IDENTIFIER, SAVA_SEPARATION,
+                    SAVE_IDENTIFIER, balance, SAVE_IDENTIFIER
                     );
 
             // 書き込み
@@ -181,18 +174,11 @@ public class FileProcessing {
             if (isUser) {
                 // 口座番号、ユーザー名、金額をカンマ区切りで連結
                 for (Personal p : list) {
-                    String str = String.format("%s%s%s%s%s%s%s%s%s%d%s",
-                            SAVE_IDENTIFIER,
-                            p.getAccountNumber(),
-                            SAVE_IDENTIFIER,
-                            SAVA_SEPARATION,
-                            SAVE_IDENTIFIER,
-                            conversionEscape(p.getName()),
-                            SAVE_IDENTIFIER,
-                            SAVA_SEPARATION,
-                            SAVE_IDENTIFIER,
-                            p.getBalance(),
-                            SAVE_IDENTIFIER
+                    String str = String.format(
+                            "%s%s%s%s%s%s%s%s%s%d%s",
+                            SAVE_IDENTIFIER, p.getAccountNumber(), SAVE_IDENTIFIER, SAVA_SEPARATION,
+                            SAVE_IDENTIFIER, conversionEscape(p.getName()), SAVE_IDENTIFIER, SAVA_SEPARATION,
+                            SAVE_IDENTIFIER, p.getBalance(), SAVE_IDENTIFIER
                             );
                     // 書き込み
                     bw.write(str);

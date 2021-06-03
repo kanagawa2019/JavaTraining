@@ -11,6 +11,7 @@ import java.util.Scanner;
  * @version 1.1 2021/05/26 No.109～113指摘対応
  * @version 1.2 2021/05/30 No.110～122指摘対応
  * @version 1.3 2021/05/31 No.123～131指摘対応
+ * @version 1.4 2021/06/02 No.132～136指摘対応
  *
  */
 public class Util {
@@ -198,10 +199,10 @@ public class Util {
     }
 
     /**
-     * 修正する人物表示文言作成
+     * 取り扱う人物表示文言作成
      * 
      * @param userList ユーザ情報リスト
-     * @param msg
+     * @param msg　入力促し文章
      * @return 表示文言
      */
     public static String displayToCorrectPerson(final List<Personal> userList, String msg) {

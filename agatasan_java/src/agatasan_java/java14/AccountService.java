@@ -10,6 +10,8 @@ import java.util.List;
  * @version 1.0 2021/05/30 V‹Kì¬
  * @version 1.1 2021/05/31 No.123`131w“E‘Î‰
  * @version 1.2 2021/06/01 No.126,128,130,131w“E‘Î‰
+ * @version 1.3 2021/06/02 No.132`136w“E‘Î‰
+ * @version 1.4 2021/06/02 No.132`136w“E‘Î‰
  *
  */
 public class AccountService {
@@ -41,6 +43,18 @@ public class AccountService {
      * @param menu     ŒûÀæ‚èˆµ‚¢ƒƒjƒ…[
      * @param msg      •\¦ƒƒbƒZ[ƒW
      * @param transfer UŒ³
+     * @return æˆµ‹àŠz
+     */
+    protected static long getInputMoneyInfo(final AccountHandlingMenu menu, final String msg, final Personal transfer) {
+        return getInputMoneyInfo(menu, msg, transfer, null);
+    }
+
+    /**
+     * “ü—Í‹àŠz‚ğæ“¾
+     * 
+     * @param menu     ŒûÀæ‚èˆµ‚¢ƒƒjƒ…[
+     * @param msg      •\¦ƒƒbƒZ[ƒW
+     * @param transfer UŒ³
      * @param payee    Uæ
      * @return æˆµ‹àŠz
      */
@@ -53,18 +67,6 @@ public class AccountService {
         } while (!isMatchCondition(menu, inputDeposit, transfer, payee));
 
         return inputDeposit;
-    }
-
-    /**
-     * “ü—Í‹àŠz‚ğæ“¾
-     * 
-     * @param menu     ŒûÀæ‚èˆµ‚¢ƒƒjƒ…[
-     * @param msg      •\¦ƒƒbƒZ[ƒW
-     * @param transfer UŒ³
-     * @return æˆµ‹àŠz
-     */
-    protected static long getInputMoneyInfo(final AccountHandlingMenu menu, final String msg, final Personal transfer) {
-        return getInputMoneyInfo(menu, msg, transfer, null);
     }
 
     /**

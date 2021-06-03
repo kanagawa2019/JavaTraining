@@ -12,6 +12,7 @@ import java.util.List;
  * @version 1.2 2021/05/30 No.110～122指摘対応
  * @version 1.3 2021/05/31 No.123～131指摘対応
  * @version 1.4 2021/06/01 No.126,128,130,131指摘対応
+ * @version 1.5 2021/06/02 No.132～136指摘対応
  *
  */
 public class AccountProcessing extends AccountService {
@@ -45,7 +46,7 @@ public class AccountProcessing extends AccountService {
 
         do {
 
-            // 修正する人物の番号を取得
+            // 取り扱う人物の番号を取得
             int personOfNumber = Util.getTargetNo(personalList, "どのユーザの処理をしますか？");
 
             // 0の場合は、最初に戻る
@@ -61,10 +62,10 @@ public class AccountProcessing extends AccountService {
             try {
 
                 do {
-                    // 修正するユーザ情報番号を取得
-                    int propertyOfNumber = getModifyUserInfo(displayToCorrectProperty(personal.getName()));
+                    // 取り扱うユーザ情報番号を取得
+                    int propertyOfNumber = getModifyUserInfo(displayToTreatProperty(personal.getName()));
 
-                    // 0 の場合、修正人物を選択する処理まで戻る
+                    // 0 の場合、人物を選択する処理まで戻る
                     if (propertyOfNumber == Util.START_NUMBER_OF_PERSONAL_ATTRIBUTE_LIST) {
                         break;
                     }
@@ -143,7 +144,7 @@ public class AccountProcessing extends AccountService {
      */
     public static void releaseAccount(List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
 
-        // 修正する人物の番号を取得
+        // 取り扱う人物の番号を取得
         int personOfNumber = Util.getTargetNo(personalList, "どのユーザの処理をしますか？");
 
         // 0の場合は、最初に戻る
@@ -189,10 +190,10 @@ public class AccountProcessing extends AccountService {
     }
 
     /**
-     * 修正する情報を取得
+     * 取り扱う情報を取得
      * 
      * @param toModifyPropertyMsg コンソールに表示する文言
-     * @return 修正番号
+     * @return 対象番号
      */
     private static int getModifyUserInfo(final String toModifyPropertyMsg) {
         int propertyOfNumber = 0;
@@ -205,20 +206,20 @@ public class AccountProcessing extends AccountService {
     }
 
     /**
-     * 修正する属性表示文言作成
+     * 取り扱う属性表示文言作成
      * 
-     * @param modifyName 修正する人物名称
+     * @param modifyName 取り扱う人物名称
      * @return 表示文言
      */
-    private static String displayToCorrectProperty(final String correctName) {
+    private static String displayToTreatProperty(final String correctName) {
 
         StringBuffer sb = new StringBuffer();
 
-        sb.append(correctName + "さんを修正します。").append("\n");
-        sb.append("どの情報を修正しますか？").append("\n");
+        sb.append(correctName + "さんを取り扱います。").append("\n");
+        sb.append("どの情報を取り扱いますか？").append("\n");
         sb.append("---------------------------").append("\n");
-        sb.append(String.format(Util.DISPLAY_FORMAT_OF_PERSONAL_LIST, Util.START_NUMBER_OF_PERSONAL_ATTRIBUTE_LIST)).append(".").append(Util.BACK)
-                .append("\n");
+        sb.append(String.format(Util.DISPLAY_FORMAT_OF_PERSONAL_LIST, Util.START_NUMBER_OF_PERSONAL_ATTRIBUTE_LIST))
+                .append(".").append(Util.BACK).append("\n");
         sb.append(AccountHandlingMenu.getSelectBankString());
         sb.append("---------------------------").append("\n");
 
