@@ -1,42 +1,42 @@
 package agatasan_java.java14;
 
 /**
- * —a‹à‹Æ–±
+ * é é‡‘æ¥­å‹™
  * 
- * @author •H“c ”ü‹I
- * @version 1.0 2021/05/23 V‹Kì¬
- * @version 1.1 2021/05/31 No.123`131w“E‘Î‰
- * @version 1.2 2021/06/02 No.132`136w“E‘Î‰
+ * @author è±ç”° ç¾ç´€
+ * @version 1.0 2021/05/23 æ–°è¦ä½œæˆ
+ * @version 1.1 2021/05/31 No.123ï½131æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.2 2021/06/02 No.132ï½136æŒ‡æ‘˜å¯¾å¿œ
  *
  */
 public enum DepositBusiness {
 
-    NEW(1, "ŒûÀ‚ğV‹Kì¬"),
-    CHANGE(2, "‚·‚Å‚É‚ ‚éŒûÀ‚ğæ‚èˆµ‚¤"),
-    RELEASE(3, "ŒûÀ‚ğ‰ğ–ñ");
+    NEW(1, "å£åº§ã‚’æ–°è¦ä½œæˆ"),
+    CHANGE(2, "ã™ã§ã«ã‚ã‚‹å£åº§ã‚’å–ã‚Šæ‰±ã†"),
+    RELEASE(3, "å£åº§ã‚’è§£ç´„");
 
     /** id */
     private final int id;
-    /** –¼Ì */
+    /** åç§° */
     private final String name;
-    /** •\¦Œ`® */
+    /** è¡¨ç¤ºå½¢å¼ */
     private static final String DISPLAY_FORMAT = "%2d";
 
     /**
-     * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+     * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
      * 
-     * @param id   id
-     * @param name –¼Ì
+     * @param id       id
+     * @param name åç§°
      */
     private DepositBusiness(final int id, final String name) {
-        this.id = id;
-        this.name = name;
+        this.id        = id;
+        this.name  = name;
     }
 
     /**
-     * ŒûÀˆ—•\¦•¶š—ñæ“¾
+     * å£åº§å‡¦ç†è¡¨ç¤ºæ–‡å­—åˆ—å–å¾—
      * 
-     * @return ŒûÀˆ—•\¦•¶š—ñ
+     * @return å£åº§å‡¦ç†è¡¨ç¤ºæ–‡å­—åˆ—
      */
     public static String getSelectAccountString() {
         final StringBuffer sb = new StringBuffer();
@@ -47,10 +47,10 @@ public enum DepositBusiness {
     }
 
     /**
-     * ŒûÀˆ—æ“¾
+     * å£åº§å‡¦ç†å–å¾—
      * 
-     * @param inputAccount“ü—Í’l
-     * @return ŒûÀˆ—‚ª‘¶İ‚µ‚È‚¢ê‡‚Ínull’l
+     * @param inputAccount  å…¥åŠ›å€¤
+     * @return å£åº§å‡¦ç†ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯nullå€¤
      */
     public static DepositBusiness convertAccount(final String inputAccount) {
         if (inputAccount == null) {

@@ -1,37 +1,37 @@
 package agatasan_java.java14;
 
 /**
- * ŒÚ‹qŒûÀƒNƒ‰ƒX
+ * é¡§å®¢å£åº§ã‚¯ãƒ©ã‚¹
  * 
- * @author •H“c ”ü‹I
- * @version 1.0 2021/01/02 V‹Kì¬
- * @version 1.1 2021/05/26 No.109`113w“E‘Î‰
+ * @author è±ç”° ç¾ç´€
+ * @version 1.0 2021/01/02 æ–°è¦ä½œæˆ
+ * @version 1.1 2021/05/26 No.109ï½113æŒ‡æ‘˜å¯¾å¿œ
  */
 public class Personal {
 
-    /** –¼ */
+    /** æ°å */
     private String name;
-    /** ŒûÀ”Ô† */
+    /** å£åº§ç•ªå· */
     private int accountNumber;
-    /** c‚ */
+    /** æ®‹é«˜ */
     private long balance;
 
     /**
-     * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+     * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
      * 
-     * @param name          –¼
-     * @param accountNumber ŒûÀ”Ô†
-     * @param balance       c‚
+     * @param name               æ°å
+     * @param accountNumber å£åº§ç•ªå·
+     * @param balance            æ®‹é«˜
      */
     Personal(final String name, final int accountNumber, final long balance) {
-        this.name          = name;
-        this.accountNumber = accountNumber;
-        this.balance       = balance;
+        this.name                 = name;
+        this.accountNumber   = accountNumber;
+        this.balance               = balance;
 
     }
 
     /**
-     * –¼‚ğæ“¾
+     * æ°åã‚’å–å¾—
      * 
      * @return name
      */
@@ -40,16 +40,16 @@ public class Personal {
     }
 
     /**
-     * –¼‚ğİ’è
+     * æ°åã‚’è¨­å®š
      * 
-     * @param name –¼‚ğƒZƒbƒg‚·‚é
+     * @param name æ°åã‚’ã‚»ãƒƒãƒˆã™ã‚‹
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * ŒûÀ”Ô†‚ğæ“¾
+     * å£åº§ç•ªå·ã‚’å–å¾—
      * 
      * @return accountNumber
      */
@@ -58,16 +58,16 @@ public class Personal {
     }
 
     /**
-     * ŒûÀ”Ô†‚ğİ’è
+     * å£åº§ç•ªå·ã‚’è¨­å®š
      * 
-     * @param accountNumber ŒûÀ”Ô†‚ğƒZƒbƒg‚·‚é
+     * @param accountNumber å£åº§ç•ªå·ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
      */
     public void setAccountNumber(int accountNumber) {
         this.accountNumber = accountNumber;
     }
 
     /**
-     * c‚‚ğæ“¾
+     * æ®‹é«˜ã‚’å–å¾—
      * 
      * @return balance
      */
@@ -76,9 +76,9 @@ public class Personal {
     }
 
     /**
-     * c‚‚ğİ’è
+     * æ®‹é«˜ã‚’è¨­å®š
      * 
-     * @param balance c‚‚ğƒZƒbƒg‚·‚é
+     * @param balance æ®‹é«˜ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
      */
     public void setBalance(long balance) {
         this.balance = balance;

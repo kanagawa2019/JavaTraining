@@ -4,57 +4,57 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * ‹¤’Êˆ—
+ * å…±é€šå‡¦ç†
  * 
- * @author •H“c ”ü‹I
- * @version 1.0 2021/05/23 V‹Kì¬
- * @version 1.1 2021/05/26 No.109`113w“E‘Î‰
- * @version 1.2 2021/05/30 No.110`122w“E‘Î‰
- * @version 1.3 2021/05/31 No.123`131w“E‘Î‰
- * @version 1.4 2021/06/02 No.132`136w“E‘Î‰
+ * @author è±ç”° ç¾ç´€
+ * @version 1.0 2021/05/23 æ–°è¦ä½œæˆ
+ * @version 1.1 2021/05/26 No.109ï½113æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.2 2021/05/30 No.110ï½122æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.3 2021/05/31 No.123ï½131æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.4 2021/06/02 No.132ï½136æŒ‡æ‘˜å¯¾å¿œ
  *
  */
 public class Util {
     // --------------------------------------------------
-    // ƒƒ“ƒo•Ï”
+    // ãƒ¡ãƒ³ãƒå¤‰æ•°
     // --------------------------------------------------
-    /** ƒXƒLƒƒƒi[iƒRƒ“ƒ\[ƒ‹“ü—Íj */
+    /** ã‚¹ã‚­ãƒ£ãƒŠãƒ¼ï¼ˆã‚³ãƒ³ã‚½ãƒ¼ãƒ«å…¥åŠ›ï¼‰ */
     public static Scanner mScanner = new Scanner(System.in);
 
     // --------------------------------------------------
-    // ’è”
+    // å®šæ•°
     // --------------------------------------------------
-    /** “ü—ÍƒJ[ƒ\ƒ‹ */
+    /** å…¥åŠ›ã‚«ãƒ¼ã‚½ãƒ« */
     private static final String CURSOL = ">";
-    /** ˆ—Œp‘± */
+    /** å‡¦ç†ç¶™ç¶š */
     private static final String PROCESSING_CONTINUE = "Y";
-    /** ˆ—I—¹ */
+    /** å‡¦ç†çµ‚äº† */
     private static final String PROCESSING_END = "N";
-    /** ”ÍˆÍ“à‚ÌƒƒbƒZ[ƒW */
-    private static final String WITHIN_RANGE = "%d`%d‚Ì”ÍˆÍ‚Å“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B";
-    /** ‘z’èŠO‚ÌƒƒbƒZ[ƒW */
-    public static final String UNEXPECTED_ERR = "‘z’è‚³‚ê‚½ˆ—‚Í‚ ‚è‚Ü‚¹‚ñBƒVƒXƒeƒ€ŠÇ—Ò‚É˜A—‚µ‚Ä‚­‚¾‚³‚¢B";
-    /** ‘O‚É–ß‚é‚ÌƒƒbƒZ[ƒW */
-    public static final String BACK = "‘O‚É–ß‚é";
-    /** l•¨ƒŠƒXƒg•\¦Œ`® */
+    /** ç¯„å›²å†…ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
+    private static final String WITHIN_RANGE = "%dï½%dã®ç¯„å›²ã§å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚";
+    /** æƒ³å®šå¤–ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
+    public static final String UNEXPECTED_ERR = "æƒ³å®šã•ã‚ŒãŸå‡¦ç†ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚ã‚·ã‚¹ãƒ†ãƒ ç®¡ç†è€…ã«é€£çµ¡ã—ã¦ãã ã•ã„ã€‚";
+    /** å‰ã«æˆ»ã‚‹ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
+    public static final String BACK = "å‰ã«æˆ»ã‚‹";
+    /** äººç‰©ãƒªã‚¹ãƒˆè¡¨ç¤ºå½¢å¼ */
     public static final String DISPLAY_FORMAT_OF_PERSONAL_LIST = "%2d";
-    /** l•¨ƒŠƒXƒgŠJn”Ô† */
+    /** äººç‰©ãƒªã‚¹ãƒˆé–‹å§‹ç•ªå· */
     public static final int START_NUMBER_OF_PERSONAL_LIST = 0;
-    /** ‘®«ƒŠƒXƒg•\¦Œ`® */
+    /** å±æ€§ãƒªã‚¹ãƒˆè¡¨ç¤ºå½¢å¼ */
     public static final String DISPLAY_FORMAT_OF_PERSONAL_ATTRIBUTE_LIST = "%2d";
-    /** ‘®«ƒŠƒXƒgŠJn”Ô† */
+    /** å±æ€§ãƒªã‚¹ãƒˆé–‹å§‹ç•ªå· */
     public static final int START_NUMBER_OF_PERSONAL_ATTRIBUTE_LIST = 0;
-    /** ‘I‘ğˆ‚ÌÅ¬’l */
+    /** é¸æŠè‚¢ã®æœ€å°å€¤ */
     public static final int RANGE_MIN = 0;
 
     // --------------------------------------------------
-    // publicŠÖ”
+    // publicé–¢æ•°
     // --------------------------------------------------
     /**
-     * •¶š“ü—Í
+     * æ–‡å­—å…¥åŠ›
      * 
-     * @param inputMsg “ü—ÍƒRƒ“ƒ\[ƒ‹
-     * @return “ü—Í’l
+     * @param inputMsg å…¥åŠ›ã‚³ãƒ³ã‚½ãƒ¼ãƒ«
+     * @return å…¥åŠ›å€¤
      */
     public static String inputStr(final String inputMsg) {
         String input = null;
@@ -67,17 +67,17 @@ public class Util {
                 input = mScanner.next();
                 isCheck = true;
             } catch (Exception e) {
-                System.out.println("\‚µ–ó‚ ‚è‚Ü‚¹‚ñB³‚µ‚­ˆ—‚ªs‚¦‚Ü‚¹‚ñ‚Å‚µ‚½B\nÄ“ü—Í‚ğ‚¨Šè‚¢‚µ‚Ü‚·B");
+                System.out.println("ç”³ã—è¨³ã‚ã‚Šã¾ã›ã‚“ã€‚æ­£ã—ãå‡¦ç†ãŒè¡Œãˆã¾ã›ã‚“ã§ã—ãŸã€‚\nå†å…¥åŠ›ã‚’ãŠé¡˜ã„ã—ã¾ã™ã€‚");
             }
         } while (!isCheck);
         return input;
     }
 
     /**
-     * ”’l“ü—Í(intŒ^)
+     * æ•°å€¤å…¥åŠ›(intå‹)
      * 
-     * @param inputMsg “ü—ÍƒRƒ“ƒ\[ƒ‹‚É•\¦‚·‚é•¶Œ¾
-     * @return “ü—Í’l
+     * @param inputMsg å…¥åŠ›ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã«è¡¨ç¤ºã™ã‚‹æ–‡è¨€
+     * @return å…¥åŠ›å€¤
      */
     public static int inputInt(final String inputMsg) {
         int num = 0;
@@ -95,7 +95,7 @@ public class Util {
                 num = Integer.parseInt(input);
                 isCheck = true;
             } catch (Exception e) {
-                System.out.println("\‚µ–ó‚ ‚è‚Ü‚¹‚ñB³‚µ‚­ˆ—‚ªs‚¦‚Ü‚¹‚ñ‚Å‚µ‚½B\nÄ“ü—Í‚ğ‚¨Šè‚¢‚µ‚Ü‚·B");
+                System.out.println("ç”³ã—è¨³ã‚ã‚Šã¾ã›ã‚“ã€‚æ­£ã—ãå‡¦ç†ãŒè¡Œãˆã¾ã›ã‚“ã§ã—ãŸã€‚\nå†å…¥åŠ›ã‚’ãŠé¡˜ã„ã—ã¾ã™ã€‚");
             }
 
         } while (!isCheck);
@@ -103,10 +103,10 @@ public class Util {
     }
 
     /**
-     * ”’l“ü—Í(longŒ^)
+     * æ•°å€¤å…¥åŠ›(longå‹)
      * 
-     * @param inputMsg “ü—ÍƒRƒ“ƒ\[ƒ‹‚É•\¦‚·‚é•¶Œ¾
-     * @return “ü—Í’l
+     * @param inputMsg å…¥åŠ›ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã«è¡¨ç¤ºã™ã‚‹æ–‡è¨€
+     * @return å…¥åŠ›å€¤
      */
     public static long inputLong(final String inputMsg) {
         long num = 0;
@@ -124,7 +124,7 @@ public class Util {
                 num = Integer.parseInt(input);
                 isCheck = true;
             } catch (Exception e) {
-                System.out.println("\‚µ–ó‚ ‚è‚Ü‚¹‚ñB³‚µ‚­ˆ—‚ªs‚¦‚Ü‚¹‚ñ‚Å‚µ‚½B\nÄ“ü—Í‚ğ‚¨Šè‚¢‚µ‚Ü‚·B");
+                System.out.println("ç”³ã—è¨³ã‚ã‚Šã¾ã›ã‚“ã€‚æ­£ã—ãå‡¦ç†ãŒè¡Œãˆã¾ã›ã‚“ã§ã—ãŸã€‚\nå†å…¥åŠ›ã‚’ãŠé¡˜ã„ã—ã¾ã™ã€‚");
             }
 
         } while (!isCheck);
@@ -132,26 +132,26 @@ public class Util {
     }
 
     /**
-     * ˆ—Œp‘±Šm”F
+     * å‡¦ç†ç¶™ç¶šç¢ºèª
      * 
-     * @return ˆ—Œp‘±‚ÍTrueBˆ—I—¹‚ÍfalseB
+     * @return å‡¦ç†ç¶™ç¶šã¯Trueã€‚å‡¦ç†çµ‚äº†ã¯falseã€‚
      */
     public static boolean isContinue() {
         boolean isCheck = false;
 
-        String displayMsg = String.format("ˆ—‚ğ‘±‚¯‚Ü‚·‚©H(%s/%s)", PROCESSING_CONTINUE, PROCESSING_END);
+        String displayMsg = String.format("å‡¦ç†ã‚’ç¶šã‘ã¾ã™ã‹ï¼Ÿ(%s/%s)", PROCESSING_CONTINUE, PROCESSING_END);
 
         do {
             String input = inputStr(displayMsg);
 
-            // “ü—Í’l‚Ì”»’è
+            // å…¥åŠ›å€¤ã®åˆ¤å®š
             switch (input.toUpperCase()) {
                 case PROCESSING_CONTINUE:
                     return true;
                 case PROCESSING_END:
                     return false;
                 default:
-                    System.out.println(String.format("(%s/%s)ˆÈŠO‚ª“ü—Í‚³‚ê‚Ü‚µ‚½B\nÄ“ü—Í‚ğ‚¨Šè‚¢‚µ‚Ü‚·B", PROCESSING_CONTINUE, PROCESSING_END));
+                    System.out.println(String.format("(%s/%s)ä»¥å¤–ãŒå…¥åŠ›ã•ã‚Œã¾ã—ãŸã€‚\nå†å…¥åŠ›ã‚’ãŠé¡˜ã„ã—ã¾ã™ã€‚", PROCESSING_CONTINUE, PROCESSING_END));
                     break;
             }
 
@@ -161,36 +161,36 @@ public class Util {
     }
 
     /**
-     * I—¹ˆ—
+     * çµ‚äº†å‡¦ç†
      */
     public static void scannerClose() {
-        System.out.println("I—¹‚µ‚Ü‚·B");
+        System.out.println("çµ‚äº†ã—ã¾ã™ã€‚");
         mScanner.close();
     }
 
     /**
-     * ”’l”ÍˆÍƒ`ƒFƒbƒN
+     * æ•°å€¤ç¯„å›²ãƒã‚§ãƒƒã‚¯
      * 
-     * @param targetNumber ƒ`ƒFƒbƒN‘ÎÛ”’l
-     * @param minValue     Å¬’l
-     * @param maxValue     Å‘å’l
-     * @return true:Å¬’l`Å‘å’l‚Ì”ÍˆÍ“à‚É‚ ‚é
+     * @param targetNumber  ãƒã‚§ãƒƒã‚¯å¯¾è±¡æ•°å€¤
+     * @param minValue         æœ€å°å€¤
+     * @param maxValue        æœ€å¤§å€¤
+     * @return true:æœ€å°å€¤ï½æœ€å¤§å€¤ã®ç¯„å›²å†…ã«ã‚ã‚‹
      */
     public static boolean isWithinRange(final long targetNumber, final long minValue, final long maxValue) {
         return (minValue <= targetNumber && targetNumber <= maxValue);
     }
 
     /**
-     * “ü—Í”’l”ÍˆÍŠOƒ`ƒFƒbƒN
+     * å…¥åŠ›æ•°å€¤ç¯„å›²å¤–ãƒã‚§ãƒƒã‚¯
      * 
-     * @param number “ü—Í‚³‚ê‚½”’l
-     * @param min    Å¬’l
-     * @param max    Å‘å’l
-     * @return “ü—Í‚³‚ê‚½”’l‚ª”ÍˆÍŠO‚Ìê‡‚ÍTrueB”ÍˆÍ“à‚Ìê‡‚ÍfalseB
+     * @param number  å…¥åŠ›ã•ã‚ŒãŸæ•°å€¤
+     * @param min       æœ€å°å€¤
+     * @param max      æœ€å¤§å€¤
+     * @return å…¥åŠ›ã•ã‚ŒãŸæ•°å€¤ãŒç¯„å›²å¤–ã®å ´åˆã¯Trueã€‚ç¯„å›²å†…ã®å ´åˆã¯falseã€‚
      */
     public static boolean isOutOfRange(final long number, final long min, final long max) {
 
-        // ”ÍˆÍŠO‚Ìê‡
+        // ç¯„å›²å¤–ã®å ´åˆ
         if (!Util.isWithinRange(number, min, max)) {
             System.out.println(String.format(WITHIN_RANGE, min, max));
             return true;
@@ -199,17 +199,17 @@ public class Util {
     }
 
     /**
-     * æ‚èˆµ‚¤l•¨•\¦•¶Œ¾ì¬
+     * å–ã‚Šæ‰±ã†äººç‰©è¡¨ç¤ºæ–‡è¨€ä½œæˆ
      * 
-     * @param userList ƒ†[ƒUî•ñƒŠƒXƒg
-     * @param msg@“ü—Í‘£‚µ•¶Í
-     * @return •\¦•¶Œ¾
+     * @param userList ãƒ¦ãƒ¼ã‚¶æƒ…å ±ãƒªã‚¹ãƒˆ
+     * @param msgã€€   å…¥åŠ›ä¿ƒã—æ–‡ç« 
+     * @return è¡¨ç¤ºæ–‡è¨€
      */
     public static String displayToCorrectPerson(final List<Personal> userList, String msg) {
 
         System.out.println(msg);
 
-        // ‘€ì•¶Œ¾•\¦
+        // æ“ä½œæ–‡è¨€è¡¨ç¤º
         StringBuffer sb = new StringBuffer();
         sb.append("---------------------------").append("\n");
         int cnt = START_NUMBER_OF_PERSONAL_LIST;
@@ -224,16 +224,16 @@ public class Util {
     }
 
     /**
-     * ’ù³‚·‚é‘ÎÛƒ†[ƒU‚ğæ“¾
+     * è¨‚æ­£ã™ã‚‹å¯¾è±¡ãƒ¦ãƒ¼ã‚¶ã‚’å–å¾—
      * 
-     * @param toCorrectPersonMsg ƒRƒ“ƒ\[ƒ‹‚É•\¦‚·‚é•¶Œ¾
-     * @param userList           ƒ†[ƒUî•ñƒŠƒXƒg
-     * @return ’ù³‚·‚éƒ†[ƒU”Ô†
+     * @param toCorrectPersonMsg ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã«è¡¨ç¤ºã™ã‚‹æ–‡è¨€
+     * @param userList                  ãƒ¦ãƒ¼ã‚¶æƒ…å ±ãƒªã‚¹ãƒˆ
+     * @return è¨‚æ­£ã™ã‚‹ãƒ¦ãƒ¼ã‚¶ç•ªå·
      */
     public static int getCorrectPerson(final String toCorrectPersonMsg, final List<Personal> userList) {
         int personOfNumber = 0;
         do {
-            // ’ù³‚·‚él•¨‚Ì”Ô†‚ğæ“¾
+            // è¨‚æ­£ã™ã‚‹äººç‰©ã®ç•ªå·ã‚’å–å¾—
             personOfNumber = Util.inputInt(toCorrectPersonMsg);
 
         } while (Util.isOutOfRange(personOfNumber, RANGE_MIN, userList.size()));
@@ -241,23 +241,23 @@ public class Util {
     }
 
     /**
-     * “ü—Í‚³‚ê‚½‹àŠz‚ğæ“¾
+     * å…¥åŠ›ã•ã‚ŒãŸé‡‘é¡ã‚’å–å¾—
      * 
-     * @return ‹àŠz
+     * @return é‡‘é¡
      */
     public static long inputMoney(final String process) {
-        return Util.inputLong(String.format("%s‹àŠz‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢", process));
+        return Util.inputLong(String.format("%sé‡‘é¡ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„", process));
     }
 
     /**
-     * ƒŠƒXƒg‚©‚çC³‘ÎÛ”Ô†‚ğæ“¾
+     * ãƒªã‚¹ãƒˆã‹ã‚‰ä¿®æ­£å¯¾è±¡ç•ªå·ã‚’å–å¾—
      * 
-     * @param personalList ƒ†[ƒUî•ñƒŠƒXƒg
-     * @param msg          ƒRƒ“ƒ\[ƒ‹‚É•\¦‚·‚é•¶Œ¾
-     * @return C³”Ô†
+     * @param personalList  ãƒ¦ãƒ¼ã‚¶æƒ…å ±ãƒªã‚¹ãƒˆ
+     * @param msg            ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã«è¡¨ç¤ºã™ã‚‹æ–‡è¨€
+     * @return ä¿®æ­£ç•ªå·
      */
     public static int getTargetNo(final List<Personal> personalList, String msg) {
-        // C³”Ô†‚ğæ“¾
+        // ä¿®æ­£ç•ªå·ã‚’å–å¾—
         return getCorrectPerson(displayToCorrectPerson(personalList, msg), personalList);
     }
 

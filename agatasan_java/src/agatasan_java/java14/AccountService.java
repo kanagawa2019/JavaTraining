@@ -4,64 +4,64 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * ŒûÀæ‚èˆµ‚¢eƒNƒ‰ƒX
+ * å£åº§å–ã‚Šæ‰±ã„è¦ªã‚¯ãƒ©ã‚¹
  * 
- * @author •H“c ”ü‹I
- * @version 1.0 2021/05/30 V‹Kì¬
- * @version 1.1 2021/05/31 No.123`131w“E‘Î‰
- * @version 1.2 2021/06/01 No.126,128,130,131w“E‘Î‰
- * @version 1.3 2021/06/02 No.132`136w“E‘Î‰
- * @version 1.4 2021/06/02 No.132`136w“E‘Î‰
+ * @author è±ç”° ç¾ç´€
+ * @version 1.0 2021/05/30 æ–°è¦ä½œæˆ
+ * @version 1.1 2021/05/31 No.123ï½131æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.2 2021/06/01 No.126,128,130,131æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.3 2021/06/02 No.132ï½136æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.4 2021/06/02 No.132ï½136æŒ‡æ‘˜å¯¾å¿œ
  *
  */
 public class AccountService {
 
-    /** ŒûÀ•Û—LŒÀ“xŠzi‰ºŒÀj */
+    /** å£åº§ä¿æœ‰é™åº¦é¡ï¼ˆä¸‹é™ï¼‰ */
     protected static final long MIN_BALANCE = 0L;
-    /** ŒûÀ•Û—LŒÀ“xŠziãŒÀj */
+    /** å£åº§ä¿æœ‰é™åº¦é¡ï¼ˆä¸Šé™ï¼‰ */
     protected static final long MAX_BALANCE = 9000000000000000000L;
-    /** “ü‹à‰ºŒÀ‹àŠz */
+    /** å…¥é‡‘ä¸‹é™é‡‘é¡ */
     private static final long MINIMUM_AMOUNT = 1L;
-    /** “ü‹àãŒÀ‹àŠz */
+    /** å…¥é‡‘ä¸Šé™é‡‘é¡ */
     private static final long MAXIMUM_AMOUNT = 10000000L;
 
     // --------------------------------------------------
-    // protectedŠÖ”
+    // protectedé–¢æ•°
     // --------------------------------------------------
     /**
-     * c‚•\¦
+     * æ®‹é«˜è¡¨ç¤º
      * 
-     * @param balance c‚
+     * @param balance æ®‹é«˜
      */
     protected static void displayBalance(final long balance) {
-        System.out.println(String.format("c‚‚ÍA%,d‰~‚Å‚·", balance));
+        System.out.println(String.format("æ®‹é«˜ã¯ã€%,då††ã§ã™", balance));
     }
 
     /**
-     * “ü—Í‹àŠz‚ğæ“¾
+     * å…¥åŠ›é‡‘é¡ã‚’å–å¾—
      * 
-     * @param menu     ŒûÀæ‚èˆµ‚¢ƒƒjƒ…[
-     * @param msg      •\¦ƒƒbƒZ[ƒW
-     * @param transfer UŒ³
-     * @return æˆµ‹àŠz
+     * @param menu     å£åº§å–ã‚Šæ‰±ã„ãƒ¡ãƒ‹ãƒ¥ãƒ¼
+     * @param msg      è¡¨ç¤ºãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @param transfer æŒ¯è¾¼å…ƒ
+     * @return å–æ‰±é‡‘é¡
      */
     protected static long getInputMoneyInfo(final AccountHandlingMenu menu, final String msg, final Personal transfer) {
         return getInputMoneyInfo(menu, msg, transfer, null);
     }
 
     /**
-     * “ü—Í‹àŠz‚ğæ“¾
+     * å…¥åŠ›é‡‘é¡ã‚’å–å¾—
      * 
-     * @param menu     ŒûÀæ‚èˆµ‚¢ƒƒjƒ…[
-     * @param msg      •\¦ƒƒbƒZ[ƒW
-     * @param transfer UŒ³
-     * @param payee    Uæ
-     * @return æˆµ‹àŠz
+     * @param menu     å£åº§å–ã‚Šæ‰±ã„ãƒ¡ãƒ‹ãƒ¥ãƒ¼
+     * @param msg       è¡¨ç¤ºãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @param transfer  æŒ¯è¾¼å…ƒ
+     * @param payee    æŒ¯è¾¼å…ˆ
+     * @return å–æ‰±é‡‘é¡
      */
     protected static long getInputMoneyInfo(final AccountHandlingMenu menu, final String msg, final Personal transfer, final Personal payee) {
         long inputDeposit = 0;
         do {
-            // “ü—Í’l‚ğæ“¾
+            // å…¥åŠ›å€¤ã‚’å–å¾—
             inputDeposit = Util.inputMoney(msg);
 
         } while (!isMatchCondition(menu, inputDeposit, transfer, payee));
@@ -70,59 +70,59 @@ public class AccountService {
     }
 
     /**
-     * “ü‹àˆ—
+     * å…¥é‡‘å‡¦ç†
      * 
-     * @param depositIdx   ‘I‘ğ‚³‚ê‚½ƒCƒ“ƒfƒbƒNƒX
-     * @param personalList ƒ†[ƒUî•ñƒŠƒXƒg
-     * @return “ü‹àŒã‚Ìc‚
+     * @param depositIdx    é¸æŠã•ã‚ŒãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+     * @param personalList  ãƒ¦ãƒ¼ã‚¶æƒ…å ±ãƒªã‚¹ãƒˆ
+     * @return å…¥é‡‘å¾Œã®æ®‹é«˜
      * @throws FileWriteException
      * @throws FileReadException
      * @throws IOException
      */
     protected static void depositMoney(final int depositIdx, List<Personal> personalList) throws IOException, FileWriteException, FileReadException {
 
-        // “ü‹à‘ÎÛ
+        // å…¥é‡‘å¯¾è±¡
         Personal target = personalList.get(depositIdx);
 
-        // “ü‹à‰Â”\‚©‚Ìƒ`ƒFƒbƒN
+        // å…¥é‡‘å¯èƒ½ã‹ã®ãƒã‚§ãƒƒã‚¯
         if (target.getBalance() >= MAX_BALANCE) {
-            System.out.println("ŒûÀ•Û—LŒÀ“xŠz‚É’B‚µ‚Ä‚¢‚é‚½‚ßA“ü‹à‚Å‚«‚Ü‚¹‚ñB");
+            System.out.println("å£åº§ä¿æœ‰é™åº¦é¡ã«é”ã—ã¦ã„ã‚‹ãŸã‚ã€å…¥é‡‘ã§ãã¾ã›ã‚“ã€‚");
             return;
         }
 
-        // “ü‹àî•ñæ“¾
-        long inputDeposit = getInputMoneyInfo(AccountHandlingMenu.DEPOSIT, "“ü‹à", target);
+        // å…¥é‡‘æƒ…å ±å–å¾—
+        long inputDeposit = getInputMoneyInfo(AccountHandlingMenu.DEPOSIT, "å…¥é‡‘", target);
 
-        // c‚‚Ì‡Œv
+        // æ®‹é«˜ã®åˆè¨ˆ
         long sum = inputDeposit + target.getBalance();
         displayBalance(sum);
 
-        // c‚‚Ìİ’è
+        // æ®‹é«˜ã®è¨­å®š
         target.setBalance(sum);
 
-        // ŒûÀ‚ÌXV
+        // å£åº§ã®æ›´æ–°
         FileProcessing.createFile(true, personalList, 0);
 
-        // “ü‹à—š—ğ
+        // å…¥é‡‘å±¥æ­´
         FileProcessing.writeHistory(target.getAccountNumber(), AccountHandlingMenu.DEPOSIT.getId(), inputDeposit, sum);
 
     }
 
     // --------------------------------------------------
-    // privateŠÖ”
+    // privateé–¢æ•°
     // --------------------------------------------------
     /**
-     * “ü—Í‹àŠz‚ª“K³‚©ƒ`ƒFƒbƒN
+     * å…¥åŠ›é‡‘é¡ãŒé©æ­£ã‹ãƒã‚§ãƒƒã‚¯
      * 
-     * @param menu         ŒûÀæ‚èˆµ‚¢ƒƒjƒ…[
-     * @param inputDeposit “ü—Í‹àŠz
-     * @param transfer     UŒ³
-     * @param payee        Uæ
-     * @return “K«‚Ìê‡‚ÍtrueA•s“K³‚Ìê‡‚Ífalse‚ğ•Ô‚·
+     * @param menu           å£åº§å–ã‚Šæ‰±ã„ãƒ¡ãƒ‹ãƒ¥ãƒ¼
+     * @param inputDeposit  å…¥åŠ›é‡‘é¡
+     * @param transfer        æŒ¯è¾¼å…ƒ
+     * @param payee           æŒ¯è¾¼å…ˆ
+     * @return é©æ€§ã®å ´åˆã¯trueã€ä¸é©æ­£ã®å ´åˆã¯falseã‚’è¿”ã™
      */
     private static boolean isMatchCondition(final AccountHandlingMenu menu, final long inputDeposit, final Personal transfer, final Personal payee) {
 
-        // ”ÍˆÍƒ`ƒFƒbƒN‚Í‹¤’Ê‚Ås‚¤
+        // ç¯„å›²ãƒã‚§ãƒƒã‚¯ã¯å…±é€šã§è¡Œã†
         if (Util.isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT)) {
             return false;
         }
@@ -159,33 +159,33 @@ public class AccountService {
     }
 
     /**
-     * c‚“à‚Å•¥‚¦‚é‚©‚Ìƒ`ƒFƒbƒN
+     * æ®‹é«˜å†…ã§æ‰•ãˆã‚‹ã‹ã®ãƒã‚§ãƒƒã‚¯
      * 
-     * @param personal     ƒ†[ƒUî•ñ
-     * @param inputDeposit U‹àŠz
-     * @return c‚“à‚Å•¥‚¦‚é‚È‚çTrueA•¥‚¦‚È‚¢‚È‚çfalse‚ğ•Ô‚·
+     * @param personal       ãƒ¦ãƒ¼ã‚¶æƒ…å ±
+     * @param inputDeposit  æŒ¯è¾¼é‡‘é¡
+     * @return æ®‹é«˜å†…ã§æ‰•ãˆã‚‹ãªã‚‰Trueã€æ‰•ãˆãªã„ãªã‚‰falseã‚’è¿”ã™
      */
     private static boolean canPay(final Personal personal, final long inputDeposit) {
 
-        // ©•ª‚ÌŒûÀ‚©‚ç•¥‚¦‚È‚¢ê‡
+        // è‡ªåˆ†ã®å£åº§ã‹ã‚‰æ‰•ãˆãªã„å ´åˆ
         if (personal.getBalance() - inputDeposit < 0) {
-            System.out.println(String.format("‚²©•ª‚Ìc‚%,d‰~“à‚Å‚¨æ‚èˆµ‚¢‚Å‚«‚Ü‚·B", personal.getBalance()));
+            System.out.println(String.format("ã”è‡ªåˆ†ã®æ®‹é«˜%,då††å†…ã§ãŠå–ã‚Šæ‰±ã„ã§ãã¾ã™ã€‚", personal.getBalance()));
             return true;
         }
         return false;
     }
 
     /**
-     * “ü‹à‰Â”\‚©‚ÌŠm”F
+     * å…¥é‡‘å¯èƒ½ã‹ã®ç¢ºèª
      * 
-     * @param inputDeposit “ü‹à‹àŠz
-     * @param balance      c‚
-     * @return “ü‹à•s‰Â”\‚È‚çTrueA‰Â”\‚È‚çfalse‚ğ•Ô‚·
+     * @param inputDeposit  å…¥é‡‘é‡‘é¡
+     * @param balance         æ®‹é«˜
+     * @return å…¥é‡‘ä¸å¯èƒ½ãªã‚‰Trueã€å¯èƒ½ãªã‚‰falseã‚’è¿”ã™
      */
     private static boolean isMaxBalance(final long inputDeposit, final long balance) {
 
         if (MAX_BALANCE < inputDeposit + balance) {
-            System.out.println(String.format("“ü‹à‚Í%,d‰~‚Ü‚Å‚µ‚©ó•t‚ç‚ê‚Ü‚¹‚ñB", MAX_BALANCE - balance));
+            System.out.println(String.format("å…¥é‡‘ã¯%,då††ã¾ã§ã—ã‹å—ä»˜ã‚‰ã‚Œã¾ã›ã‚“ã€‚", MAX_BALANCE - balance));
             return true;
         }
         return false;

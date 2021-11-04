@@ -6,79 +6,79 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * c‚•\¦ŠÖŒWˆ—
+ * æ®‹é«˜è¡¨ç¤ºé–¢ä¿‚å‡¦ç†
  * 
- * @author •H“c ”ü‹I
- * @version 1.0 2021/05/23 V‹Kì¬
- * @version 1.1 2021/05/26 No.109`113w“E‘Î‰
- * @version 1.2 2021/05/30 No.110`122w“E‘Î‰
- * @version 1.3 2021/06/01 No.126,128,130,131w“E‘Î‰
+ * @author è±ç”° ç¾ç´€
+ * @version 1.0 2021/05/23 æ–°è¦ä½œæˆ
+ * @version 1.1 2021/05/26 No.109ï½113æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.2 2021/05/30 No.110ï½122æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.3 2021/06/01 No.126,128,130,131æŒ‡æ‘˜å¯¾å¿œ
  *  
  */
 public class BalanceProcessiong {
     // --------------------------------------------------
-    // ’è”
+    // å®šæ•°
     // --------------------------------------------------
-    /** —š—ğ•\¦Ú‘±•¶š */
+    /** å±¥æ­´è¡¨ç¤ºæ¥ç¶šæ–‡å­— */
     private static final String DISPLAY_CONNECT = "|";
-    /** ƒwƒbƒ_[•”‚Ì•\¦Œ`®F‚¨æˆø“ú */
+    /** ãƒ˜ãƒƒãƒ€ãƒ¼éƒ¨ã®è¡¨ç¤ºå½¢å¼ï¼šãŠå–å¼•æ—¥ */
     private static final String HEADER_FORMAT_FOR_DATE = "%-10S";
-    /** ƒwƒbƒ_[•”‚Ì•\¦Œ`®F‹æ•ª */
+    /** ãƒ˜ãƒƒãƒ€ãƒ¼éƒ¨ã®è¡¨ç¤ºå½¢å¼ï¼šåŒºåˆ† */
     private static final String HEADER_FORMAT_FOR_CLASSIFICATION = "%-3S";
-    /** ƒwƒbƒ_[•”‚Ì•\¦Œ`®Fæˆø‹àŠz */
+    /** ãƒ˜ãƒƒãƒ€ãƒ¼éƒ¨ã®è¡¨ç¤ºå½¢å¼ï¼šå–å¼•é‡‘é¡ */
     private static final String HEADER_FORMAT_FOR_TRANSACTIONAMOUNT = "%-10S";
-    /** ƒf[ƒ^•”‚Ì•\¦Œ`®F‚¨æˆø“ú */
+    /** ãƒ‡ãƒ¼ã‚¿éƒ¨ã®è¡¨ç¤ºå½¢å¼ï¼šãŠå–å¼•æ—¥ */
     private static final String DATA_FORMAT_FOR_DATE = "%10S";
-    /** ƒf[ƒ^•”‚Ì•\¦Œ`®F‹æ•ª */
+    /** ãƒ‡ãƒ¼ã‚¿éƒ¨ã®è¡¨ç¤ºå½¢å¼ï¼šåŒºåˆ† */
     private static final String DATA_FORMAT_FOR_CLASSIFICATION = "%-3S";
-    /** ƒf[ƒ^•”‚Ì•\¦Œ`®Fæˆø‹àŠz */
-    private static final String DATA_FORMAT_FOR_TRANSACTIONAMOUNT = "%,12d‰~";
-    /** ƒf[ƒ^•”‚Ì•\¦Œ`®Fc‚ */
-    private static final String DATA_FORMAT_FOR_BALANCE = "%,26d‰~";
-    /** “ú•tŒ`® Fyyyy”NMMŒdd“ú */
-    private static final String DATE_OF_STANDARD_BIRTH = "yyyy”NMMŒdd“ú";
+    /** ãƒ‡ãƒ¼ã‚¿éƒ¨ã®è¡¨ç¤ºå½¢å¼ï¼šå–å¼•é‡‘é¡ */
+    private static final String DATA_FORMAT_FOR_TRANSACTIONAMOUNT = "%,12då††";
+    /** ãƒ‡ãƒ¼ã‚¿éƒ¨ã®è¡¨ç¤ºå½¢å¼ï¼šæ®‹é«˜ */
+    private static final String DATA_FORMAT_FOR_BALANCE = "%,26då††";
+    /** æ—¥ä»˜å½¢å¼ ï¼šyyyyå¹´MMæœˆddæ—¥ */
+    private static final String DATE_OF_STANDARD_BIRTH = "yyyyå¹´MMæœˆddæ—¥";
 
     // --------------------------------------------------
-    // publicŠÖ”
+    // publicé–¢æ•°
     // --------------------------------------------------
 
     /**
-     * ‚¨æˆø—š—ğ•\¦
+     * ãŠå–å¼•å±¥æ­´è¡¨ç¤º
      * 
-     * @param accountNumber ŒûÀ”Ô†
+     * @param accountNumber å£åº§ç•ªå·
      * @throws FileReadException
      * @throws IOException
      */
     public static void displayHistory(final int accountNumber) throws FileReadException, IOException {
 
-        // —š—ğƒf[ƒ^æ“¾
+        // å±¥æ­´ãƒ‡ãƒ¼ã‚¿å–å¾—
         List<AccountHistory> historyList = FileProcessing.getAccountHistory();
 
-        // —š—ğ‚Ì’†‚ÅŒûÀ”Ô†ˆê’v‚Ì‚à‚Ì‚ğ•\¦
+        // å±¥æ­´ã®ä¸­ã§å£åº§ç•ªå·ä¸€è‡´ã®ã‚‚ã®ã‚’è¡¨ç¤º
         matchAccountNo(accountNumber, historyList);
 
     }
 
     // --------------------------------------------------
-    // privateŠÖ”
+    // privateé–¢æ•°
     // --------------------------------------------------
     /**
-     * •\¦‘ÎÛŒûÀ”Ô†‚Æˆê’v‚·‚é—š—ğ‚ğ•\¦
+     * è¡¨ç¤ºå¯¾è±¡å£åº§ç•ªå·ã¨ä¸€è‡´ã™ã‚‹å±¥æ­´ã‚’è¡¨ç¤º
      * 
-     * @param accountNumber •\¦‘ÎÛŒûÀ”Ô†
-     * @param historyList   æˆø—š—ğƒŠƒXƒg
+     * @param accountNumber è¡¨ç¤ºå¯¾è±¡å£åº§ç•ªå·
+     * @param historyList         å–å¼•å±¥æ­´ãƒªã‚¹ãƒˆ
      */
     private static void matchAccountNo(final int accountNumber, final List<AccountHistory> historyList) {
 
         StringBuffer sb = new StringBuffer();
-        // —š—ğ‚ ‚è
+        // å±¥æ­´ã‚ã‚Š
         Boolean isExistHistory = false;
 
         sb.append("****************************************************************").append("\n");
-        sb.append(String.format(HEADER_FORMAT_FOR_DATE, "‚¨æˆø“ú")).append(DISPLAY_CONNECT)
-                .append(String.format(HEADER_FORMAT_FOR_CLASSIFICATION, "‹æ•ª")).append(DISPLAY_CONNECT)
-                .append(String.format(HEADER_FORMAT_FOR_TRANSACTIONAMOUNT, "æˆø‹àŠz")).append(DISPLAY_CONNECT)
-                .append("c‚").append("\n");
+        sb.append(String.format(HEADER_FORMAT_FOR_DATE, "ãŠå–å¼•æ—¥")).append(DISPLAY_CONNECT)
+           .append(String.format(HEADER_FORMAT_FOR_CLASSIFICATION, "åŒºåˆ†")).append(DISPLAY_CONNECT)
+           .append(String.format(HEADER_FORMAT_FOR_TRANSACTIONAMOUNT, "å–å¼•é‡‘é¡")).append(DISPLAY_CONNECT)
+           .append("æ®‹é«˜").append("\n");
 
         for (AccountHistory history : historyList) {
             if (accountNumber == history.getAccountNumber()) {
@@ -88,24 +88,23 @@ public class BalanceProcessiong {
                 }
 
                 sb.append(String.format(DATA_FORMAT_FOR_DATE, dateToString(history.getDate()))).append(DISPLAY_CONNECT)
-                        .append(String.format(DATA_FORMAT_FOR_CLASSIFICATION, history.getClassification().getName())).append(DISPLAY_CONNECT)
-                        .append(String.format(DATA_FORMAT_FOR_TRANSACTIONAMOUNT, history.getTransactionAmount())).append(DISPLAY_CONNECT)
-                        .append(String.format(DATA_FORMAT_FOR_BALANCE, history.getBalance())).append("\n");
-
+                   .append(String.format(DATA_FORMAT_FOR_CLASSIFICATION, history.getClassification().getName())).append(DISPLAY_CONNECT)
+                   .append(String.format(DATA_FORMAT_FOR_TRANSACTIONAMOUNT, history.getTransactionAmount())).append(DISPLAY_CONNECT)
+                   .append(String.format(DATA_FORMAT_FOR_BALANCE, history.getBalance())).append("\n");
             }
 
         }
 
         sb.append("****************************************************************");
 
-        System.out.println(isExistHistory == true ? sb.toString() : "‚¨æˆø—š—ğ‚Í‚ ‚è‚Ü‚¹‚ñB");
+        System.out.println(isExistHistory == true ? sb.toString() : "ãŠå–å¼•å±¥æ­´ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚");
     }
 
     /**
-     * “ú•t‚ğ•¶š—ñ‚É•ÏŠ·
+     * æ—¥ä»˜ã‚’æ–‡å­—åˆ—ã«å¤‰æ›
      * 
-     * @param date “ú•t
-     * @return •¶š—ñŒ^“ú•t
+     * @param date æ—¥ä»˜
+     * @return æ–‡å­—åˆ—å‹æ—¥ä»˜
      */
     private static String dateToString(final Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_OF_STANDARD_BIRTH);

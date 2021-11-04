@@ -3,45 +3,45 @@ package agatasan_java.java14;
 import java.util.Date;
 
 /**
- * ŒûÀ—š—ğƒNƒ‰ƒX
+ * å£åº§å±¥æ­´ã‚¯ãƒ©ã‚¹
  * 
- * @author •H“c ”ü‹I
- * @version 1.0 2021/01/03 V‹Kì¬
- * @version 1.1 2021/05/26 No.109`113w“E‘Î‰
- * @version 1.2 2021/05/31 No.123`131w“E‘Î‰
+ * @author è±ç”° ç¾ç´€
+ * @version 1.0 2021/01/03 æ–°è¦ä½œæˆ
+ * @version 1.1 2021/05/26 No.109ï½113æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.2 2021/05/31 No.123ï½131æŒ‡æ‘˜å¯¾å¿œ
  */
 public class AccountHistory {
 
-    /** ŒûÀ”Ô† */
+    /** å£åº§ç•ªå· */
     private int accountNumber;
-    /** c‚ */
+    /** æ®‹é«˜ */
     private long balance;
-    /** “ú•t */
+    /** æ—¥ä»˜ */
     private Date date;
-    /** ‹æ•ª */
+    /** åŒºåˆ† */
     private AccountHandlingMenu classification;
-    /** æˆø‹àŠz */
+    /** å–å¼•é‡‘é¡ */
     private long transactionAmount;
 
     /**
-     * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+     * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
      * 
-     * @param accountNumber     ŒûÀ”Ô†
-     * @param balance           c‚
-     * @param date              “ú•t
-     * @param classification    ‹æ•ª
-     * @param transactionAmount æˆø‹àŠz
+     * @param accountNumber      å£åº§ç•ªå·
+     * @param balance                 æ®‹é«˜
+     * @param date                     æ—¥ä»˜
+     * @param classification          åŒºåˆ†
+     * @param transactionAmount å–å¼•é‡‘é¡
      */
     AccountHistory(int accountNumber, final long balance, final Date date, final AccountHandlingMenu classification, final long transactionAmount) {
-        this.accountNumber = accountNumber;
-        this.balance = balance;
-        this.date = date;
-        this.classification = classification;
+        this.accountNumber     = accountNumber;
+        this.balance                = balance;
+        this.date                     = date;
+        this.classification          = classification;
         this.transactionAmount = transactionAmount;
     }
 
     /**
-     * ŒûÀ”Ô†‚ğæ“¾
+     * å£åº§ç•ªå·ã‚’å–å¾—
      * 
      * @return accountNumber
      */
@@ -50,16 +50,16 @@ public class AccountHistory {
     }
 
     /**
-     * ŒûÀ”Ô†‚ğİ’è
+     * å£åº§ç•ªå·ã‚’è¨­å®š
      * 
-     * @param accountNumber ŒûÀ”Ô†‚ğƒZƒbƒg‚·‚é
+     * @param accountNumber å£åº§ç•ªå·ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
      */
     public void setAccountNumber(int accountNumber) {
         this.accountNumber = accountNumber;
     }
 
     /**
-     * c‚‚ğæ“¾
+     * æ®‹é«˜ã‚’å–å¾—
      * 
      * @return balance
      */
@@ -68,16 +68,16 @@ public class AccountHistory {
     }
 
     /**
-     * c‚‚ğİ’è
+     * æ®‹é«˜ã‚’è¨­å®š
      * 
-     * @param balance c‚‚ğƒZƒbƒg‚·‚é
+     * @param balance æ®‹é«˜ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
      */
     public void setBalance(long balance) {
         this.balance = balance;
     }
 
     /**
-     * “ú•t‚ğæ“¾
+     * æ—¥ä»˜ã‚’å–å¾—
      * 
      * @return date
      */
@@ -86,16 +86,16 @@ public class AccountHistory {
     }
 
     /**
-     * “ú•t‚ğİ’è
+     * æ—¥ä»˜ã‚’è¨­å®š
      * 
-     * @param date “ú•t‚ğƒZƒbƒg‚·‚é
+     * @param date æ—¥ä»˜ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
      */
     public void setDate(Date date) {
         this.date = date;
     }
 
     /**
-     * ‹æ•ª‚ğæ“¾
+     * åŒºåˆ†ã‚’å–å¾—
      * 
      * @return classification
      */
@@ -104,16 +104,16 @@ public class AccountHistory {
     }
 
     /**
-     * ‹æ•ª‚ğİ’è
+     * åŒºåˆ†ã‚’è¨­å®š
      * 
-     * @param classification ‹æ•ª‚ğƒZƒbƒg‚·‚é
+     * @param classification åŒºåˆ†ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
      */
     public void setClassification(AccountHandlingMenu classification) {
         this.classification = classification;
     }
 
     /**
-     * æˆø‹àŠz‚ğæ“¾
+     * å–å¼•é‡‘é¡ã‚’å–å¾—
      * 
      * @return transactionAmount
      */
@@ -122,9 +122,9 @@ public class AccountHistory {
     }
 
     /**
-     * æˆø‹àŠz‚ğİ’è
+     * å–å¼•é‡‘é¡ã‚’è¨­å®š
      * 
-     * @param transactionAmount æˆø‹àŠz‚ğƒZƒbƒg‚·‚é
+     * @param transactionAmount å–å¼•é‡‘é¡ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
      */
     public void setTransactionAmount(long transactionAmount) {
         this.transactionAmount = transactionAmount;

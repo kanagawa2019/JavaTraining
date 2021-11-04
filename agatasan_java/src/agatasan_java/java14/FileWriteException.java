@@ -1,21 +1,21 @@
 package agatasan_java.java14;
 
 /**
- * ƒtƒ@ƒCƒ‹‘‚«‚İ—áŠOƒNƒ‰ƒX
+ * ãƒ•ã‚¡ã‚¤ãƒ«æ›¸ãè¾¼ã¿ä¾‹å¤–ã‚¯ãƒ©ã‚¹
  *
- * @author •H“c ”ü‹I
- * @version 1.0 2020/10/18 V‹Kì¬
- * @version 1.0 2020/11/08 No.57,58w“E‘Î‰
+ * @author è±ç”° ç¾ç´€
+ * @version 1.0 2020/10/18 æ–°è¦ä½œæˆ
+ * @version 1.0 2020/11/08 No.57,58æŒ‡æ‘˜å¯¾å¿œ
  */
 public class FileWriteException extends Exception {
 
     private static final long serialVersionUID = 2L;
 
     /**
-     * ƒGƒ‰[ƒƒbƒZ[ƒW•\¦
+     * ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
      * 
-     * @param e   ƒGƒ‰[î•ñ
-     * @param msg •\¦ƒƒbƒZ[ƒW
+     * @param e     ã‚¨ãƒ©ãƒ¼æƒ…å ±
+     * @param msg è¡¨ç¤ºãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
      */
     public FileWriteException(Exception e, String msg) {
         super(msg);

@@ -4,25 +4,25 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * ŒûÀˆ—
+ * å£åº§å‡¦ç†
  * 
- * @author •H“c ”ü‹I
- * @version 1.0 2021/05/23 V‹Kì¬
- * @version 1.1 2021/05/26 No.109`113w“E‘Î‰
- * @version 1.2 2021/05/30 No.110`122w“E‘Î‰
- * @version 1.3 2021/05/31 No.123`131w“E‘Î‰
- * @version 1.4 2021/06/01 No.126,128,130,131w“E‘Î‰
- * @version 1.5 2021/06/02 No.132`136w“E‘Î‰
+ * @author è±ç”° ç¾ç´€
+ * @version 1.0 2021/05/23 æ–°è¦ä½œæˆ
+ * @version 1.1 2021/05/26 No.109ï½113æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.2 2021/05/30 No.110ï½122æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.3 2021/05/31 No.123ï½131æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.4 2021/06/01 No.126,128,130,131æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.5 2021/06/02 No.132ï½136æŒ‡æ‘˜å¯¾å¿œ
  *
  */
 public class AccountProcessing extends AccountService {
 
     // --------------------------------------------------
-    // publicŠÖ”
+    // publicé–¢æ•°
     // --------------------------------------------------
 
     /**
-     * ŒûÀ‚Ìˆ—“ü—Í
+     * å£åº§ã®å‡¦ç†å…¥åŠ›
      */
     public static DepositBusiness inputAccount() {
         DepositBusiness account = null;
@@ -30,7 +30,7 @@ public class AccountProcessing extends AccountService {
         do {
             account = DepositBusiness.convertAccount(Util.inputStr(displayMsg));
             if (account == null) {
-                System.out.println("ŠY“–‚·‚éˆ—‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½B");
+                System.out.println("è©²å½“ã™ã‚‹å‡¦ç†ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸã€‚");
             }
 
         } while (account == null);
@@ -38,61 +38,61 @@ public class AccountProcessing extends AccountService {
     }
 
     /**
-     * ŒûÀ‘€ì‚Ìˆ—
+     * å£åº§æ“ä½œã®å‡¦ç†
      * 
-     * @param personalList ƒ†[ƒUî•ñƒŠƒXƒg
+     * @param personalList ãƒ¦ãƒ¼ã‚¶æƒ…å ±ãƒªã‚¹ãƒˆ
      */
     public static void changeAccountInfo(List<Personal> personalList) {
 
         do {
 
-            // æ‚èˆµ‚¤l•¨‚Ì”Ô†‚ğæ“¾
-            int personOfNumber = Util.getTargetNo(personalList, "‚Ç‚Ìƒ†[ƒU‚Ìˆ—‚ğ‚µ‚Ü‚·‚©H");
+            // å–ã‚Šæ‰±ã†äººç‰©ã®ç•ªå·ã‚’å–å¾—
+            int personOfNumber = Util.getTargetNo(personalList, "ã©ã®ãƒ¦ãƒ¼ã‚¶ã®å‡¦ç†ã‚’ã—ã¾ã™ã‹ï¼Ÿ");
 
-            // 0‚Ìê‡‚ÍAÅ‰‚É–ß‚é
+            // 0ã®å ´åˆã¯ã€æœ€åˆã«æˆ»ã‚‹
             if (personOfNumber == Util.START_NUMBER_OF_PERSONAL_LIST) {
                 break;
             }
 
             int idx = personOfNumber - 1;
 
-            // “ü—Í‚³‚ê‚½”Ô†‚É•R‚Ã‚­–¼‘O‚ğæ“¾
+            // å…¥åŠ›ã•ã‚ŒãŸç•ªå·ã«ç´ã¥ãåå‰ã‚’å–å¾—
             Personal personal = personalList.get(idx);
 
             try {
 
                 do {
-                    // æ‚èˆµ‚¤ƒ†[ƒUî•ñ”Ô†‚ğæ“¾
+                    // å–ã‚Šæ‰±ã†ãƒ¦ãƒ¼ã‚¶æƒ…å ±ç•ªå·ã‚’å–å¾—
                     int propertyOfNumber = getModifyUserInfo(displayToTreatProperty(personal.getName()));
 
-                    // 0 ‚Ìê‡Al•¨‚ğ‘I‘ğ‚·‚éˆ—‚Ü‚Å–ß‚é
+                    // 0 ã®å ´åˆã€äººç‰©ã‚’é¸æŠã™ã‚‹å‡¦ç†ã¾ã§æˆ»ã‚‹
                     if (propertyOfNumber == Util.START_NUMBER_OF_PERSONAL_ATTRIBUTE_LIST) {
                         break;
                     }
 
                     // --------------------------------------------------
-                    // ˆ—Eo—Í
+                    // å‡¦ç†ãƒ»å‡ºåŠ›
                     // --------------------------------------------------
 
                     switch (AccountHandlingMenu.convertBank(String.valueOf(propertyOfNumber))) {
                         case DEPOSIT:
-                            // “ü‹àˆ—
+                            // å…¥é‡‘å‡¦ç†
                             depositMoney(idx, personalList);
                             break;
                         case TRANSFER:
-                            // Uˆ—
+                            // æŒ¯è¾¼å‡¦ç†
                             TransferProcessiong.transferMoney(personal, personalList);
                             break;
                         case WITHDRAW:
-                            // o‹àˆ—
+                            // å‡ºé‡‘å‡¦ç†
                             WithdrawProcessiong.withdrawMoney(idx, personalList);
                             break;
                         case BALANCE:
-                            // c‚•\¦ˆ—
+                            // æ®‹é«˜è¡¨ç¤ºå‡¦ç†
                             displayBalance(personal.getBalance());
                             break;
                         case HISTORY:
-                            // ‚¨æˆø—š—ğ•\¦
+                            // ãŠå–å¼•å±¥æ­´è¡¨ç¤º
                             BalanceProcessiong.displayHistory(personal.getAccountNumber());
                             break;
                         default:
@@ -103,7 +103,7 @@ public class AccountProcessing extends AccountService {
                 } while (true);
 
             } catch (FileReadException | FileWriteException | IOException e) {
-                System.out.println("ˆ—‚ğ’†’f‚µ‚Ü‚µ‚½BƒVƒXƒeƒ€ŠÇ—Ò‚Ö–â‚¢‡‚í‚¹‚µ‚Ä‚­‚¾‚³‚¢B");
+                System.out.println("å‡¦ç†ã‚’ä¸­æ–­ã—ã¾ã—ãŸã€‚ã‚·ã‚¹ãƒ†ãƒ ç®¡ç†è€…ã¸å•ã„åˆã‚ã›ã—ã¦ãã ã•ã„ã€‚");
             }
 
         } while (true);
@@ -111,94 +111,94 @@ public class AccountProcessing extends AccountService {
     }
 
     /**
-     * ŒûÀV‹Kì¬
+     * å£åº§æ–°è¦ä½œæˆ
      * 
-     * @param personalList ƒ†[ƒU[î•ñƒŠƒXƒg
+     * @param personalList ãƒ¦ãƒ¼ã‚¶ãƒ¼æƒ…å ±ãƒªã‚¹ãƒˆ
      * @throws FileWriteException
      * @throws FileReadException
      * @throws IOException
      */
     public static void createAccount(List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
 
-        // ’l‚ğİ’è
+        // å€¤ã‚’è¨­å®š
         personalList.add(new Personal(
                 inputName(),
                 createNewAccountNo(),
                 0)
                 );
 
-        // ŒûÀ‚ğXV
+        // å£åº§ã‚’æ›´æ–°
         depositMoney(personalList.size() - 1, personalList);
 
-        System.out.println("ŒûÀ‚ğV‹K“o˜^‚µ‚Ü‚µ‚½B");
+        System.out.println("å£åº§ã‚’æ–°è¦ç™»éŒ²ã—ã¾ã—ãŸã€‚");
 
     }
 
     /**
-     * ŒûÀ‰ğœ‚Ìˆ—
+     * å£åº§è§£é™¤ã®å‡¦ç†
      * 
-     * @param personalList ƒ†[ƒUî•ñƒŠƒXƒg
+     * @param personalList ãƒ¦ãƒ¼ã‚¶æƒ…å ±ãƒªã‚¹ãƒˆ
      * @throws IOException
      * @throws FileReadException
      * @throws FileWriteException
      */
     public static void releaseAccount(List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
 
-        // æ‚èˆµ‚¤l•¨‚Ì”Ô†‚ğæ“¾
-        int personOfNumber = Util.getTargetNo(personalList, "‚Ç‚Ìƒ†[ƒU‚Ìˆ—‚ğ‚µ‚Ü‚·‚©H");
+        // å–ã‚Šæ‰±ã†äººç‰©ã®ç•ªå·ã‚’å–å¾—
+        int personOfNumber = Util.getTargetNo(personalList, "ã©ã®ãƒ¦ãƒ¼ã‚¶ã®å‡¦ç†ã‚’ã—ã¾ã™ã‹ï¼Ÿ");
 
-        // 0‚Ìê‡‚ÍAÅ‰‚É–ß‚é
+        // 0ã®å ´åˆã¯ã€æœ€åˆã«æˆ»ã‚‹
         if (personOfNumber == Util.START_NUMBER_OF_PERSONAL_LIST) {
             return;
         }
 
         int idx = personOfNumber - 1;
 
-        // ”p~—\’èŒûÀ‚Ìc‚o‹à
+        // å»ƒæ­¢äºˆå®šå£åº§ã®æ®‹é«˜å‡ºé‡‘
         Personal releaseTarget = personalList.get(idx);
-        System.out.println(String.format("%,d‰~o‹à‚µ‚Ü‚µ‚½B", releaseTarget.getBalance()));
+        System.out.println(String.format("%,då††å‡ºé‡‘ã—ã¾ã—ãŸã€‚", releaseTarget.getBalance()));
 
-        // —š—ğXV
+        // å±¥æ­´æ›´æ–°
         FileProcessing.writeHistory(releaseTarget.getAccountNumber(), AccountHandlingMenu.WITHDRAW.getId(), releaseTarget.getBalance(), 0);
 
-        // ƒŠƒXƒg‚©‚çŒûÀíœ
+        // ãƒªã‚¹ãƒˆã‹ã‚‰å£åº§å‰Šé™¤
         personalList.remove(idx);
 
-        // ‘SŒŒûÀÄì¬
+        // å…¨ä»¶å£åº§å†ä½œæˆ
         FileProcessing.createFile(true, personalList, 0);
 
-        System.out.println(releaseTarget.getName() + "‚³‚ñ‚ÌŒûÀ‚ğíœ‚µ‚Ü‚µ‚½B");
+        System.out.println(releaseTarget.getName() + "ã•ã‚“ã®å£åº§ã‚’å‰Šé™¤ã—ã¾ã—ãŸã€‚");
 
     }
 
     // --------------------------------------------------
-    // privateŠÖ”
+    // privateé–¢æ•°
     // --------------------------------------------------
     /**
-     * ˆ—‘I‘ğ•\¦•¶Œ¾æ“¾
+     * å‡¦ç†é¸æŠè¡¨ç¤ºæ–‡è¨€å–å¾—
      * 
-     * @param msg •\¦‚µ‚½‚¢•¶Œ¾
-     * @return ˆ—‘I‘ğ•¶Œ¾
+     * @param msg è¡¨ç¤ºã—ãŸã„æ–‡è¨€
+     * @return å‡¦ç†é¸æŠæ–‡è¨€
      */
     private static String getDisplayString(String msg) {
         final StringBuffer sb = new StringBuffer();
         sb.append("***********************************").append("\n");
-        sb.append("ˆ—‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢").append("\n");
+        sb.append("å‡¦ç†ã‚’é¸æŠã—ã¦ãã ã•ã„").append("\n");
         sb.append(msg);
         sb.append("***********************************");
         return sb.toString();
     }
 
     /**
-     * æ‚èˆµ‚¤î•ñ‚ğæ“¾
+     * å–ã‚Šæ‰±ã†æƒ…å ±ã‚’å–å¾—
      * 
-     * @param toModifyPropertyMsg ƒRƒ“ƒ\[ƒ‹‚É•\¦‚·‚é•¶Œ¾
-     * @return ‘ÎÛ”Ô†
+     * @param toModifyPropertyMsg ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã«è¡¨ç¤ºã™ã‚‹æ–‡è¨€
+     * @return å¯¾è±¡ç•ªå·
      */
     private static int getModifyUserInfo(final String toModifyPropertyMsg) {
         int propertyOfNumber = 0;
         do {
-            // “ü—Í’l‚ğæ“¾
+            // å…¥åŠ›å€¤ã‚’å–å¾—
             propertyOfNumber = Util.inputInt(toModifyPropertyMsg);
 
         } while (Util.isOutOfRange(propertyOfNumber, Util.RANGE_MIN, AccountHandlingMenu.values().length));
@@ -206,20 +206,20 @@ public class AccountProcessing extends AccountService {
     }
 
     /**
-     * æ‚èˆµ‚¤‘®«•\¦•¶Œ¾ì¬
+     * å–ã‚Šæ‰±ã†å±æ€§è¡¨ç¤ºæ–‡è¨€ä½œæˆ
      * 
-     * @param modifyName æ‚èˆµ‚¤l•¨–¼Ì
-     * @return •\¦•¶Œ¾
+     * @param modifyName å–ã‚Šæ‰±ã†äººç‰©åç§°
+     * @return è¡¨ç¤ºæ–‡è¨€
      */
     private static String displayToTreatProperty(final String correctName) {
 
         StringBuffer sb = new StringBuffer();
 
-        sb.append(correctName + "‚³‚ñ‚ğæ‚èˆµ‚¢‚Ü‚·B").append("\n");
-        sb.append("‚Ç‚Ìî•ñ‚ğæ‚èˆµ‚¢‚Ü‚·‚©H").append("\n");
+        sb.append(correctName + "ã•ã‚“ã‚’å–ã‚Šæ‰±ã„ã¾ã™ã€‚").append("\n");
+        sb.append("ã©ã®æƒ…å ±ã‚’å–ã‚Šæ‰±ã„ã¾ã™ã‹ï¼Ÿ").append("\n");
         sb.append("---------------------------").append("\n");
         sb.append(String.format(Util.DISPLAY_FORMAT_OF_PERSONAL_LIST, Util.START_NUMBER_OF_PERSONAL_ATTRIBUTE_LIST))
-                .append(".").append(Util.BACK).append("\n");
+                       .append(".").append(Util.BACK).append("\n");
         sb.append(AccountHandlingMenu.getSelectBankString());
         sb.append("---------------------------").append("\n");
 
@@ -228,47 +228,47 @@ public class AccountProcessing extends AccountService {
     }
 
     /**
-     * ŒûÀ”Ô†V‹KÌ”Ô
+     * å£åº§ç•ªå·æ–°è¦æ¡ç•ª
      * 
-     * @return V‹KÌ”Ô”Ô†
+     * @return æ–°è¦æ¡ç•ªç•ªå·
      * @throws FileWriteException
      * @throws FileReadException
      * @throws IOException
      */
     private static int createNewAccountNo() throws FileWriteException, FileReadException, IOException {
 
-        // Ì”Ô—p‚Ìƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚İ
-        // +1‚·‚é
+        // æ¡ç•ªç”¨ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿
+        // +1ã™ã‚‹
         int nextAccountNo = sumUpAccountNo(FileProcessing.getAccountNo());
 
-        // Ì”Ô‚µ‚½”Ô†‚ğÌ”Ô—p‚Ìƒtƒ@ƒCƒ‹‚É‘‚«‚İ
+        // æ¡ç•ªã—ãŸç•ªå·ã‚’æ¡ç•ªç”¨ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãè¾¼ã¿
         FileProcessing.createFile(false, null, nextAccountNo);
 
-        // Ì”Ô‚µ‚½”Ô†‚ğ•Ô‚·
+        // æ¡ç•ªã—ãŸç•ªå·ã‚’è¿”ã™
         return nextAccountNo;
 
     }
 
     /**
-     * ŒûÀ”Ô†‰ÁZˆ—
+     * å£åº§ç•ªå·åŠ ç®—å‡¦ç†
      * 
-     * @param accountNo ŒûÀ”Ô†
-     * @return ‰ÁZ‚µ‚½ŒûÀ”Ô†
+     * @param accountNo å£åº§ç•ªå·
+     * @return åŠ ç®—ã—ãŸå£åº§ç•ªå·
      */
     private static int sumUpAccountNo(String accountNo) {
-        // •¶š‚©‚ç”’l‚É•ÏŠ·
+        // æ–‡å­—ã‹ã‚‰æ•°å€¤ã«å¤‰æ›
         int retVlalue = Integer.parseInt(accountNo);
-        // ‰ÁZ
+        // åŠ ç®—
         return ++retVlalue;
 
     }
 
     /**
-     * “ü—Í‚³‚ê‚½–¼‚ğæ“¾
+     * å…¥åŠ›ã•ã‚ŒãŸæ°åã‚’å–å¾—
      * 
-     * @return –¼
+     * @return æ°å
      */
     private static String inputName() {
-        return Util.inputStr("–¼‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
+        return Util.inputStr("æ°åã‚’å…¥åŠ›ã—ã¦ãã ã•ã„");
     }
 }

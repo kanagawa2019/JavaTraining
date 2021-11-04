@@ -4,54 +4,54 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * o‹àˆ—
+ * å‡ºé‡‘å‡¦ç†
  * 
- * @author •H“c ”ü‹I
- * @version 1.0 2021/05/23 V‹Kì¬
- * @version 1.1 2021/05/26 No.109`113w“E‘Î‰
- * @version 1.2 2021/05/30 No.110`122w“E‘Î‰
- * @version 1.3 2021/05/31 No.123`131w“E‘Î‰
- * @version 1.4 2021/06/01 No.126,128,130,131w“E‘Î‰
+ * @author è±ç”° ç¾ç´€
+ * @version 1.0 2021/05/23 æ–°è¦ä½œæˆ
+ * @version 1.1 2021/05/26 No.109ï½113æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.2 2021/05/30 No.110ï½122æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.3 2021/05/31 No.123ï½131æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.4 2021/06/01 No.126,128,130,131æŒ‡æ‘˜å¯¾å¿œ
  *
  */
 public class WithdrawProcessiong extends AccountService {
     // --------------------------------------------------
-    // publicŠÖ”
+    // publicé–¢æ•°
     // --------------------------------------------------
 
     /**
-     * o‹àˆ—
+     * å‡ºé‡‘å‡¦ç†
      * 
-     * @param depositIdx   o‹à‘ÎÛƒCƒ“ƒfƒbƒNƒX
-     * @param personalList ƒ†[ƒUî•ñƒŠƒXƒg
+     * @param depositIdx   å‡ºé‡‘å¯¾è±¡ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+     * @param personalList ãƒ¦ãƒ¼ã‚¶æƒ…å ±ãƒªã‚¹ãƒˆ
      * @throws FileWriteException
      * @throws FileReadException
      * @throws IOException
      */
     public static void withdrawMoney(final int depositIdx, List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
-        // o‹à‘ÎÛ
+        // å‡ºé‡‘å¯¾è±¡
         Personal target = personalList.get(depositIdx);
 
-        // ŒÀ“xŠzãŒÀ‚Ìê‡‚ÍA’†~
+        // é™åº¦é¡ä¸Šé™ã®å ´åˆã¯ã€ä¸­æ­¢
         if (target.getBalance() == MIN_BALANCE) {
-            System.out.println("—a‹àŠz‚ª0‰~‚Ì‚½‚ßAo‹à‚ğ’†~’v‚µ‚Ü‚·B");
+            System.out.println("é é‡‘é¡ãŒ0å††ã®ãŸã‚ã€å‡ºé‡‘ã‚’ä¸­æ­¢è‡´ã—ã¾ã™ã€‚");
             return;
         }
 
-        // o‹àî•ñæ“¾
-        long inputWithdraw = getInputMoneyInfo(AccountHandlingMenu.WITHDRAW, "o‹à", target);
+        // å‡ºé‡‘æƒ…å ±å–å¾—
+        long inputWithdraw = getInputMoneyInfo(AccountHandlingMenu.WITHDRAW, "å‡ºé‡‘", target);
 
-        // c‚‚Ì‡Œv
+        // æ®‹é«˜ã®åˆè¨ˆ
         long sum = target.getBalance() - inputWithdraw;
         displayBalance(sum);
 
-        // c‚‚Ìİ’è
+        // æ®‹é«˜ã®è¨­å®š
         target.setBalance(sum);
 
-        // ŒûÀ‚ÌXV
+        // å£åº§ã®æ›´æ–°
         FileProcessing.createFile(true, personalList, 0);
 
-        // o‹à—š—ğ
+        // å‡ºé‡‘å±¥æ­´
         FileProcessing.writeHistory(target.getAccountNumber(), AccountHandlingMenu.WITHDRAW.getId(), inputWithdraw, sum);
 
     }

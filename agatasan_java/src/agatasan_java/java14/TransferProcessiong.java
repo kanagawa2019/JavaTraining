@@ -4,26 +4,26 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Uˆ—
+ * æŒ¯è¾¼å‡¦ç†
  * 
- * @author •H“c ”ü‹I
- * @version 1.0 2021/05/23 V‹Kì¬
- * @version 1.1 2021/05/26 No.109`113w“E‘Î‰
- * @version 1.2 2021/05/30 No.110`122w“E‘Î‰
- * @version 1.3 2021/05/31 No.123`131w“E‘Î‰
- * @version 1.4 2021/06/01 No.126,128,130,131w“E‘Î‰
+ * @author è±ç”° ç¾ç´€
+ * @version 1.0 2021/05/23 æ–°è¦ä½œæˆ
+ * @version 1.1 2021/05/26 No.109ï½113æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.2 2021/05/30 No.110ï½122æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.3 2021/05/31 No.123ï½131æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.4 2021/06/01 No.126,128,130,131æŒ‡æ‘˜å¯¾å¿œ
  * 
  */
 public class TransferProcessiong extends AccountService {
 
     // --------------------------------------------------
-    // publicŠÖ”
+    // publicé–¢æ•°
     // --------------------------------------------------
     /**
-     * Uˆ—
+     * æŒ¯è¾¼å‡¦ç†
      * 
-     * @param transfer     UŒ³
-     * @param personalList ƒ†[ƒUî•ñƒŠƒXƒg
+     * @param transfer       æŒ¯è¾¼å…ƒ
+     * @param personalList  ãƒ¦ãƒ¼ã‚¶æƒ…å ±ãƒªã‚¹ãƒˆ
      * @throws FileWriteException
      * @throws FileReadException
      * @throws IOException
@@ -33,22 +33,22 @@ public class TransferProcessiong extends AccountService {
         Personal payee;
 
         do {
-            // Uæ‚Ìl•¨‚Ì”Ô†‚ğæ“¾
-            int payeeOfNumber = Util.getTargetNo(personalList, "‚Ç‚Ìƒ†[ƒU‚ÉU‚µ‚Ü‚·‚©H");
+            // æŒ¯è¾¼å…ˆã®äººç‰©ã®ç•ªå·ã‚’å–å¾—
+            int payeeOfNumber = Util.getTargetNo(personalList, "ã©ã®ãƒ¦ãƒ¼ã‚¶ã«æŒ¯è¾¼ã—ã¾ã™ã‹ï¼Ÿ");
 
-            // 0‚Ìê‡‚ÍAÅ‰‚É–ß‚é
+            // 0ã®å ´åˆã¯ã€æœ€åˆã«æˆ»ã‚‹
             if (payeeOfNumber == Util.START_NUMBER_OF_PERSONAL_LIST) {
                 return;
             }
 
-            // “ü—Í‚³‚ê‚½”Ô†‚É•R‚Ã‚­–¼‘O‚ğæ“¾
+            // å…¥åŠ›ã•ã‚ŒãŸç•ªå·ã«ç´ã¥ãåå‰ã‚’å–å¾—
             payee = personalList.get(payeeOfNumber - 1);
 
-            // ©•ª‚ÉU‚µ‚È‚¢ê‡
+            // è‡ªåˆ†ã«æŒ¯è¾¼ã—ãªã„å ´åˆ
             if (!transfer.getName().equals(payee.getName())) {
                 break;
             }
-            System.out.println("‚²©•ª‚É‚ÍU‚ß‚Ü‚¹‚ñB");
+            System.out.println("ã”è‡ªåˆ†ã«ã¯æŒ¯è¾¼ã‚ã¾ã›ã‚“ã€‚");
         } while (true);
 
         remitMoney(transfer, payee);
@@ -56,39 +56,39 @@ public class TransferProcessiong extends AccountService {
     }
 
     // --------------------------------------------------
-    // privateŠÖ”
+    // privateé–¢æ•°
     // --------------------------------------------------
 
     /**
-     * ‘Šèæ‚ÉU‚Şˆ—
+     * ç›¸æ‰‹å…ˆã«æŒ¯è¾¼ã‚€å‡¦ç†
      * 
-     * @param transfer UŒ³
-     * @param payee    Uæ
+     * @param transfer   æŒ¯è¾¼å…ƒ
+     * @param payee     æŒ¯è¾¼å…ˆ
      * @throws FileWriteException
      * @throws FileReadException
      * @throws IOException
      */
     private static void remitMoney(Personal transfer, Personal payee) throws FileWriteException, FileReadException, IOException {
 
-        // Uæ‚ÌŒÀ“xŠzãŒÀ‚Ìê‡‚ÍAU’†~
+        // æŒ¯è¾¼å…ˆã®é™åº¦é¡ä¸Šé™ã®å ´åˆã¯ã€æŒ¯è¾¼ä¸­æ­¢
         if (payee.getBalance() == MAX_BALANCE) {
-            System.out.println("Uæ‚Ì—a‹àãŒÀŠz‚ª’B‚µ‚Ä‚¢‚é‚½‚ßA‚¨U‚ğ’†~’v‚µ‚Ü‚·B");
+            System.out.println("æŒ¯è¾¼å…ˆã®é é‡‘ä¸Šé™é¡ãŒé”ã—ã¦ã„ã‚‹ãŸã‚ã€ãŠæŒ¯è¾¼ã‚’ä¸­æ­¢è‡´ã—ã¾ã™ã€‚");
             return;
         }
 
-        // Uî•ñæ“¾
-        long inputDeposit = getInputMoneyInfo(AccountHandlingMenu.TRANSFER, "“ü‹à", transfer, payee);
+        // æŒ¯è¾¼æƒ…å ±å–å¾—
+        long inputDeposit = getInputMoneyInfo(AccountHandlingMenu.TRANSFER, "å…¥é‡‘", transfer, payee);
 
-        // UŒ³‚Ìc‚‚ğİ’è
+        // æŒ¯è¾¼å…ƒã®æ®‹é«˜ã‚’è¨­å®š
         transfer.setBalance(transfer.getBalance() - inputDeposit);
-        // Uæ‚Ìc‚‚ğİ’è
+        // æŒ¯è¾¼å…ˆã®æ®‹é«˜ã‚’è¨­å®š
         payee.setBalance(payee.getBalance() + inputDeposit);
 
-        // UŒ³—š—ğ‚ÌXV
+        // æŒ¯è¾¼å…ƒå±¥æ­´ã®æ›´æ–°
         FileProcessing.writeHistory(transfer.getAccountNumber(), AccountHandlingMenu.TRANSFER.getId(), (-inputDeposit), transfer.getBalance());
-        // Uæ—š—ğ‚ÌXV
+        // æŒ¯è¾¼å…ˆå±¥æ­´ã®æ›´æ–°
         FileProcessing.writeHistory(payee.getAccountNumber(), AccountHandlingMenu.TRANSFER.getId(), inputDeposit, payee.getBalance());
 
-        System.out.println(String.format("%S‚³‚ñ‚ÉUŠ®—¹‚µ‚Ü‚µ‚½B", payee.getName()));
+        System.out.println(String.format("%Sã•ã‚“ã«æŒ¯è¾¼å®Œäº†ã—ã¾ã—ãŸã€‚", payee.getName()));
     }
 }

@@ -18,44 +18,44 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * ƒtƒ@ƒCƒ‹ˆ—
+ * ãƒ•ã‚¡ã‚¤ãƒ«å‡¦ç†
  * 
- * @author •H“c ”ü‹I
- * @version 1.0 2021/05/23 V‹Kì¬
- * @version 1.1 2021/05/26 No.109`113w“E‘Î‰
- * @version 1.2 2021/05/31 No.123`131w“E‘Î‰
- * @version 1.3 2021/06/01 No.126,128,130,131w“E‘Î‰
- * @version 1.4 2021/06/02 No.132`136w“E‘Î‰
+ * @author è±ç”° ç¾ç´€
+ * @version 1.0 2021/05/23 æ–°è¦ä½œæˆ
+ * @version 1.1 2021/05/26 No.109ï½113æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.2 2021/05/31 No.123ï½131æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.3 2021/06/01 No.126,128,130,131æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.4 2021/06/02 No.132ï½136æŒ‡æ‘˜å¯¾å¿œ
  *
  */
 public class FileProcessing {
     // --------------------------------------------------
-    // ’è”
+    // å®šæ•°
     // --------------------------------------------------
-    /** “ú•tŒ`® FyyyyMMdd */
+    /** æ—¥ä»˜å½¢å¼ ï¼šyyyyMMdd */
     private static final String DATE_OF_BIRTH = "yyyyMMdd";
-    /** ƒtƒ@ƒCƒ‹•Û‘¶¯•Êq */
+    /** ãƒ•ã‚¡ã‚¤ãƒ«ä¿å­˜è­˜åˆ¥å­ */
     private static final String SAVE_IDENTIFIER = "'";
-    /** ƒtƒ@ƒCƒ‹‹æØ‚è¯•Êq */
+    /** ãƒ•ã‚¡ã‚¤ãƒ«åŒºåˆ‡ã‚Šè­˜åˆ¥å­ */
     private static final String SAVA_SEPARATION = ",";
-    /** ƒGƒXƒP[ƒv¯•Êq */
+    /** ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—è­˜åˆ¥å­ */
     private static final char SAVA_ESCAPE = '\\';
-    /** ƒtƒ@ƒCƒ‹o—ÍƒpƒX */
+    /** ãƒ•ã‚¡ã‚¤ãƒ«å‡ºåŠ›ãƒ‘ã‚¹ */
     private static final String ACCOUNT_FILE_OUTPUT_PATH = "ACCOUNT_FILE_OUTPUT_PATH";
-    /** ƒvƒƒpƒeƒBİ’èƒpƒX */
+    /** ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£è¨­å®šãƒ‘ã‚¹ */
     private static final String INIT_PROPERTIES_PATH = "." + File.separator + "Setting.properties";
-    /** æˆø—š—ğƒtƒ@ƒCƒ‹o—ÍƒpƒX */
+    /** å–å¼•å±¥æ­´ãƒ•ã‚¡ã‚¤ãƒ«å‡ºåŠ›ãƒ‘ã‚¹ */
     private static final String ACCOUNT_HISTORY_FILE_OUTPUT_PATH = "ACCOUNT_HISTORY_FILE_OUTPUT_PATH";
-    /** Ì”Ô—pŒûÀƒtƒ@ƒCƒ‹o—ÍƒpƒX */
+    /** æ¡ç•ªç”¨å£åº§ãƒ•ã‚¡ã‚¤ãƒ«å‡ºåŠ›ãƒ‘ã‚¹ */
     private static final String NUMBERING_ACCOUNT_FILE_OUTPUT_PATH = "NUMBERING_ACCOUNT_FILE_OUTPUT_PATH";
 
     // --------------------------------------------------
-    // publicŠÖ”
+    // publicé–¢æ•°
     // --------------------------------------------------
     /**
-     * ‘O‰ñ‚Ìƒ†[ƒU[î•ñ‚ğæ“¾
+     * å‰å›ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼æƒ…å ±ã‚’å–å¾—
      * 
-     * @return ‘O‰ñ“ü—Í‚µ‚½ƒ†[ƒU[î•ñ
+     * @return å‰å›å…¥åŠ›ã—ãŸãƒ¦ãƒ¼ã‚¶ãƒ¼æƒ…å ±
      * @throws FileReadException
      * @throws IOException
      */
@@ -70,7 +70,7 @@ public class FileProcessing {
 
             File file = new File(strPass);
 
-            // ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¢ê‡(=ˆ—1‰ñ–Ú‚Ìê‡)
+            // ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„å ´åˆ(=å‡¦ç†1å›ç›®ã®å ´åˆ)
             if (!file.exists()) {
                 return list;
             }
@@ -89,12 +89,12 @@ public class FileProcessing {
             }
 
         } catch (IOException e) {
-            throw new FileReadException(e, "‘O‰ñ‚Ìƒ†[ƒU[î•ñ‚ğ•Û‘¶‚µ‚½ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ß‚Ü‚¹‚ñ‚Å‚µ‚½B");
+            throw new FileReadException(e, "å‰å›ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼æƒ…å ±ã‚’ä¿å­˜ã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚ã¾ã›ã‚“ã§ã—ãŸã€‚");
 
         } finally {
 
             if (br != null) {
-                // •Â‚¶‚éˆ—
+                // é–‰ã˜ã‚‹å‡¦ç†
                 br.close();
             }
         }
@@ -102,12 +102,12 @@ public class FileProcessing {
     }
 
     /**
-     * ‚¨æˆø—š—ğ‚Ì‘‚«‚İ
+     * ãŠå–å¼•å±¥æ­´ã®æ›¸ãè¾¼ã¿
      * 
-     * @param accountNumber     ŒûÀ”Ô†
-     * @param id                æ‚èˆµ‚¢‹æ•ª
-     * @param transactionAmount æˆø‹àŠz
-     * @param balance           c‚
+     * @param accountNumber     å£åº§ç•ªå·
+     * @param id                         å–ã‚Šæ‰±ã„åŒºåˆ†
+     * @param transactionAmount å–å¼•é‡‘é¡
+     * @param balance                 æ®‹é«˜
      * @throws FileWriteException
      * @throws FileReadException
      * @throws IOException
@@ -120,10 +120,10 @@ public class FileProcessing {
         try {
             strPass = getPropertiesInfo(ACCOUNT_HISTORY_FILE_OUTPUT_PATH);
 
-            // ’Ç‰Á‘‚«‚İ
+            // è¿½åŠ æ›¸ãè¾¼ã¿
             bw = new BufferedWriter(new FileWriter(strPass, true));
 
-            // “ú•tA”Ô†Aæ‚èˆµ‚¢‹æ•ªAæˆø‹àŠzAc‚
+            // æ—¥ä»˜ã€ç•ªå·ã€å–ã‚Šæ‰±ã„åŒºåˆ†ã€å–å¼•é‡‘é¡ã€æ®‹é«˜
             String str = String.format(
                     "%s%s%s%s%s%d%s%s%s%d%s%s%s%d%s%s%s%d%s",
                     SAVE_IDENTIFIER, getToday(), SAVE_IDENTIFIER, SAVA_SEPARATION,
@@ -133,18 +133,18 @@ public class FileProcessing {
                     SAVE_IDENTIFIER, balance, SAVE_IDENTIFIER
                     );
 
-            // ‘‚«‚İ
+            // æ›¸ãè¾¼ã¿
             bw.write(str);
-            // ‰üs
+            // æ”¹è¡Œ
             bw.newLine();
 
         } catch (IOException e) {
-            throw new FileWriteException(e, String.format("ƒtƒ@ƒCƒ‹‚Ì‘‚«‚İ‚É¸”s‚µ‚Ü‚µ‚½Bƒtƒ@ƒCƒ‹–¼:%s", strPass));
+            throw new FileWriteException(e, String.format("ãƒ•ã‚¡ã‚¤ãƒ«ã®æ›¸ãè¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚ãƒ•ã‚¡ã‚¤ãƒ«å:%s", strPass));
 
         } finally {
 
             if (bw != null) {
-                // •Â‚¶‚éˆ—
+                // é–‰ã˜ã‚‹å‡¦ç†
                 bw.close();
             }
         }
@@ -152,10 +152,10 @@ public class FileProcessing {
     }
 
     /**
-     * ƒtƒ@ƒCƒ‹‚É•Û‘¶
+     * ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜
      * 
-     * @param isUser        •Û‘¶‘ÎÛ‚ªƒ†[ƒUî•ñƒŠƒXƒg‚È‚çtrue
-     * @param list          ƒ†[ƒUî•ñƒŠƒXƒg
+     * @param isUser          ä¿å­˜å¯¾è±¡ãŒãƒ¦ãƒ¼ã‚¶æƒ…å ±ãƒªã‚¹ãƒˆãªã‚‰true
+     * @param list              ãƒ¦ãƒ¼ã‚¶æƒ…å ±ãƒªã‚¹ãƒˆ
      * @param nextAccountNo
      * @throws FileWriteException
      * @throws FileReadException
@@ -172,7 +172,7 @@ public class FileProcessing {
             bw = new BufferedWriter(new FileWriter(strPass));
 
             if (isUser) {
-                // ŒûÀ”Ô†Aƒ†[ƒU[–¼A‹àŠz‚ğƒJƒ“ƒ}‹æØ‚è‚Å˜AŒ‹
+                // å£åº§ç•ªå·ã€ãƒ¦ãƒ¼ã‚¶ãƒ¼åã€é‡‘é¡ã‚’ã‚«ãƒ³ãƒåŒºåˆ‡ã‚Šã§é€£çµ
                 for (Personal p : list) {
                     String str = String.format(
                             "%s%s%s%s%s%s%s%s%s%d%s",
@@ -180,26 +180,26 @@ public class FileProcessing {
                             SAVE_IDENTIFIER, conversionEscape(p.getName()), SAVE_IDENTIFIER, SAVA_SEPARATION,
                             SAVE_IDENTIFIER, p.getBalance(), SAVE_IDENTIFIER
                             );
-                    // ‘‚«‚İ
+                    // æ›¸ãè¾¼ã¿
                     bw.write(str);
-                    // ‰üs
+                    // æ”¹è¡Œ
                     bw.newLine();
                 }
             } else {
                 String str = String.format("%s%d%s", SAVE_IDENTIFIER, nextAccountNo, SAVE_IDENTIFIER);
-                // ‘‚«‚İ
+                // æ›¸ãè¾¼ã¿
                 bw.write(str);
-                // ‰üs
+                // æ”¹è¡Œ
                 bw.newLine();
             }
 
         } catch (IOException e) {
-            throw new FileWriteException(e, String.format("ƒtƒ@ƒCƒ‹‚Ì‘‚«‚İ‚É¸”s‚µ‚Ü‚µ‚½Bƒtƒ@ƒCƒ‹–¼:%s", strPass));
+            throw new FileWriteException(e, String.format("ãƒ•ã‚¡ã‚¤ãƒ«ã®æ›¸ãè¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚ãƒ•ã‚¡ã‚¤ãƒ«å:%s", strPass));
 
         } finally {
 
             if (bw != null) {
-                // •Â‚¶‚éˆ—
+                // é–‰ã˜ã‚‹å‡¦ç†
                 bw.close();
             }
         }
@@ -207,9 +207,9 @@ public class FileProcessing {
     }
 
     /**
-     * ŒûÀ”Ô†æ“¾
+     * å£åº§ç•ªå·å–å¾—
      * 
-     * @return æ“¾‚µ‚½ŒûÀ”Ô†
+     * @return å–å¾—ã—ãŸå£åº§ç•ªå·
      * @throws FileReadException
      * @throws IOException
      */
@@ -224,7 +224,7 @@ public class FileProcessing {
 
             File file = new File(strPass);
 
-            // ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¢ê‡(=ˆ—1‰ñ–Ú‚Ìê‡)
+            // ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„å ´åˆ(=å‡¦ç†1å›ç›®ã®å ´åˆ)
             if (!file.exists()) {
                 return "1";
             }
@@ -233,17 +233,17 @@ public class FileProcessing {
             br = new BufferedReader(fileReader);
             String str = br.readLine();
             if (str != null) {
-                // “Ç‚İæ‚è
+                // èª­ã¿å–ã‚Š
                 retValue = fileSplit(str).get(0);
             }
 
         } catch (IOException e) {
-            throw new FileReadException(e, "ŒûÀÌ”Ô—pƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ß‚Ü‚¹‚ñ‚Å‚µ‚½B");
+            throw new FileReadException(e, "å£åº§æ¡ç•ªç”¨ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚ã¾ã›ã‚“ã§ã—ãŸã€‚");
 
         } finally {
 
             if (br != null) {
-                // •Â‚¶‚éˆ—
+                // é–‰ã˜ã‚‹å‡¦ç†
                 br.close();
             }
         }
@@ -251,9 +251,9 @@ public class FileProcessing {
     }
 
     /**
-     * æˆø—š—ğ‚ğæ“¾
+     * å–å¼•å±¥æ­´ã‚’å–å¾—
      * 
-     * @return ‘O‰ñ“ü—Í‚µ‚½ƒ†[ƒU[î•ñ
+     * @return å‰å›å…¥åŠ›ã—ãŸãƒ¦ãƒ¼ã‚¶ãƒ¼æƒ…å ±
      * @throws FileReadException
      * @throws IOException
      */
@@ -268,7 +268,7 @@ public class FileProcessing {
 
             File file = new File(strPass);
 
-            // ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¢ê‡(=ˆ—1‰ñ–Ú‚Ìê‡)
+            // ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„å ´åˆ(=å‡¦ç†1å›ç›®ã®å ´åˆ)
             if (!file.exists()) {
                 return list;
             }
@@ -290,12 +290,12 @@ public class FileProcessing {
             }
 
         } catch (IOException e) {
-            throw new FileReadException(e, "‘O‰ñ‚Ì—š—ğ‚ğ•Û‘¶‚µ‚½ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ß‚Ü‚¹‚ñ‚Å‚µ‚½B");
+            throw new FileReadException(e, "å‰å›ã®å±¥æ­´ã‚’ä¿å­˜ã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚ã¾ã›ã‚“ã§ã—ãŸã€‚");
 
         } finally {
 
             if (br != null) {
-                // •Â‚¶‚éˆ—
+                // é–‰ã˜ã‚‹å‡¦ç†
                 br.close();
             }
         }
@@ -303,13 +303,13 @@ public class FileProcessing {
     }
 
     // --------------------------------------------------
-    // privateŠÖ”
+    // privateé–¢æ•°
     // --------------------------------------------------
     /**
-     * ƒvƒƒpƒeƒBƒtƒ@ƒCƒ‹‚Ì’l‚ğæ“¾
+     * ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãƒ•ã‚¡ã‚¤ãƒ«ã®å€¤ã‚’å–å¾—
      * 
-     * @param path æ“¾‚µ‚½‚¢ƒtƒ@ƒCƒ‹‚ÌƒpƒX
-     * @return æ“¾‚µ‚½ƒtƒ@ƒCƒ‹‚ÌŠi”[ƒpƒX
+     * @param path å–å¾—ã—ãŸã„ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹
+     * @return å–å¾—ã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã®æ ¼ç´ãƒ‘ã‚¹
      * @throws FileNotFoundException
      * @throws FileReadException
      * @throws IOException
@@ -324,24 +324,24 @@ public class FileProcessing {
 
             strPass = properties.getProperty(path);
 
-            // İ’èƒtƒ@ƒCƒ‹“Ç‚İ‚İ¸”s
+            // è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿å¤±æ•—æ™‚
             if (strPass == null) {
-                throw new FileReadException(new Exception(), "ƒvƒƒpƒeƒBƒtƒ@ƒCƒ‹‚É‹LÚ‚³‚ê‚Ä‚¢‚é’è‹`‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½B");
+                throw new FileReadException(new Exception(), "ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãƒ•ã‚¡ã‚¤ãƒ«ã«è¨˜è¼‰ã•ã‚Œã¦ã„ã‚‹å®šç¾©ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸã€‚");
             }
 
         } catch (FileNotFoundException e) {
-            throw new FileReadException(e, "ƒvƒƒpƒeƒBƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½B");
+            throw new FileReadException(e, "ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãƒ•ã‚¡ã‚¤ãƒ«ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸã€‚");
         } catch (IOException e) {
-            throw new FileReadException(e, "ƒvƒƒpƒeƒBƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½B");
+            throw new FileReadException(e, "ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚");
 
         }
         return strPass;
     }
 
     /**
-     * –{“ú“ú•t‚Ìæ“¾
+     * æœ¬æ—¥æ—¥ä»˜ã®å–å¾—
      * 
-     * @return •¶š—ñŒ^“ú•t
+     * @return æ–‡å­—åˆ—å‹æ—¥ä»˜
      */
     private static String getToday() {
         Calendar cl = Calendar.getInstance();
@@ -351,10 +351,10 @@ public class FileProcessing {
     }
 
     /**
-     * “ü—Í’l‚ğƒGƒXƒP[ƒvˆ—‚ğ‚µ‚Ä•Ô‚·
+     * å…¥åŠ›å€¤ã‚’ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—å‡¦ç†ã‚’ã—ã¦è¿”ã™
      * 
-     * @param input “ü—Í’l
-     * @return ƒGƒXƒP[ƒvˆ—
+     * @param input å…¥åŠ›å€¤
+     * @return ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—å‡¦ç†
      */
     private static String conversionEscape(final String input) {
         char c;
@@ -372,31 +372,31 @@ public class FileProcessing {
     }
 
     /**
-     * •¶š—ñ‚Ì“ú•t‚ğDateŒ^‚Ì“ú•t‚É•ÏŠ·‚·‚é
+     * æ–‡å­—åˆ—ã®æ—¥ä»˜ã‚’Dateå‹ã®æ—¥ä»˜ã«å¤‰æ›ã™ã‚‹
      * 
-     * @param date •¶š—ñ‚Ì“ú•t
-     * @return DateŒ^‚Ì“ú•t
+     * @param date æ–‡å­—åˆ—ã®æ—¥ä»˜
+     * @return Dateå‹ã®æ—¥ä»˜
      */
     private static Date StringToDate(final String date) {
         if (date == null) {
             return null;
         }
-        // •¶š—ñ‚©‚ç“ú•tŒ^•ÏŠ·
+        // æ–‡å­—åˆ—ã‹ã‚‰æ—¥ä»˜å‹å¤‰æ›
         SimpleDateFormat tempSdf = new SimpleDateFormat(DATE_OF_BIRTH);
         Date formatDate = new Date();
         try {
             formatDate = tempSdf.parse(date);
         } catch (ParseException e) {
-            // ƒT[ƒo[‚Åİ’è‚·‚é‚Ì‚Å‚ ‚è‚¦‚È‚¢
+            // ã‚µãƒ¼ãƒãƒ¼ã§è¨­å®šã™ã‚‹ã®ã§ã‚ã‚Šãˆãªã„
         }
         return formatDate;
     }
 
     /**
-     * ƒtƒ@ƒCƒ‹‚Ì1s•ª‚ğŒûÀ”Ô†‚Æƒ†[ƒU[–¼‚Æc‚‚É•ªŠ„‚·‚é
+     * ãƒ•ã‚¡ã‚¤ãƒ«ã®1è¡Œåˆ†ã‚’å£åº§ç•ªå·ã¨ãƒ¦ãƒ¼ã‚¶ãƒ¼åã¨æ®‹é«˜ã«åˆ†å‰²ã™ã‚‹
      * 
-     * @param line “Ç‚İ‚İs
-     * @return •ªŠ„Œã‚ÌƒŠƒXƒg
+     * @param line èª­ã¿è¾¼ã¿è¡Œ
+     * @return åˆ†å‰²å¾Œã®ãƒªã‚¹ãƒˆ
      */
     private static List<String> fileSplit(final String line) {
         char c;
@@ -425,7 +425,7 @@ public class FileProcessing {
                 sb.append(c);
             }
 
-            // ÅŒã‚Ì€–Ú‚ğİ’è
+            // æœ€å¾Œã®é …ç›®ã‚’è¨­å®š
             if (i == line.length() - 1) {
                 data.add(sb.toString());
             }

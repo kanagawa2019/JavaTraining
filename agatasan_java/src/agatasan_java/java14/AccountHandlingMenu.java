@@ -1,46 +1,46 @@
 package agatasan_java.java14;
 
 /**
- * ŒûÀæ‚èˆµ‚¢ƒƒjƒ…[
+ * å£åº§å–ã‚Šæ‰±ã„ãƒ¡ãƒ‹ãƒ¥ãƒ¼
  * 
- * @author •H“c ”ü‹I
- * @version 1.0 2020/12/29 V‹Kì¬
- * @version 1.1 2021/05/23 No.95`102w“E‘Î‰
- * @version 1.2 2021/05/30 No.110`122w“E‘Î‰
- * @version 1.3 2021/05/31 No.123`131w“E‘Î‰
- * @version 1.4 2021/06/02 No.132`136w“E‘Î‰
+ * @author è±ç”° ç¾ç´€
+ * @version 1.0 2020/12/29 æ–°è¦ä½œæˆ
+ * @version 1.1 2021/05/23 No.95ï½102æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.2 2021/05/30 No.110ï½122æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.3 2021/05/31 No.123ï½131æŒ‡æ‘˜å¯¾å¿œ
+ * @version 1.4 2021/06/02 No.132ï½136æŒ‡æ‘˜å¯¾å¿œ
  *
  */
 public enum AccountHandlingMenu {
 
-    DEPOSIT(1, "“ü‹à"),
-    TRANSFER(2, "U"),
-    WITHDRAW(3, "o‹à"),
-    BALANCE(4, "c‚•\¦"),
-    HISTORY(5, "‚¨æˆø—š—ğ•\¦");
+    DEPOSIT(1, "å…¥é‡‘"),
+    TRANSFER(2, "æŒ¯è¾¼"),
+    WITHDRAW(3, "å‡ºé‡‘"),
+    BALANCE(4, "æ®‹é«˜è¡¨ç¤º"),
+    HISTORY(5, "ãŠå–å¼•å±¥æ­´è¡¨ç¤º");
 
     /** id */
     private final int id;
-    /** –¼Ì */
+    /** åç§° */
     private final String name;
-    /** •\¦Œ`® */
+    /** è¡¨ç¤ºå½¢å¼ */
     private static final String DISPLAY_FORMAT = "%2d";
 
     /**
-     * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+     * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
      * 
-     * @param id   id
-     * @param name –¼Ì
+     * @param id        id
+     * @param name  åç§°
      */
     private AccountHandlingMenu(final int id, final String name) {
-        this.id = id;
-        this.name = name;
+        this.id       = id;
+        this.name  = name;
     }
 
     /**
-     * ƒ‚[ƒh•\¦•¶š—ñæ“¾
+     * ãƒ¢ãƒ¼ãƒ‰è¡¨ç¤ºæ–‡å­—åˆ—å–å¾—
      * 
-     * @return ƒ‚[ƒh•\¦•¶š—ñ
+     * @return ãƒ¢ãƒ¼ãƒ‰è¡¨ç¤ºæ–‡å­—åˆ—
      */
     public static String getSelectBankString() {
         final StringBuffer sb = new StringBuffer();
@@ -51,10 +51,10 @@ public enum AccountHandlingMenu {
     }
 
     /**
-     * ƒ‚[ƒhæ“¾
+     * ãƒ¢ãƒ¼ãƒ‰å–å¾—
      * 
-     * @param inputBank“ü—Í’l
-     * @return ƒ‚[ƒh‚ª‘¶İ‚µ‚È‚¢ê‡‚Ínull’l
+     * @param inputBankå…¥åŠ›å€¤
+     * @return ãƒ¢ãƒ¼ãƒ‰ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯nullå€¤
      */
     public static AccountHandlingMenu convertBank(final String inputBank) {
         if (inputBank == null) {
@@ -77,7 +77,7 @@ public enum AccountHandlingMenu {
     }
 
     /**
-     * id‚ğæ“¾
+     * idã‚’å–å¾—
      * 
      * @return id
      */
@@ -86,7 +86,7 @@ public enum AccountHandlingMenu {
     }
 
     /**
-     * name‚ğæ“¾
+     * nameã‚’å–å¾—
      * 
      * @return name
      */
