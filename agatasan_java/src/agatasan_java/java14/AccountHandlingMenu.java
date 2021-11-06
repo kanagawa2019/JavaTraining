@@ -1,7 +1,7 @@
 package agatasan_java.java14;
 
 /**
- * 口座取り扱いメニュー
+ * 口座内処理メニューenum
  * 
  * @author 菱田 美紀
  * @version 1.0 2020/12/29 新規作成

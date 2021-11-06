@@ -29,7 +29,7 @@ public class WithdrawProcessiong extends AccountService {
      * @throws IOException
      */
     public static void withdrawMoney(final int depositIdx, List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
-        // 出金対象
+        // 出金対象取得
         Personal target = personalList.get(depositIdx);
 
         // 限度額上限の場合は、中止

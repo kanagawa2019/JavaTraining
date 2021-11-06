@@ -1,7 +1,7 @@
 package agatasan_java.java14;
 
 /**
- * 顧客口座クラス
+ * 口座開設で必要な顧客情報クラス
  * 
  * @author 菱田 美紀
  * @version 1.0 2021/01/02 新規作成

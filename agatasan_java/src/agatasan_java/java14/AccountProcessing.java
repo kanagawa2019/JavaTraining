@@ -120,7 +120,7 @@ public class AccountProcessing extends AccountService {
      */
     public static void createAccount(List<Personal> personalList) throws FileWriteException, FileReadException, IOException {
 
-        // 値を設定
+        // 新規顧客を作成
         personalList.add(new Personal(
                 inputName(),
                 createNewAccountNo(),

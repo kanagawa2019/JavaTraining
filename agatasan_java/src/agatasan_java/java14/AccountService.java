@@ -21,9 +21,9 @@ public class AccountService {
     /** 口座保有限度額（上限） */
     protected static final long MAX_BALANCE = 9000000000000000000L;
     /** 入金下限金額 */
-    private static final long MINIMUM_AMOUNT = 1L;
+    private static final long MIN_AMOUNT = 1L;
     /** 入金上限金額 */
-    private static final long MAXIMUM_AMOUNT = 10000000L;
+    private static final long MAX_AMOUNT = 10000000L;
 
     // --------------------------------------------------
     // protected関数
@@ -123,7 +123,7 @@ public class AccountService {
     private static boolean isMatchCondition(final AccountHandlingMenu menu, final long inputDeposit, final Personal transfer, final Personal payee) {
 
         // 範囲チェックは共通で行う
-        if (Util.isOutOfRange(inputDeposit, MINIMUM_AMOUNT, MAXIMUM_AMOUNT)) {
+        if (Util.isOutOfRange(inputDeposit, MIN_AMOUNT, MAX_AMOUNT)) {
             return false;
         }
 
