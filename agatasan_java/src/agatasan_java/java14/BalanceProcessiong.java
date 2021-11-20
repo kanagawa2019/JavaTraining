@@ -74,12 +74,14 @@ public class BalanceProcessiong {
         // 履歴あり
         Boolean isExistHistory = false;
 
+        // ヘッダーの設定
         sb.append("****************************************************************").append("\n");
         sb.append(String.format(HEADER_FORMAT_FOR_DATE, "お取引日")).append(DISPLAY_CONNECT)
            .append(String.format(HEADER_FORMAT_FOR_CLASSIFICATION, "区分")).append(DISPLAY_CONNECT)
            .append(String.format(HEADER_FORMAT_FOR_TRANSACTIONAMOUNT, "取引金額")).append(DISPLAY_CONNECT)
            .append("残高").append("\n");
 
+        // 明細の設定
         for (AccountHistory history : historyList) {
             if (accountNumber == history.getAccountNumber()) {
 

@@ -51,7 +51,7 @@ public class WithdrawProcessiong extends AccountService {
         // 口座の更新
         FileProcessing.createFile(true, personalList, 0);
 
-        // 出金履歴
+        // 出金履歴の書き込み
         FileProcessing.writeHistory(target.getAccountNumber(), AccountHandlingMenu.WITHDRAW.getId(), inputWithdraw, sum);
 
     }

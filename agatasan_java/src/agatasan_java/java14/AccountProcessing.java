@@ -22,7 +22,7 @@ public class AccountProcessing extends AccountService {
     // --------------------------------------------------
 
     /**
-     * 口座の処理入力
+     * 取り扱う操作番号を取得
      */
     public static DepositBusiness inputAccount() {
         DepositBusiness account = null;
@@ -49,7 +49,7 @@ public class AccountProcessing extends AccountService {
             // 取り扱う人物の番号を取得
             int personOfNumber = Util.getTargetNo(personalList, "どのユーザの処理をしますか？");
 
-            // 0の場合は、最初に戻る
+            // 0の場合は、処理継続質問に遷移
             if (personOfNumber == Util.START_NUMBER_OF_PERSONAL_LIST) {
                 break;
             }
@@ -127,7 +127,7 @@ public class AccountProcessing extends AccountService {
                 0)
                 );
 
-        // 口座を更新
+        // 入金処理を行う
         depositMoney(personalList.size() - 1, personalList);
 
         System.out.println("口座を新規登録しました。");
@@ -147,7 +147,7 @@ public class AccountProcessing extends AccountService {
         // 取り扱う人物の番号を取得
         int personOfNumber = Util.getTargetNo(personalList, "どのユーザの処理をしますか？");
 
-        // 0の場合は、最初に戻る
+        // 0の場合は、処理継続質問に遷移
         if (personOfNumber == Util.START_NUMBER_OF_PERSONAL_LIST) {
             return;
         }

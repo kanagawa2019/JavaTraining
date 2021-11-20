@@ -123,7 +123,7 @@ public class FileProcessing {
             // 追加書き込み
             bw = new BufferedWriter(new FileWriter(strPass, true));
 
-            // 日付、番号、取り扱い区分、取引金額、残高
+            // 日付、番号、取り扱い区分、取引金額、残高 の順番で書き込む
             String str = String.format(
                     "%s%s%s%s%s%d%s%s%s%d%s%s%s%d%s%s%s%d%s",
                     SAVE_IDENTIFIER, getToday(), SAVE_IDENTIFIER, SAVA_SEPARATION,
@@ -133,7 +133,7 @@ public class FileProcessing {
                     SAVE_IDENTIFIER, balance, SAVE_IDENTIFIER
                     );
 
-            // 書き込み
+            // 書き込み実施
             bw.write(str);
             // 改行
             bw.newLine();
@@ -167,6 +167,7 @@ public class FileProcessing {
         String strPass = null;
         BufferedWriter bw = null;
         try {
+            // ファイル出力パスを取得
             strPass = getPropertiesInfo(isUser ? ACCOUNT_FILE_OUTPUT_PATH : NUMBERING_ACCOUNT_FILE_OUTPUT_PATH);
 
             bw = new BufferedWriter(new FileWriter(strPass));
@@ -180,7 +181,7 @@ public class FileProcessing {
                             SAVE_IDENTIFIER, conversionEscape(p.getName()), SAVE_IDENTIFIER, SAVA_SEPARATION,
                             SAVE_IDENTIFIER, p.getBalance(), SAVE_IDENTIFIER
                             );
-                    // 書き込み
+                    // 書き込み実施
                     bw.write(str);
                     // 改行
                     bw.newLine();
@@ -209,13 +210,13 @@ public class FileProcessing {
     /**
      * 口座番号取得
      * 
-     * @return 取得した口座番号
+     * @return 口座番号
      * @throws FileReadException
      * @throws IOException
      */
     public static String getAccountNo() throws FileReadException, IOException {
 
-        String retValue = null;
+        String accountNo = null;
 
         String strPass = null;
         BufferedReader br = null;
@@ -234,7 +235,7 @@ public class FileProcessing {
             String str = br.readLine();
             if (str != null) {
                 // 読み取り
-                retValue = fileSplit(str).get(0);
+                accountNo = fileSplit(str).get(0);
             }
 
         } catch (IOException e) {
@@ -247,7 +248,7 @@ public class FileProcessing {
                 br.close();
             }
         }
-        return retValue;
+        return accountNo;
     }
 
     /**
@@ -393,7 +394,8 @@ public class FileProcessing {
     }
 
     /**
-     * ファイルの1行分を口座番号とユーザー名と残高に分割する
+     * ファイルの1行分を分割し（「'」に囲まれた単語を「,」で分割）、リストで返す
+     * （例：'1','山田太郎','100'→{1,山田太郎,100}）
      * 
      * @param line 読み込み行
      * @return 分割後のリスト

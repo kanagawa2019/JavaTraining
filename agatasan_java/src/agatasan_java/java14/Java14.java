@@ -30,7 +30,7 @@ public class Java14 {
                 // 入力
                 // --------------------------------------------------
 
-                // 口座の処理モード入力
+                // 取り扱う操作番号を取得
                 final DepositBusiness account = AccountProcessing.inputAccount();
 
                 switch (account) {

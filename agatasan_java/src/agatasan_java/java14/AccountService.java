@@ -103,7 +103,7 @@ public class AccountService {
         // 口座の更新
         FileProcessing.createFile(true, personalList, 0);
 
-        // 入金履歴
+        // 入金履歴の書き込み
         FileProcessing.writeHistory(target.getAccountNumber(), AccountHandlingMenu.DEPOSIT.getId(), inputDeposit, sum);
 
     }

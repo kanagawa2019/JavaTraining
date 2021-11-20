@@ -2,6 +2,7 @@ package agatasan_java.java14;
 
 import java.util.List;
 import java.util.Scanner;
+import java.text.Normalizer;
 
 /**
  * 共通処理
@@ -145,7 +146,7 @@ public class Util {
             String input = inputStr(displayMsg);
 
             // 入力値の判定
-            switch (input.toUpperCase()) {
+            switch (Normalizer.normalize(input.toUpperCase(), Normalizer.Form.NFKC)) {
                 case PROCESSING_CONTINUE:
                     return true;
                 case PROCESSING_END:
