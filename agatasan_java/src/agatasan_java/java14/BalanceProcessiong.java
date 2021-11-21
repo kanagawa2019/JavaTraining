@@ -83,23 +83,23 @@ public class BalanceProcessiong {
 
         // 明細の設定
         for (AccountHistory history : historyList) {
-            if (accountNumber == history.getAccountNumber()) {
 
-                if (isExistHistory == false) {
-                    isExistHistory = true;
-                }
+            if (history.getAccountNumber() != accountNumber) continue;
 
-                sb.append(String.format(DATA_FORMAT_FOR_DATE, dateToString(history.getDate()))).append(DISPLAY_CONNECT)
-                   .append(String.format(DATA_FORMAT_FOR_CLASSIFICATION, history.getClassification().getName())).append(DISPLAY_CONNECT)
-                   .append(String.format(DATA_FORMAT_FOR_TRANSACTIONAMOUNT, history.getTransactionAmount())).append(DISPLAY_CONNECT)
-                   .append(String.format(DATA_FORMAT_FOR_BALANCE, history.getBalance())).append("\n");
+            if (!isExistHistory) {
+                isExistHistory = true;
             }
+
+            sb.append(String.format(DATA_FORMAT_FOR_DATE, dateToString(history.getDate()))).append(DISPLAY_CONNECT)
+               .append(String.format(DATA_FORMAT_FOR_CLASSIFICATION, history.getClassification().getName())).append(DISPLAY_CONNECT)
+               .append(String.format(DATA_FORMAT_FOR_TRANSACTIONAMOUNT, history.getTransactionAmount())).append(DISPLAY_CONNECT)
+               .append(String.format(DATA_FORMAT_FOR_BALANCE, history.getBalance())).append("\n");
 
         }
 
         sb.append("****************************************************************");
 
-        System.out.println(isExistHistory == true ? sb.toString() : "お取引履歴はありません。");
+        System.out.println(isExistHistory ? sb.toString() : "お取引履歴はありません。");
     }
 
     /**

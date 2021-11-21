@@ -64,7 +64,7 @@ public class AccountService {
             // 入力値を取得
             inputDeposit = Util.inputMoney(msg);
 
-        } while (!isMatchCondition(menu, inputDeposit, transfer, payee));
+    } while (isUnMatchCondition(menu, inputDeposit, transfer, payee));
 
         return inputDeposit;
     }
@@ -118,35 +118,25 @@ public class AccountService {
      * @param inputDeposit  入力金額
      * @param transfer        振込元
      * @param payee           振込先
-     * @return 適性の場合はtrue、不適正の場合はfalseを返す
+     * @return 不適正の場合はtrue、適性の場合はfalseを返す
      */
-    private static boolean isMatchCondition(final AccountHandlingMenu menu, final long inputDeposit, final Personal transfer, final Personal payee) {
+    private static boolean isUnMatchCondition(final AccountHandlingMenu menu, final long inputDeposit, final Personal transfer, final Personal payee) {
 
         // 範囲チェックは共通で行う
         if (Util.isOutOfRange(inputDeposit, MIN_AMOUNT, MAX_AMOUNT)) {
-            return false;
+            return true;
         }
 
         switch (menu) {
             case DEPOSIT:
-                if (isMaxBalance(inputDeposit, transfer.getBalance())) {
-                    return false;
-                }
-                break;
+                return isMaxBalance(inputDeposit, transfer.getBalance());
             case TRANSFER:
-                if (canPay(transfer, inputDeposit)) {
-                    return false;
+                if (canNotPay(transfer, inputDeposit)) {
+                    return true;
                 }
-
-                if (isMaxBalance(inputDeposit, payee.getBalance())) {
-                    return false;
-                }
-                break;
+                return isMaxBalance(inputDeposit, transfer.getBalance());
             case WITHDRAW:
-                if (canPay(transfer, inputDeposit)) {
-                    return false;
-                }
-                break;
+                return canNotPay(transfer, inputDeposit);
             case BALANCE:
                 break;
             case HISTORY:
@@ -159,13 +149,13 @@ public class AccountService {
     }
 
     /**
-     * 残高内で払えるかのチェック
+     * 残高内で払えないかのチェック
      * 
      * @param personal       ユーザ情報
      * @param inputDeposit  振込金額
-     * @return 残高内で払えるならTrue、払えないならfalseを返す
+     * @return 残高内で払えないならTrue、払えるならfalseを返す
      */
-    private static boolean canPay(final Personal personal, final long inputDeposit) {
+    private static boolean canNotPay(final Personal personal, final long inputDeposit) {
 
         // 自分の口座から払えない場合
         if (personal.getBalance() - inputDeposit < 0) {
@@ -184,7 +174,7 @@ public class AccountService {
      */
     private static boolean isMaxBalance(final long inputDeposit, final long balance) {
 
-        if (MAX_BALANCE < inputDeposit + balance) {
+        if (inputDeposit + balance > MAX_BALANCE) {
             System.out.println(String.format("入金は%,d円までしか受付られません。", MAX_BALANCE - balance));
             return true;
         }

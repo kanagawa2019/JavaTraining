@@ -37,17 +37,14 @@ public class TransferProcessiong extends AccountService {
             int payeeOfNumber = Util.getTargetNo(personalList, "どのユーザに振込しますか？");
 
             // 0の場合は、1段階前に戻る
-            if (payeeOfNumber == Util.START_NUMBER_OF_PERSONAL_LIST) {
-                return;
-            }
+            if (payeeOfNumber == Util.START_NUMBER_OF_PERSONAL_LIST) return;
 
             // 入力された番号に紐づく名前を取得
             payee = personalList.get(payeeOfNumber - 1);
 
             // 自分に振込しない場合
-            if (!transfer.getName().equals(payee.getName())) {
-                break;
-            }
+            if (!transfer.getName().equals(payee.getName())) break;
+
             System.out.println("ご自分には振込めません。");
         } while (true);
 

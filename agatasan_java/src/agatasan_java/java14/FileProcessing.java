@@ -71,9 +71,7 @@ public class FileProcessing {
             File file = new File(strPass);
 
             // ファイルが存在しない場合(=処理1回目の場合)
-            if (!file.exists()) {
-                return list;
-            }
+            if (!file.exists()) return list;
 
             br = new BufferedReader(new FileReader(file));
             String str = br.readLine();
@@ -93,10 +91,8 @@ public class FileProcessing {
 
         } finally {
 
-            if (br != null) {
-                // 閉じる処理
-                br.close();
-            }
+            // 閉じる処理
+            if (br != null) br.close();
         }
         return list;
     }
@@ -142,11 +138,8 @@ public class FileProcessing {
             throw new FileWriteException(e, String.format("ファイルの書き込みに失敗しました。ファイル名:%s", strPass));
 
         } finally {
-
-            if (bw != null) {
-                // 閉じる処理
-                bw.close();
-            }
+            // 閉じる処理
+            if (bw != null) bw.close();
         }
 
     }
@@ -198,11 +191,8 @@ public class FileProcessing {
             throw new FileWriteException(e, String.format("ファイルの書き込みに失敗しました。ファイル名:%s", strPass));
 
         } finally {
-
-            if (bw != null) {
-                // 閉じる処理
-                bw.close();
-            }
+            // 閉じる処理
+            if (bw != null) bw.close();
         }
 
     }
@@ -226,9 +216,7 @@ public class FileProcessing {
             File file = new File(strPass);
 
             // ファイルが存在しない場合(=処理1回目の場合)
-            if (!file.exists()) {
-                return "1";
-            }
+            if (!file.exists()) return "1";
 
             FileReader fileReader = new FileReader(file);
             br = new BufferedReader(fileReader);
@@ -242,11 +230,8 @@ public class FileProcessing {
             throw new FileReadException(e, "口座採番用ファイルを読み込めませんでした。");
 
         } finally {
-
-            if (br != null) {
-                // 閉じる処理
-                br.close();
-            }
+            // 閉じる処理
+            if (br != null) br.close();
         }
         return accountNo;
     }
@@ -270,9 +255,7 @@ public class FileProcessing {
             File file = new File(strPass);
 
             // ファイルが存在しない場合(=処理1回目の場合)
-            if (!file.exists()) {
-                return list;
-            }
+            if (!file.exists()) return list;
 
             br = new BufferedReader(new FileReader(file));
             String str = br.readLine();
@@ -294,11 +277,8 @@ public class FileProcessing {
             throw new FileReadException(e, "前回の履歴を保存したファイルを読み込めませんでした。");
 
         } finally {
-
-            if (br != null) {
-                // 閉じる処理
-                br.close();
-            }
+            // 閉じる処理
+            if (br != null) br.close();
         }
         return list;
     }
@@ -379,9 +359,8 @@ public class FileProcessing {
      * @return Date型の日付
      */
     private static Date StringToDate(final String date) {
-        if (date == null) {
-            return null;
-        }
+        if (date == null) return null;
+
         // 文字列から日付型変換
         SimpleDateFormat tempSdf = new SimpleDateFormat(DATE_OF_BIRTH);
         Date formatDate = new Date();
