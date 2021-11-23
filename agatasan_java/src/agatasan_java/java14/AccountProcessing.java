@@ -148,9 +148,7 @@ public class AccountProcessing extends AccountService {
         int personOfNumber = Util.getTargetNo(personalList, "どのユーザの処理をしますか？");
 
         // 0の場合は、処理継続質問に遷移
-        if (personOfNumber == Util.START_NUMBER_OF_PERSONAL_LIST) {
-            return;
-        }
+        if (personOfNumber == Util.START_NUMBER_OF_PERSONAL_LIST) return;
 
         int idx = personOfNumber - 1;
 

@@ -131,9 +131,7 @@ public class AccountService {
             case DEPOSIT:
                 return isMaxBalance(inputDeposit, transfer.getBalance());
             case TRANSFER:
-                if (canNotPay(transfer, inputDeposit)) {
-                    return true;
-                }
+                if (canNotPay(transfer, inputDeposit)) return true;
                 return isMaxBalance(inputDeposit, transfer.getBalance());
             case WITHDRAW:
                 return canNotPay(transfer, inputDeposit);

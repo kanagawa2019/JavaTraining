@@ -326,9 +326,7 @@ public class FileProcessing {
      */
     private static String getToday() {
         Calendar cl = Calendar.getInstance();
-
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_OF_BIRTH);
-        return sdf.format(cl.getTime());
+        return new SimpleDateFormat(DATE_OF_BIRTH).format(cl.getTime());
     }
 
     /**

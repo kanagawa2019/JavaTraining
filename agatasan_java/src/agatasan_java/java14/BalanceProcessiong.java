@@ -50,13 +50,8 @@ public class BalanceProcessiong {
      * @throws IOException
      */
     public static void displayHistory(final int accountNumber) throws FileReadException, IOException {
-
-        // 履歴データ取得
-        List<AccountHistory> historyList = FileProcessing.getAccountHistory();
-
         // 履歴の中で口座番号一致のものを表示
-        matchAccountNo(accountNumber, historyList);
-
+        matchAccountNo(accountNumber, FileProcessing.getAccountHistory());
     }
 
     // --------------------------------------------------
@@ -109,7 +104,6 @@ public class BalanceProcessiong {
      * @return 文字列型日付
      */
     private static String dateToString(final Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_OF_STANDARD_BIRTH);
-        return dateFormat.format(date);
+        return new SimpleDateFormat(DATE_OF_STANDARD_BIRTH).format(date);
     }
 }
