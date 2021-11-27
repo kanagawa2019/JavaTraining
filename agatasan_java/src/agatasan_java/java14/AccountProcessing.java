@@ -73,32 +73,7 @@ public class AccountProcessing extends AccountService {
                     // --------------------------------------------------
                     // 処理・出力
                     // --------------------------------------------------
-
-                    switch (AccountHandlingMenu.convertBank(String.valueOf(propertyOfNumber))) {
-                        case DEPOSIT:
-                            // 入金処理
-                            depositMoney(idx, personalList);
-                            break;
-                        case TRANSFER:
-                            // 振込処理
-                            TransferProcessiong.transferMoney(personal, personalList);
-                            break;
-                        case WITHDRAW:
-                            // 出金処理
-                            WithdrawProcessiong.withdrawMoney(idx, personalList);
-                            break;
-                        case BALANCE:
-                            // 残高表示処理
-                            displayBalance(personal.getBalance());
-                            break;
-                        case HISTORY:
-                            // お取引履歴表示
-                            BalanceProcessiong.displayHistory(personal.getAccountNumber());
-                            break;
-                        default:
-                            System.out.println(Util.UNEXPECTED_ERR);
-                            break;
-                    }
+                    handleAccount(AccountHandlingMenu.convertBank(String.valueOf(propertyOfNumber)), idx, personal, personalList);
 
                 } while (true);
 
@@ -269,4 +244,44 @@ public class AccountProcessing extends AccountService {
     private static String inputName() {
         return Util.inputStr("氏名を入力してください");
     }
+    
+    /**
+     * 取り扱うメニューの個々の処理
+     * 
+     * @param menue         取り扱うメニュー番号
+     * @param idx               取り扱う人物の番号
+     * @param personal       取り扱い人物の口座情報
+     * @param personalList  全ての口座リスト
+     * @throws FileWriteException
+     * @throws FileReadException
+     * @throws IOException
+     */
+    private static void handleAccount(AccountHandlingMenu menue, int idx, Personal personal, List<Personal> personalList) throws FileWriteException,
+        FileReadException, IOException {
+        switch (menue) {
+            case DEPOSIT:
+                // 入金処理
+                depositMoney(idx, personalList);
+                break;
+            case TRANSFER:
+                // 振込処理
+                TransferProcessiong.transferMoney(personal, personalList);
+                break;
+            case WITHDRAW:
+                // 出金処理
+                WithdrawProcessiong.withdrawMoney(idx, personalList);
+                break;
+            case BALANCE:
+                // 残高表示処理
+                displayBalance(personal.getBalance());
+                break;
+            case HISTORY:
+                // お取引履歴表示
+                BalanceProcessiong.displayHistory(personal.getAccountNumber());
+                break;
+            default:
+                System.out.println(Util.UNEXPECTED_ERR);
+                break;
+        }
+}
 }
