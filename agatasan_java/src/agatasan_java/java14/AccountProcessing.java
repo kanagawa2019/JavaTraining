@@ -50,9 +50,7 @@ public class AccountProcessing extends AccountService {
             int personOfNumber = Util.getTargetNo(personalList, "どのユーザの処理をしますか？");
 
             // 0の場合は、処理継続質問に遷移
-            if (personOfNumber == Util.START_NUMBER_OF_PERSONAL_LIST) {
-                break;
-            }
+            if (personOfNumber == Util.START_NUMBER_OF_PERSONAL_LIST) break;
 
             int idx = personOfNumber - 1;
 
@@ -66,9 +64,7 @@ public class AccountProcessing extends AccountService {
                     int propertyOfNumber = getModifyUserInfo(displayToTreatProperty(personal.getName()));
 
                     // 0 の場合、人物を選択する処理まで戻る
-                    if (propertyOfNumber == Util.START_NUMBER_OF_PERSONAL_ATTRIBUTE_LIST) {
-                        break;
-                    }
+                    if (propertyOfNumber == Util.START_NUMBER_OF_PERSONAL_ATTRIBUTE_LIST) break;
 
                     // --------------------------------------------------
                     // 処理・出力
