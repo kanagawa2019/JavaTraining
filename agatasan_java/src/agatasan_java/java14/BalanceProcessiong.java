@@ -22,7 +22,7 @@ public class BalanceProcessiong {
     /** 履歴表示接続文字 */
     private static final String DISPLAY_CONNECT = "|";
     /** ヘッダー部の表示形式：お取引日 */
-    private static final String HEADER_FORMAT_FOR_DATE = "%-10S";
+    private static final String HEADER_FORMAT_FOR_DATE = "%-11S";
     /** ヘッダー部の表示形式：区分 */
     private static final String HEADER_FORMAT_FOR_CLASSIFICATION = "%-3S";
     /** ヘッダー部の表示形式：取引金額 */
